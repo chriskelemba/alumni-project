@@ -1,61 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
-<body>
-    @extends('role-permission.nav-links')
-    @section('content')
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div>
-                            <h4>Create User
-                                <a href="{{ url('users') }}" class="btn btn-danger float-end">Back</a>
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <form action="{{ url('users') }}" method="POST">
-                                @csrf
-                                
-                                <div class="mb-3">
-                                    <label for="">Name</label>
-                                    <input type="text" name="name" class="form-control"/>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="">Email</label>
-                                    <input type="email" name="email" class="form-control"/>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="">Password</label>
-                                    <input type="password" name="password" class="form-control"/>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="">Roles</label>
-                                    <select name="roles[]" class="form-control" multiple>
-                                        <option value="">Select Role</option>
+<x-app-layout>
+    <div class="container mx-auto p-5">
+        <div class="flex flex-wrap justify-center">
+            <div class="w-full lg:w-1/2 xl:w-1/3 p-6">
+                <div class="bg-white shadow-md rounded p-4">
+                    <div class="flex justify-between mb-4">
+                        <h4 class="text-lg font-bold">Create User</h4>
+                        <a href="{{ url('users') }}" class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded">Back</a>
+                    </div>
+                    <div class="p-4">
+                        <form action="{{ url('users') }}" method="POST">
+                            @csrf
+                            
+                            <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">Name</label>
+                                <input type="text" name="name" class="w-full p-2 pl-10 text-sm text-gray-700"/>
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">Email</label>
+                                <input type="email" name="email" class="w-full p-2 pl-10 text-sm text-gray-700"/>
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">Password</label>
+                                <input type="password" name="password" class="w-full p-2 pl-10 text-sm text-gray-700"/>
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">Roles</label>
+                                <select name="roles[]" class="w-full p-2 pl-10 text-sm text-gray-700" multiple>
+                                    <option value="">Select Role</option>
 
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role }}">{{ $role }}</option>
-                                        @endforeach
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role }}">{{ $role }}</option>
+                                    @endforeach
 
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
-                        </div>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">Save</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @endsection
-</body>
-</html>
+</x-app-layout>

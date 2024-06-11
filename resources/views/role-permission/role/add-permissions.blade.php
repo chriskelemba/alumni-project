@@ -1,65 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Role</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
-<body>
-    @extends('role-permission.nav-links')
-    @section('content')
-    <div class="container mt-5">
-        <div class="row">
-
+<x-app-layout>
+    <div class="container mx-auto p-5">
+        <div class="flex flex-wrap justify-center">
             @if (session('status'))
-                <div class="alert alert-success">{{ session('status') }}</div>
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                    {{ session('status') }}
+                </div>
             @endif
 
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div>
-                            <h4>Role: {{ $role->name }}
-                                <a href="{{ url('roles') }}" class="btn btn-danger float-end">Back</a>
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <form action="{{ url('roles/'.$role->id.'/give-permissions') }}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <div class="mb-3">
+            <div class="w-full lg:w-1/2 xl:w-1/3 p-6">
+                <div class="bg-white shadow-md rounded p-4">
+                    <div class="flex justify-between mb-4">
+                        <h4 class="text-lg font-bold">Role: {{ $role->name }}</h4>
+                        <a href="{{ url('roles') }}" class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded float-right">Back</a>
+                    </div>
+                    <div class="p-4">
+                        <form action="{{ url('roles/'.$role->id.'/give-permissions') }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="mb-4">
+                                @error('permission')
+                                    <span class="text-red-500">{{ $message }}</span>
+                                @enderror
 
-                                    @error('permission')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-
-                                    <label for="">Permissions</label>
-                                    <div class="row">
-                                        @foreach ($permissions as $permission)
-                                        <div class="col-md-2">
-                                            <label>
-                                                <input type="checkbox"
-                                                name="permission[]"
-                                                value="{{ $permission->name }}"
-                                                {{ in_array($permission->id, $rolePermissions) ? 'checked':'' }}
-                                                />
-                                                {{ $permission->name }}
-                                            </label>
-                                        </div>
-                                        @endforeach
+                                <label for="" class="block mb-2 text-sm font-bold">Permissions</label>
+                                <div class="flex flex-wrap">
+                                    @foreach ($permissions as $permission)
+                                    <div class="w-1/2 md:w-1/3 xl:w-1/4 p-2">
+                                        <label>
+                                            <input type="checkbox"
+                                            name="permission[]"
+                                            value="{{ $permission->name }}"
+                                            {{ in_array($permission->id, $rolePermissions) ? 'checked':'' }}
+                                            />
+                                            {{ $permission->name }}
+                                        </label>
                                     </div>
+                                    @endforeach
                                 </div>
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                </div>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="mb-4">
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">Update</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @endsection
-</body>
-</html>
+</x-app-layout>

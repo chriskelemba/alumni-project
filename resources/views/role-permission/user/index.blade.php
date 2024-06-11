@@ -1,75 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
-<body>
-    @extends('role-permission.nav-links')
-    @section('content')
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
+<x-app-layout>
+    <div class="container mx-auto p-5">
+        <div class="flex flex-wrap justify-center">
+            <div class="w-full lg:w-1/2 xl:w-1/3 p-6">
 
-            @if (session('status'))
-                <div class="alert alert-success">{{ session('status') }}</div>
-            @endif
+                @if (session('status'))
+                    <div class="bg-green-500 text-white font-bold rounded p-4 mb-4">{{ session('status') }}</div>
+                @endif
 
+                <div class="bg-white shadow-md rounded p-4">
+                    <div class="flex justify-between mb-4">
+                        <h4 class="text-lg font-bold">Users</h4>
+                        <a href="{{ url('users/create') }}" class="bg-orange-500 hover:bg-orange-700 text-black font-bold py-2 px-4 rounded">Add User</a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th class="py-3 px-6">Id</th>
+                                    <th class="py-3 px-6">Name</th>
+                                    <th class="py-3 px-6">Email</th>
+                                    <th class="py-3 px-6">Roles</th>
+                                    <th class="py-3 px-6">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($users as $user)
+                                <tr class="bg-white border-b">
+                                    <td class="py-4 px-6">{{ $user->id }}</td>
+                                    <td class="py-4 px-6">{{ $user->name }}</td>
+                                    <td class="py-4 px-6">{{ $user->email }}</td>
+                                    <td class="py-4 px-6">
+                                        @if (!empty($user->getRoleNames()))
+                                            @foreach ($user->getRoleNames() as $rolename)
+                                                <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ $rolename }}</span>
+                                            @endforeach
+                                        @endif
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        @can('update user')
+                                            <a href="{{ url('users/'.$user->id.'/edit') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Edit</a>
+                                        @endcan
 
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <div>
-                            <h4>Users
-                                <a href="{{ url('users/create') }}" class="btn btn-primary float-end">Add User</a>
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Roles</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($users as $user)
-                                    <tr>
-                                        <td>{{ $user->id }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>
-                                            @if (!empty($user->getRoleNames()))
-                                                @foreach ($user->getRoleNames() as $rolename)
-                                                    <label class="badge bg-primary text-white mx-1">{{ $rolename }}</label>
-                                                @endforeach
-                                            @endif
-                                        </td>
-                                        <td>
-
-                                            @can('update user')
-                                                <a href="{{ url('users/'.$user->id.'/edit') }}" class="btn btn-success">Edit</a>
-                                            @endcan
-
-                                            @can('delete user')
-                                                <a href="{{ url('users/'.$user->id.'/delete') }}" class="btn btn-danger">Delete</a>
-                                            @endcan
-
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                        @can('delete user')
+                                            <a href="{{ url('users/'.$user->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</a>
+                                        @endcan
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @endsection
-</body>
-</html>
+</x-app-layout>

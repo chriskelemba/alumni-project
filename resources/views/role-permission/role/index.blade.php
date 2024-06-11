@@ -1,66 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Role</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
-<body>
-    @extends('role-permission.nav-links')
-    @section('content')
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
+<x-app-layout>
+    <div class="container mx-auto p-5">
+        <div class="flex flex-wrap justify-center">
+            <div class="w-full lg:w-1/2 xl:w-1/3 p-6">
+                @if (session('status'))
+                    <div class="bg-green-500 text-black font-bold py-2 px-4 rounded mb-4">{{ session('status') }}</div>
+                @endif
 
-            @if (session('status'))
-                <div class="alert alert-success">{{ session('status') }}</div>
-            @endif
+                <div class="bg-white shadow-md rounded p-4 mt-3">
+                    <div class="flex justify-between mb-4">
+                        <h4 class="text-lg font-bold">Roles</h4>
+                        <a href="{{ url('roles/create') }}" class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">Add Role</a>
+                    </div>
+                    <div class="p-4">
+                        <table class="w-full text-sm text-gray-700">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2">Id</th>
+                                    <th class="px-4 py-2 w-50">Name</th>
+                                    <th class="px-4 py-2">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($roles as $role)
+                                <tr>
+                                    <td class="px-4 py-2">{{ $role->id }}</td>
+                                    <td class="px-4 py-2">{{ $role->name }}</td>
+                                    <td class="px-4 py-2">
+                                        <a href="{{ url('roles/'.$role->id.'/give-permissions') }}" class="bg-orange-500 hover:bg-orange-700 text-orange-300 font-bold py-2 px-4 rounded">Add / Edit Role Permission</a>
 
+                                        @can('update role')
+                                            <a href="{{ url('roles/'.$role->id.'/edit') }}" class="bg-green-500 hover:bg-green-700 text-green font-bold py-2 px-4 rounded">Edit</a>
+                                        @endcan
 
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <div>
-                            <h4>Roles
-                                <a href="{{ url('roles/create') }}" class="btn btn-primary float-end">Add Role</a>
-                            </h4>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th class="w-50">Name</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($roles as $role)
-                                    <tr>
-                                        <td>{{ $role->id }}</td>
-                                        <td>{{ $role->name }}</td>
-                                        <td>
-                                            <a href="{{ url('roles/'.$role->id.'/give-permissions') }}" class="btn btn-warning">Add / Edit Role Permission</a>
-
-                                            @can('update role')
-                                                <a href="{{ url('roles/'.$role->id.'/edit') }}" class="btn btn-success">Edit</a>
-                                            @endcan
-
-                                            @can('delete role')
-                                                <a href="{{ url('roles/'.$role->id.'/delete') }}" class="btn btn-danger">Delete</a>
-                                            @endcan
-                                            
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                        @can('delete role')
+                                            <a href="{{ url('roles/'.$role->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-red font-bold py-2 px-4 rounded">Delete</a>
+                                        @endcan
+                                        
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @endsection
-</body>
-</html>
+</x-app-layout>
