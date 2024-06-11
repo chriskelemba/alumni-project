@@ -36,7 +36,7 @@
                             </div>
                             <div class="mb-4">
                                 <label for="" class="block mb-2 text-sm font-bold">Roles</label>
-                                <select name="roles[]" class="w-full p-2 pl-10 text-sm text-gray-700" multiple>
+                                <select name="roles[]" class="w-full p-2 pl-10 text-sm text-gray-700">
                                     <option value="">Select Role</option>
 
                                     @foreach ($roles as $role)
