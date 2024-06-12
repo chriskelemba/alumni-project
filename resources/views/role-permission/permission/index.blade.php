@@ -33,7 +33,7 @@
                                         @endcan
 
                                         @can('delete permission')
-                                            <a href="{{ url('permissions/'.$permission->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</a>
+                                            <a href="{{ url('permissions/'.$permission->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this permission?')">Delete</a>
                                         @endcan
                                     </td>
                                 </tr>

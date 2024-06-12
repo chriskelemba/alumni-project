@@ -8,6 +8,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\JobController;
 
 Route::group(['middleware' => ['role:super-admin|admin']], function() {
     
@@ -26,6 +27,12 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('users/{userId}/forceDelete', [UserController::class, 'forceDelete']);
 
 });
+
+Route::get('jobs/trash', [JobController::class, 'trash']);
+Route::resource('jobs', JobController::class);
+Route::get('jobs/{jobId}/delete', [JobController::class, 'destroy']);
+Route::get('jobs/{jobId}/restore', [JobController::class, 'restore']);
+Route::get('jobs/{jobId}/forceDelete', [JobController::class, 'forceDelete']);
 
 Route::get('/', function () {
     return view('welcome');
