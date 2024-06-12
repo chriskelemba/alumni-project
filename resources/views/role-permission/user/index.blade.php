@@ -20,7 +20,9 @@
                                     <th class="py-3 px-6">Name</th>
                                     <th class="py-3 px-6">Email</th>
                                     <th class="py-3 px-6">Roles</th>
+                                    @can('update user')
                                     <th class="py-3 px-6">Action</th>
+                                    @endcan
                                 </tr>
                             </thead>
                             <tbody>
@@ -36,6 +38,7 @@
                                             @endforeach
                                         @endif
                                     </td>
+                                    @can('update user')
                                     <td class="py-4 px-6">
                                         @can('update user')
                                             <a href="{{ url('users/'.$user->id.'/edit') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Edit</a>
@@ -45,6 +48,7 @@
                                             <a href="{{ url('users/'.$user->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
                                         @endcan
                                     </td>
+                                    @endcan
                                 </tr>
                                 @endforeach
                             </tbody>
