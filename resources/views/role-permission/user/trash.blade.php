@@ -2,6 +2,11 @@
     <div class="container mx-auto p-5">
         <div class="flex flex-wrap justify-center">
             <div class="w-full p-6">
+
+                @if (session('status'))
+                <div class="bg-green-500 text-white font-bold rounded p-4 mb-4" role="alert">{{ session('status') }}</div>
+                @endif
+
                 <div class="bg-white shadow-md rounded p-4">
 
                     <div class="flex justify-between mb-4">
@@ -27,7 +32,7 @@
                                     <td class="py-4 px-6">{{ $trashedUser->email }}</td>
                                     <td class="py-4 px-6">
                                         <a href="{{ url('users/'.$trashedUser->id.'/restore') }}" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">Restore</a>
-                                        <a href="{{ url('users/'.$trashedUser->id.'/forceDelete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete Permanently</a>
+                                        <a href="{{ url('users/'.$trashedUser->id.'/forceDelete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this user?')">Delete Permanently</a>
                                     </td>
                                 </tr>
                                 @endforeach

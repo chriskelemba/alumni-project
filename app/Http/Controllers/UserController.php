@@ -110,7 +110,7 @@ class UserController extends Controller implements HasMiddleware
         $user = User::withTrashed()->findOrFail($userId);
         $user->restore();
 
-        return redirect('/users')->with('status', 'User Restored Successfully');
+        return redirect('/users/trash')->with('status', 'User Restored Successfully');
     }
 
     public function forceDelete($userId)
@@ -118,6 +118,6 @@ class UserController extends Controller implements HasMiddleware
         $user = User::withTrashed()->findOrFail($userId);
         $user->forceDelete();
 
-        return redirect('/users')->with('status', 'User Deleted Permanently');
+        return redirect('/users/trash')->with('status', 'User Deleted Permanently');
     }
 }
