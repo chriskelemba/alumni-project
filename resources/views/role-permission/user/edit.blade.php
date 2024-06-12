@@ -1,11 +1,11 @@
 <x-app-layout>
     <div class="container mx-auto p-5">
         <div class="flex flex-wrap justify-center">
-            <div class="w-full lg:w-1/2 xl:w-1/3 p-6">
+            <div class="w-full p-6">
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
                         <h4 class="text-lg font-bold">Edit User</h4>
-                        <a href="{{ url('users') }}" class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded">Back</a>
+                        <a href="{{ url('users') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Back</a>
                     </div>
                     <div class="p-4">
                         <form action="{{ url('users/'.$user->id) }}" method="POST">
@@ -56,7 +56,7 @@
                                 
                             </div>
                             <div class="mb-4">
-                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">Update</button>
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
                             </div>
                         </form>
                     </div>

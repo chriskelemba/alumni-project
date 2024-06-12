@@ -1,19 +1,19 @@
 <x-app-layout>
     <div class="container mx-auto p-5">
         <div class="flex flex-wrap justify-center">
-            <div class="w-full lg:w-1/2 xl:w-1/3 p-6">
+            <div class="w-full p-6">
 
                 @if (session('status'))
-                    <div class="bg-green-500 text-white font-bold rounded p-4 mb-4">{{ session('status') }}</div>
+                    <div class="bg-green-500 text-white font-bold rounded p-4 mb-4" role="alert">{{ session('status') }}</div>
                 @endif
 
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
                         <h4 class="text-lg font-bold">Users</h4>
-                        <a href="{{ url('users/create') }}" class="bg-orange-500 hover:bg-orange-700 text-black font-bold py-2 px-4 rounded">Add User</a>
+                        <a href="{{ url('users/create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add User</a>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500">
+                        <table class="w-full text-sm text-center text-gray-500">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
                                     <th class="py-3 px-6">Id</th>
