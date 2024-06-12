@@ -16,7 +16,7 @@ class UserController extends Controller implements HasMiddleware
         return [
             new Middleware('permission:view user', only: ['index']),
             new Middleware('permission:create user', only: ['create', 'store']),
-            new Middleware('permission:update user', only: ['update', 'edit']),
+            new Middleware('permission:update user', only: ['update', 'edit', 'trash']),
             new Middleware('permission:delete user', only: ['destroy']),
         ];
     }
@@ -96,5 +96,28 @@ class UserController extends Controller implements HasMiddleware
         $user->delete();
 
         return redirect('/users')->with('status', 'User Deleted Successfully');
+    }
+
+    public function trash()
+    {
+        $trashedUsers = User::onlyTrashed()->get();
+
+        return view('role-permission.user.trash', ['trashedUsers' => $trashedUsers]);
+    }
+
+    public function restore($userId)
+    {
+        $user = User::withTrashed()->findOrFail($userId);
+        $user->restore();
+
+        return redirect('/users')->with('status', 'User Restored Successfully');
+    }
+
+    public function forceDelete($userId)
+    {
+        $user = User::withTrashed()->findOrFail($userId);
+        $user->forceDelete();
+
+        return redirect('/users')->with('status', 'User Deleted Permanently');
     }
 }

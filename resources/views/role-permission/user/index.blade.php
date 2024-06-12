@@ -50,6 +50,11 @@
                             </tbody>
                         </table>
                     </div>
+                    @can('update user')
+                        <div class="text-center mb-4 mt-6">
+                            <a href="{{ url('users/trash') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Recycling Bin</a>
+                        </div>
+                    @endcan
                 </div>
             </div>
         </div>

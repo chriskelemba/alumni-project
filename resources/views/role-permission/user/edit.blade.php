@@ -65,3 +65,7 @@
         </div>
     </div>
 </x-app-layout>
+
+@if($user->trashed())
+<a href="{{ url('users/'.$user->id.'/restore')}}">Restore</a>
+@endif

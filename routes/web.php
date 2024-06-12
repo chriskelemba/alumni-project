@@ -19,8 +19,11 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('roles/{roleId}/give-permissions', [RoleController::class, 'addPermissionToRole']);
     Route::put('roles/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole']);
 
+    Route::get('users/trash', [UserController::class, 'trash']);
     Route::resource('users', UserController::class);
     Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
+    Route::get('users/{userId}/restore', [UserController::class, 'restore']);
+    Route::get('users/{userId}/forceDelete', [UserController::class, 'forceDelete']);
 
 });
 
