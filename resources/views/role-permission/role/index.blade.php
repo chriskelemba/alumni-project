@@ -33,7 +33,7 @@
                                         @endcan
 
                                         @can('delete role')
-                                            <a href="{{ url('roles/'.$role->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</a>
+                                            <a href="{{ url('roles/'.$role->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this role?')">Delete</a>
                                         @endcan
                                         
                                     </td>
