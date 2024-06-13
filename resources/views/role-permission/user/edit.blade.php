@@ -23,7 +23,7 @@
                             </div>
                             <div class="mb-4">
                                 <label for="" class="block mb-2 text-sm font-bold">Email</label>
-                                <input type="email" name="email" readonly value="{{ $user->email }}" class="w-full p-2 pl-10 text-sm text-gray-700"/>
+                                <input type="email" name="email" value="{{ $user->email }}" class="w-full p-2 pl-10 text-sm text-gray-700"/>
                             </div>
                             <div class="mb-4">
                                 <label for="" class="block mb-2 text-sm font-bold">Password</label>

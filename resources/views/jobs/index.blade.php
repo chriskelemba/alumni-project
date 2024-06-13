@@ -16,11 +16,10 @@
                         <table class="w-full text-sm text-center text-gray-500">
                             <tbody>
                                 @foreach ($jobs as $job)
-                                <tr class="bg-gray-100 border-b">
-                                    <td class="py-4 px-6 text-xs text-gray-700 uppercase">{{ $job->id }}</td>
-                                    <td class="py-4 px-6">{{ $job->title }}</td>
+                                <tr class="bg-gray-100 border-b mb-5 grid grid-cols-1">
+                                    <td class="py-4 px-6 text-3xl text-bold">{{ $job->title }}</td>
                                     <td class="py-4 px-6">{{ $job->description }}</td>
-                                    <td class="py-4 px-6 flex">
+                                    <td class="py-4 px-6 flex text-center">
                                             <a href="{{ url('jobs/'.$job->id.'/edit') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Edit</a>
                                             <a href="{{ url('jobs/'.$job->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this job?')">Delete</a>
                                     </td>

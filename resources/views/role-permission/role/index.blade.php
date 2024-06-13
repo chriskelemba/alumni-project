@@ -3,7 +3,7 @@
         <div class="flex flex-wrap justify-center">
             <div class="w-full p-6">
                 @if (session('status'))
-                    <div class="bg-green-500 text-black font-bold py-2 px-4 rounded mb-4">{{ session('status') }}</div>
+                    <div class="bg-green-500 text-white font-bold py-2 px-4 rounded mb-4">{{ session('status') }}</div>
                 @endif
 
                 <div class="bg-white shadow-md rounded p-4">
