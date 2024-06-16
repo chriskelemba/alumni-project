@@ -5,8 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Job;
 
-class JobController extends Controller
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+
+class JobController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:create job', only: ['create', 'store']),
+            new Middleware('permission:update job', only: ['update', 'edit']),
+            new Middleware('permission:delete job', only: ['destroy', 'trash', 'restore', 'forceDelete']),
+        ];
+    }
+
     public function index()
     {
         $jobs = Job::get();
@@ -84,5 +96,15 @@ class JobController extends Controller
         $job->forceDelete();
 
         return redirect('/jobs/trash')->with('status', 'Job Deleted Permanently');
+    }
+
+    public function show(Job $job)
+    {
+        return view('jobs.show', ['job' => $job]);
+    }
+
+    public function apply(Job $job)
+    {
+        return view('jobs.apply', ['job' => $job]);
     }
 }

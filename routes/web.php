@@ -28,11 +28,19 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 
 });
 
-Route::get('jobs/trash', [JobController::class, 'trash']);
-Route::resource('jobs', JobController::class);
-Route::get('jobs/{jobId}/delete', [JobController::class, 'destroy']);
-Route::get('jobs/{jobId}/restore', [JobController::class, 'restore']);
-Route::get('jobs/{jobId}/forceDelete', [JobController::class, 'forceDelete']);
+Route::get('jobs', [JobController::class, 'index']);
+Route::get('jobs/{job}/show', [JobController::class, 'show']);
+Route::get('jobs/{job}/apply', [JobController::class, 'apply']);
+
+Route::group(['middleware' => ['role:super-admin|admin']], function() {
+
+    Route::get('jobs/trash', [JobController::class, 'trash']);
+    Route::resource('jobs', JobController::class)->except(['index']);
+    Route::get('jobs/{jobId}/delete', [JobController::class, 'destroy']);
+    Route::get('jobs/{jobId}/restore', [JobController::class, 'restore']);
+    Route::get('jobs/{jobId}/forceDelete', [JobController::class, 'forceDelete']);
+
+});
 
 Route::get('/', function () {
     return view('welcome');
