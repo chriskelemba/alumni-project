@@ -17,7 +17,9 @@
                                 <tr>
                                     <th class="py-3 px-6">Id</th>
                                     <th class="py-3 px-6 w-50">Name</th>
+                                    @can('update role')
                                     <th class="py-3 px-6">Action</th>
+                                    @endcan
                                 </tr>
                             </thead>
                             <tbody>
@@ -25,10 +27,11 @@
                                 <tr class="bg-white border-b">
                                     <td class="py-4 px-6">{{ $role->id }}</td>
                                     <td class="py-4 px-6">{{ $role->name }}</td>
+                                    @can('update role')
                                     <td class="py-4 px-6">
-                                        <a href="{{ url('roles/'.$role->id.'/give-permissions') }}" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">Add / Edit Role Permission</a>
-
                                         @can('update role')
+                                            <a href="{{ url('roles/'.$role->id.'/give-permissions') }}" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">Add / Edit Role Permission</a>
+
                                             <a href="{{ url('roles/'.$role->id.'/edit') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Edit</a>
                                         @endcan
 
@@ -37,6 +40,7 @@
                                         @endcan
                                         
                                     </td>
+                                    @endcan
                                 </tr>
                                 @endforeach
                             </tbody>

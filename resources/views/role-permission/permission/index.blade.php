@@ -17,7 +17,9 @@
                                 <tr>
                                     <th class="py-3 px-6">Id</th>
                                     <th class="py-3 px-6">Name</th>
+                                    @can('update permission')
                                     <th class="py-3 px-6">Action</th>
+                                    @endcan
                                 </tr>
                             </thead>
                             <tbody>
@@ -25,6 +27,7 @@
                                 <tr class="bg-white border-b">
                                     <td class="py-4 px-6">{{ $permission->id }}</td>
                                     <td class="py-4 px-6">{{ $permission->name }}</td>
+                                    @can('update permission')
                                     <td class="py-4 px-6">
                                         @can('update permission')
                                             <a href="{{ url('permissions/'.$permission->id.'/edit') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Edit</a>
@@ -34,6 +37,7 @@
                                             <a href="{{ url('permissions/'.$permission->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this permission?')">Delete</a>
                                         @endcan
                                     </td>
+                                    @endcan
                                 </tr>
                                 @endforeach
                             </tbody>
