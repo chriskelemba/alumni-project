@@ -22,7 +22,7 @@
 
                             </div>
                             <div class="mb-4">
-                                <label for="" class="block mb-2 text-sm font-bold">Email</label>
+                                <label for="" class="block mb-2 text-sm font-bold">Description</label>
                                 <textarea name="description" value="{{ $job->description }}" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
                             </div>
                             <div class="mb-4">
