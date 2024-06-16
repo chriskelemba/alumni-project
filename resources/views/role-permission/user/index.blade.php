@@ -10,7 +10,12 @@
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
                         <h4 class="text-lg font-bold">Users</h4>
-                        <a href="{{ url('users/create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add User</a>
+                        <div>
+                            @can('delete user')
+                            <a href="{{ url('users/trash') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Recycling Bin</a>
+                            @endcan
+                            <a href="{{ url('users/create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add User</a>
+                        </div>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-center text-gray-500">
@@ -53,12 +58,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
-                    @can('update user')
-                        <div class="text-center mb-4 mt-6">
-                            <a href="{{ url('users/trash') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Recycling Bin</a>
-                        </div>
-                    @endcan
                 </div>
             </div>
         </div>

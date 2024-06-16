@@ -13,7 +13,6 @@ class JobController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            // new Middleware('permission:view job', only: ['index']),
             new Middleware('permission:create job', only: ['create', 'store']),
             new Middleware('permission:update job', only: ['update', 'edit']),
             new Middleware('permission:delete job', only: ['destroy', 'trash', 'restore', 'forceDelete']),

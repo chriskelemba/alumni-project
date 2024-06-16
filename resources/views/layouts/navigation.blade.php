@@ -88,6 +88,24 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="url('jobs')" :active="request()->routeIs('jobs')">
+                {{ __('Jobs') }}
+            </x-responsive-nav-link>
+            @can('view user')
+            <x-responsive-nav-link :href="url('users')" :active="request()->routeIs('users')">
+                {{ __('Users') }}
+            </x-responsive-nav-link>
+            @endcan
+            @can('view role')
+            <x-responsive-nav-link :href="url('roles')" :active="request()->routeIs('roles')">
+                {{ __('Roles') }}
+            </x-responsive-nav-link>
+            @endcan
+            @can('view permission')
+            <x-responsive-nav-link :href="url('permissions')" :active="request()->routeIs('permissions')">
+                {{ __('Permissions') }}
+            </x-responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->

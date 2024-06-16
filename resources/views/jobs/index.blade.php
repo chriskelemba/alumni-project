@@ -10,35 +10,34 @@
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
                         <h4 class="text-lg font-bold">Jobs</h4>
-                        @can('create job')
-                        <a href="{{ url('jobs/create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Job</a>
-                        @endcan
+                        <div>
+                            @can('delete job')
+                            <a href="{{ url('jobs/trash') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Recycling Bin</a>
+                            @endcan
+                            @can('create job')
+                            <a href="{{ url('jobs/create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Job</a>
+                            @endcan
+                        </div>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-center text-gray-500">
-                            <tbody>
-                                @foreach ($jobs as $job)
-                                <tr class="bg-gray-100 border-b mb-5 grid grid-cols-1">
-                                    <td class="py-4 px-6 text-3xl text-bold">
-                                        <a href="{{ url('jobs/'.$job->id.'/show') }}">{{ $job->title }}</a>
-                                    </td>
-                                    <td class="py-4 px-6">{{ $job->description }}</td>
-                                    @can('update job')
-                                    <td class="text-center py-4 px-6">
-                                        <a href="{{ url('jobs/'.$job->id.'/edit') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Edit</a>
-                                        <a href="{{ url('jobs/'.$job->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this job?')">Delete</a>
-                                    </td>
-                                    @endcan
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <div class="grid grid-cols-3 gap-4 text-gray-500">
+                            @foreach ($jobs as $job)
+                            <div class="bg-gray-100 border-b mb-5 p-4">
+                                <h5 class="text-lg font-bold">{{ $job->title }}</h5>
+                                <p>{{ Str::limit($job->description, 200) }}</p>
+                                <div class="text-center mt-10">
+                                    <a href={{ url('jobs/'.$job->id.'/show')}} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View More</a>
+                                </div>
+                                @can('update job')
+                                <div class="text-center mt-5">
+                                    <a href="{{ url('jobs/'.$job->id.'/edit') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Edit</a>
+                                    <a href="{{ url('jobs/'.$job->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this job?')">Delete</a>
+                                </div>
+                                @endcan
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
-                    @can('delete job')
-                    <div class="text-center mb-4 mt-6">
-                        <a href="{{ url('jobs/trash') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Recycling Bin</a>
-                    </div>
-                    @endcan
                 </div>
             </div>
         </div>

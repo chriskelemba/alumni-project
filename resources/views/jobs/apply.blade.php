@@ -5,7 +5,7 @@
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
                         <h4 class="text-lg font-bold">Apply for {{ $job->title }}</h4>
-                        <a href="{{ url('jobs') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Back</a>
+                        <a href="{{ url('jobs/'.$job->id.'/show') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Back</a>
                     </div>
                     <form method="POST" action="{{ url('jobs/'.$job->id) }}">
                         @csrf
