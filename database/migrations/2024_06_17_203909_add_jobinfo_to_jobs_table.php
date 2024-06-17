@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('jobs', function (Blueprint $table) {
-            $table->string('requirements')->nullable();
-            $table->string('aboutus')->nullable();
+            $table->text('responsibilities');
+            $table->text('qualifications');
+            $table->text('aboutus');
         });
     }
 
@@ -23,7 +24,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('jobs', function (Blueprint $table) {
-            $table->dropColumn('requirements');
+            $table->dropColumn('responsibilities');
+            $table->dropColumn('qualifications');
             $table->dropColumn('aboutus');
         });
     }
