@@ -20,6 +20,18 @@
                                 <textarea name="description" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
                             </div>
                             <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">Responsibilities</label>
+                                <textarea name="responsibilities" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">Qualifications</label>
+                                <textarea name="qualifications" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">About Us</label>
+                                <textarea name="aboutus" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
+                            </div>
+                            <div class="mb-4">
                                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
                             </div>
                         </form>

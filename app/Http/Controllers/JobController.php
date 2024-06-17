@@ -35,12 +35,18 @@ class JobController extends Controller implements HasMiddleware
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required|string'
+            'description' => 'required|string',
+            'responsibilities' => 'required|string',
+            'qualifications' => 'required|string',
+            'aboutus' => 'required|string'
         ]);
 
         $job = Job::create([
             'title' => $request->title,
             'description' => $request->description,
+            'responsibilities' => $request->responsibilities,
+            'qualifications' => $request->qualifications,
+            'aboutus' => $request->aboutus,
         ]);
 
         return redirect('/jobs')->with('status', 'Job Created Successfully');
@@ -55,12 +61,18 @@ class JobController extends Controller implements HasMiddleware
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required|string'
+            'description' => 'required|string',
+            'responsibilities' => 'required|string',
+            'qualifications' => 'required|string',
+            'aboutus' => 'required|string'
         ]);
 
         $data = [
             'title' => $request->title,
             'description' => $request->description,
+            'responsibilities' => $request->responsibilities,
+            'qualifications' => $request->qualifications,
+            'aboutus' => $request->aboutus,
         ];
 
         $job->update($data);

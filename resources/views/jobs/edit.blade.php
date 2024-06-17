@@ -23,7 +23,19 @@
                             </div>
                             <div class="mb-4">
                                 <label for="" class="block mb-2 text-sm font-bold">Description</label>
-                                <textarea name="description" value="{{ $job->description }}" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
+                                <input type="text" name="description" value="{{ $job->description }}" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">Responsibilities</label>
+                                <input type="text" name="responsibilities" value="{{ $job->responsibilities }}" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">Qualifications</label>
+                                <input type="text" name="qualifications" value="{{ $job->qualifications }}" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">About Us</label>
+                                <input type="text" name="aboutus" value="{{ $job->aboutus }}" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
                             </div>
                             <div class="mb-4">
                                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>

@@ -13,5 +13,8 @@ class Job extends Model
     protected $fillable = [
         'title',
         'description',
+        'responsibilities',
+        'qualifications',
+        'aboutus',
     ];
 }

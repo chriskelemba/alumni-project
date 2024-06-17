@@ -7,7 +7,14 @@
                         <h4 class="text-center text-3xl text-bold">{{ $job->title }}</h4>
                         <a href="{{ url('jobs') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Back</a>
                     </div>
+                    <h1 class="text-gray-600">Description</h1>
                     <p class="text-gray-600">{{ $job->description }}</p>
+                    <h1 class="text-gray-600">Responsibilities</h1>
+                    <p class="text-gray-600">{{ $job->responsibilities }}</p>
+                    <h1 class="text-gray-600">Qualifications</h1>
+                    <p class="text-gray-600">{{ $job->qualifications }}</p>
+                    <h1 class="text-gray-600">About Us</h1>
+                    <p class="text-gray-600">{{ $job->aboutus }}</p>
                     <div class="text-center mb-4 mt-6">
                         <a href="{{ url('jobs/'.$job->id.'/apply') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Apply</a>
                     </div>
