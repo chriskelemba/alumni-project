@@ -79,6 +79,7 @@ class JobController extends Controller implements HasMiddleware
 
         return redirect('/jobs')->with('status', 'Job Updated Successfully');
     }
+    
     public function destroy($jobId)
     {
         $job = Job::findOrFail($jobId);
