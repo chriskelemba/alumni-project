@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 
+use App\Notifications\AccountActivation;
+use Illuminate\Support\Str;
+
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
@@ -46,11 +49,46 @@ class UserController extends Controller implements HasMiddleware
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'activation_token' => Str::random(60),
         ]);
+
+        $user->notify(new AccountActivation($user));
 
         $user->syncRoles($request->roles);
 
         return redirect('/users')->with('status', 'User created successfully with roles');
+    }
+    
+    public function activateAccount($token)
+    {
+        $user = User::where('activation_token', $token)->first();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'Invalid activation token.');
+        }
+
+        // Show a form to set the password
+        return view('auth.activate', ['token' => $token]);
+    }
+
+    public function setPassword(Request $request, $token)
+    {
+        $user = User::where('activation_token', $token)->first();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'Invalid activation token.');
+        }
+
+        $request->validate([
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user->password = Hash::make($request->password);
+        $user->activation_token = null;
+        $user->save();
+
+        // Log the user in or redirect to login page
+        return redirect('/login')->with('success', 'Account activated. You can now log in.');
     }
 
     public function edit(User $user)
@@ -84,10 +122,12 @@ class UserController extends Controller implements HasMiddleware
             ];
         }
 
+        $user->notify(new AccountActivation($user));
+
         $user->update($data);
         $user->syncRoles($request->roles);
 
-        return redirect('/users')->with('status', 'User Updated Successfully with roles');
+        return redirect('/users')->with('status', 'User created and activation email sent.');
     }
 
     public function destroy($userId)
