@@ -36,8 +36,38 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
+            <!-- Settings & Notifications Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                {{-- Notifications --}}
+                <x-dropdown align="right">
+                    <x-slot name="trigger">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
+                                </svg>
+                            </div>
+                            <div class="relative">
+                                <span class="absolute bottom-1 right-1 inline-flex items-center justify-center w-4 h-4 text-xs font-bold leading-none text-red-600 bg-red-200 rounded-full">
+                                    0
+                                </span>
+                            </div>
+                            <div class="ms-1">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </button>
+                      </x-slot>
+
+                    <x-slot name="content">
+                        <x-dropdown-link :href="url('')" disabled>
+                            {{ __('There are no new notifications') }}
+                        </x-dropdown-link>
+                    </x-slot>
+                </x-dropdown>
+
+                {{-- Settings --}}
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -108,6 +138,18 @@
             @endcan
         </div>
 
+        <div class="pt-4 pb-1 border-t border-gray-200">
+            <div class="flex px-4 text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
+                </svg>
+                <p class="px-2">Notifications</p>
+            </div>
+
+            <div class="px-4 py-2">
+                <p>There are no new notifications</p>
+            </div>
+        </div>
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">

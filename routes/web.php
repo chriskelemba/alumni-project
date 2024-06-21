@@ -28,6 +28,9 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 
 });
 
+Route::get('activate-account/{token}', [UserController::class, 'activateAccount'])->name('activate-account');
+Route::post('activate-account/{token}', [UserController::class, 'setPassword'])->name('set-password');
+
 Route::get('jobs', [JobController::class, 'index']);
 Route::get('jobs/{job}/show', [JobController::class, 'show']);
 Route::get('jobs/{job}/apply', [JobController::class, 'apply']);
