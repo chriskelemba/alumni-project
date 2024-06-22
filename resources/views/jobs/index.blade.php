@@ -10,6 +10,10 @@
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
                         <h4 class="text-lg font-bold">Jobs</h4>
+                        <form action="{{ url('jobs') }}" method="GET">
+                            <input type="search" name="search" placeholder="Search for a job" class="bg-gray-100">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Search</button>
+                        </form>
                         <div>
                             @can('delete job')
                             <a href="{{ url('jobs/trash') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Recycling Bin</a>
