@@ -19,9 +19,21 @@ class JobController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $jobs = Job::get();
+        $search = $request->input('search');
+
+        $jobs = Job::when($search, function ($query) use ($search) {
+            $query->where('title', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        })->paginate(10);
+
+        if ($jobs->isEmpty()) {
+            return redirect('/jobs')->with('status', 'No Results Found');
+        } else {
+            $message = '';
+        }
+
         return view('jobs.index', ['jobs' => $jobs]);
     }
 

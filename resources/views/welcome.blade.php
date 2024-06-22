@@ -38,5 +38,9 @@
             </nav>
         @endif
     </header>
+    
+    @if (session('error'))
+        <p class="text-red-500">{{ session('error') }}</p>
+    @endif
 </body>
 </html>

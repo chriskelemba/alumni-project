@@ -1,4 +1,21 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+    <!-- Top Red Part -->
+    <div class="bg-red-600 text-white md:px-20 lg:px-40 xl:px-80">
+        <div class="flex justify-between font-bold text-sm py-4">
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                    <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/>
+                </svg>
+                <a href="" class="mx-1">info@isteducation.com</a>
+            </div>
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                </svg>
+                <p class="mx-1">Westpoint Building, Mpaka Road, Westlands, Nairobi</p>
+            </div>
+        </div>
+    </div>
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7">
         <div class="flex justify-between h-16">
@@ -18,21 +35,12 @@
                     <x-nav-link :href="url('jobs')" :active="request()->routeIs('jobs')">
                         {{ __('Jobs') }}
                     </x-nav-link>
-                    @can('view user')
-                    <x-nav-link :href="url('users')" :active="request()->routeIs('users')">
-                        {{ __('Users') }}
+                    <x-nav-link :href="url('jobs')" :active="request()->routeIs('jobs')">
+                        {{ __('Projects') }}
                     </x-nav-link>
-                    @endcan
-                    @can('view role')
-                    <x-nav-link :href="url('roles')" :active="request()->routeIs('roles')">
-                        {{ __('Roles') }}
+                    <x-nav-link :href="url('jobs')" :active="request()->routeIs('jobs')">
+                        {{ __('Portfolio') }}
                     </x-nav-link>
-                    @endcan
-                    @can('view permission')
-                    <x-nav-link :href="url('permissions')" :active="request()->routeIs('permissions')">
-                        {{ __('Permissions') }}
-                    </x-nav-link>
-                    @endcan
                 </div>
             </div>
 
@@ -110,6 +118,26 @@
                 </button>
             </div>
         </div>
+        
+        @role('super-admin|admin')
+        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex justify-center">
+            @can('view user')
+            <x-nav-link :href="url('users')" :active="request()->routeIs('users')">
+                {{ __('Users') }}
+            </x-nav-link>
+            @endcan
+            @can('view role')
+            <x-nav-link :href="url('roles')" :active="request()->routeIs('roles')">
+                {{ __('Roles') }}
+            </x-nav-link>
+            @endcan
+            @can('view permission')
+            <x-nav-link :href="url('permissions')" :active="request()->routeIs('permissions')">
+                {{ __('Permissions') }}
+            </x-nav-link>
+            @endcan
+        </div>
+        @endrole
     </div>
 
     <!-- Responsive Navigation Menu -->
