@@ -11,9 +11,10 @@
 
     <ul>
         @foreach($projects as $project)
-            <li>
-                <h3>{{ $project->title }}</h3>
+            <li class="p-6 my-2 bg-gray-100">
+                <h3 class="font-bold">{{ $project->title }}</h3>
                 <p>{{ $project->description }}</p>
+                <p class="mt-10">{{ 'Posted On: ' }}<b>{{ date('M d, Y', strtotime($project->posted_on)) }}</b></p>
             </li>
         @endforeach
     </ul>
