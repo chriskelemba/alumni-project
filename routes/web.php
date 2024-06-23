@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\ProjectController;
 
 Route::group(['middleware' => ['role:super-admin|admin']], function() {
     
@@ -44,6 +45,9 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('jobs/{jobId}/forceDelete', [JobController::class, 'forceDelete']);
 
 });
+
+Route::resource('projects', ProjectController::class);
+Route::get('projects/{projectId}/delete', [ProjectController::class, 'destroy']);
 
 Route::get('/', function () {
     return view('welcome');

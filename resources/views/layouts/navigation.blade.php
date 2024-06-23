@@ -35,10 +35,10 @@
                     <x-nav-link :href="url('jobs')" :active="request()->routeIs('jobs')">
                         {{ __('Jobs') }}
                     </x-nav-link>
-                    <x-nav-link :href="url('jobs')" :active="request()->routeIs('jobs')">
+                    <x-nav-link :href="url('projects')" :active="request()->routeIs('jobs')">
                         {{ __('Projects') }}
                     </x-nav-link>
-                    <x-nav-link :href="url('jobs')" :active="request()->routeIs('jobs')">
+                    <x-nav-link :href="url('portfolio')" :active="request()->routeIs('jobs')">
                         {{ __('Portfolio') }}
                     </x-nav-link>
                 </div>
