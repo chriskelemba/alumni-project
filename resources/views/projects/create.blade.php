@@ -20,6 +20,15 @@
                                 <textarea name="description" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
                             </div>
                             <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">Project Type</label>
+                                <div class="flex items-center">
+                                    <input type="radio" name="is_private" value="0" id="public_project" class="mr-2" checked>
+                                    <label for="public_project" class="text-sm text-gray-700">Public</label>
+                                    <input type="radio" name="is_private" value="1" id="private_project" class="mr-2 ml-4">
+                                    <label for="private_project" class="text-sm text-gray-700">Private</label>
+                                </div>
+                            </div>
+                            <div class="mb-4">
                                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
                             </div>
                         </form>

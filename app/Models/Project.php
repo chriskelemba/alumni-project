@@ -15,6 +15,7 @@ class Project extends Model
         'user_id',
         'posted_by',
         'posted_on',
+        'is_private',
     ];
 
     public function user()

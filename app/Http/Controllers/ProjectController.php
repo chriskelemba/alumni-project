@@ -11,9 +11,20 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::all();
+        $projects = Project::where('is_private', false)->get();
         return view('projects.index', ['projects' => $projects]);
     }
+
+    // public function index()
+    // {
+    //     $projects = Project::where('is_private', false)
+    //         ->orWhere(function ($query) {
+    //             $query->where('user_id', auth()->user()->id)
+    //                 ->where('is_private', true);
+    //         })
+    //         ->get();
+    //     return view('projects.index', ['projects' => $projects]);
+    // }
 
     public function create()
     {
@@ -33,7 +44,7 @@ class ProjectController extends Controller
             'user_id' => auth()->user()->id,
             'posted_by' => auth()->user()->name,
             'posted_on' => now(),
-            
+            'is_private' => $request->is_private,
         ]);
 
         return redirect('/projects')->with('status', 'Project Created Successfully');
