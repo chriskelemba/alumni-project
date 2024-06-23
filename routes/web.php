@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\ProjectController;
 
 Route::group(['middleware' => ['role:super-admin|admin']], function() {
     
@@ -45,6 +46,9 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 
 });
 
+Route::resource('projects', ProjectController::class);
+Route::get('projects/{projectId}/delete', [ProjectController::class, 'destroy']);
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -57,6 +61,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/view', [ProfileController::class, 'view'])->name('profile.view');
+    // Route::get('/profile/view', [ProfileController::class, 'myProject']);
 });
 
 require __DIR__.'/auth.php';

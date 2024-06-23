@@ -35,10 +35,10 @@
                     <x-nav-link :href="url('jobs')" :active="request()->routeIs('jobs')">
                         {{ __('Jobs') }}
                     </x-nav-link>
-                    <x-nav-link :href="url('jobs')" :active="request()->routeIs('jobs')">
+                    <x-nav-link :href="url('projects')" :active="request()->routeIs('jobs')">
                         {{ __('Projects') }}
                     </x-nav-link>
-                    <x-nav-link :href="url('jobs')" :active="request()->routeIs('jobs')">
+                    <x-nav-link :href="url('portfolio')" :active="request()->routeIs('jobs')">
                         {{ __('Portfolio') }}
                     </x-nav-link>
                 </div>
@@ -90,7 +90,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
+                        <x-dropdown-link :href="route('profile.view')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
@@ -186,7 +186,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
+                <x-responsive-nav-link :href="route('profile.view')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
