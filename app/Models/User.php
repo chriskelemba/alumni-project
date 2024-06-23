@@ -51,6 +51,6 @@ class User extends Authenticatable
 
     public function projects()
     {
-        return $this->hasMany(Project::class, 'posted_by');
+        return $this->hasMany(Project::class, 'user_id');
     }
 }

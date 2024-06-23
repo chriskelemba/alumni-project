@@ -30,8 +30,8 @@ class ProjectController extends Controller
         $project = Project::create([
             'title' => $request->title,
             'description' => $request->description,
-            'posted_by' => auth()->user()->id,
-            'posted_by_name' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
+            'posted_by' => auth()->user()->name,
             'posted_on' => now(),
             
         ]);

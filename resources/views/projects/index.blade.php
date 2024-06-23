@@ -29,7 +29,7 @@
                             <div class="bg-gray-100 border-b mb-5 p-4">
                                 <h5 class="text-lg font-bold">{{ $project->title }}</h5>
                                 <p>{{ Str::limit($project->description, 200) }}</p>
-                                <p class="mt-10">{{ 'Posted By: ' }}<b>{{ $project->posted_by_name }}</b></p>
+                                <p class="mt-10">{{ 'Posted By: ' }}<b>{{ $project->posted_by }}</b></p>
                                 <p>{{ 'Posted On: ' }}<b>{{ date('M d, Y', strtotime($project->posted_on)) }}</b></p>
                                 <div class="text-center mt-10">
                                     <a href={{ url('projects/'.$project->id.'/show')}} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View More</a>

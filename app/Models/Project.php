@@ -12,13 +12,13 @@ class Project extends Model
     protected $fillable = [
         'title',
         'description',
+        'user_id',
         'posted_by',
-        'posted_by_name',
         'posted_on',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'posted_by');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
