@@ -8,15 +8,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
+use App\Models\Project;
 
 class ProfileController extends Controller
 {
     public function view(Request $request): View
     {
-        $user = $request->user();
-
+        $user = auth()->user()->load('projects');
+    
         return view('profile.view', [
             'user' => $user,
+            'projects' => $user->projects,
         ]);
     }
     /**
@@ -64,5 +67,11 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+  
+    public function myProjects()
+    {
+        $user = auth()->user();
+        $projects = $user->projects;
     }
 }
