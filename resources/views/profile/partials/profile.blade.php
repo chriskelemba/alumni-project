@@ -9,9 +9,9 @@
             </p>
         </div>
 
-        <form action="{{ url('/project') }}">
+        <a href="{{ url('/project') }}">
             <x-primary-button>{{ __('My Portfolio') }}</x-primary-button>
-        </form>
+        </a>
     </header>
     
     <div class="mt-10 mb-5">

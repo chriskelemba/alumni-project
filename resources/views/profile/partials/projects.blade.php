@@ -4,9 +4,9 @@
             {{ __('My Projects') }}
         </h2>
 
-        <form action="{{ url('/projects/create') }}">
+        <a href="{{ url('/projects/create') }}">
             <x-primary-button>{{ __('New Project') }}</x-primary-button>
-        </form>
+        </a>
     </header>
 
     <ul>
