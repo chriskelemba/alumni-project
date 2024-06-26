@@ -10,9 +10,9 @@
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="">
                     @include('profile.partials.profile')
-                    <form action="{{ url('/profile') }}">
+                    <a href="{{ url('/profile') }}">
                         <x-primary-button>{{ __('Edit Profile') }}</x-primary-button>
-                    </form>
+                    </a>
                 </div>
             </div>
 

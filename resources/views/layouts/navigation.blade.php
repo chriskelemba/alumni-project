@@ -120,7 +120,7 @@
         </div>
         
         @role('super-admin|admin')
-        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex justify-center">
+        <div class="hidden space-x-8 sm:flex justify-center mt-7 border-t border-gray-100">
             @can('view user')
             <x-nav-link :href="url('users')" :active="request()->routeIs('users')">
                 {{ __('Users') }}
