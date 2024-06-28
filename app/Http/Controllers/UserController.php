@@ -91,6 +91,41 @@ class UserController extends Controller implements HasMiddleware
         return redirect('/login')->with('success', 'Account activated. You can now log in.');
     }
 
+    public function setupProfile(Request $request, $token)
+    {
+        $user = User::where('activation_token', $token)->first();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'Invalid activation token.');
+        }
+
+        // Check if the user has already set up their profile
+        if ($user->profile_setup) {
+            return redirect('/home'); // or wherever you want to redirect them
+        }
+
+        return view('auth.profile', ['user' => $user]);
+    }
+
+    public function saveProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'skills' => 'required|string',
+        ]);
+
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->skills = $request->input('skills');
+        $user->profile_setup = true;
+        $user->save();
+
+        return redirect('/home')->with('success', 'Profile set up successfully!');
+    }
+
     public function edit(User $user)
     {
         $roles = Role::pluck('name', 'name')->all();
