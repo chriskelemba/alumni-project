@@ -84,14 +84,12 @@ class UserController extends Controller implements HasMiddleware
         ]);
 
         $user->password = Hash::make($request->password);
-        $user->activation_token = null;
         $user->save();
 
-        // Log the user in or redirect to login page
-        return redirect('/login')->with('success', 'Account activated. You can now log in.');
+        return redirect(route('create-profile', ['token' => $token]))->with('success', 'Account activated. Setup your profile.');
     }
 
-    public function setupProfile(Request $request, $token)
+    public function createProfile(Request $request, $token)
     {
         $user = User::where('activation_token', $token)->first();
 
@@ -104,7 +102,7 @@ class UserController extends Controller implements HasMiddleware
             return redirect('/home'); // or wherever you want to redirect them
         }
 
-        return view('auth.profile', ['user' => $user]);
+        return view('auth.profile', ['token' => $token]);
     }
 
     public function saveProfile(Request $request)
@@ -112,18 +110,17 @@ class UserController extends Controller implements HasMiddleware
         $user = Auth::user();
 
         $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'skills' => 'required|string',
+            'skills' => 'required',
         ]);
 
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->skills = $request->input('skills');
+        $user = User::create([
+            'skills' => $request->skills,
+        ]);
+        $user->activation_token = null;
         $user->profile_setup = true;
         $user->save();
 
-        return redirect('/home')->with('success', 'Profile set up successfully!');
+        return redirect('/dashboard')->with('success', 'Profile set up successfully!');
     }
 
     public function edit(User $user)
