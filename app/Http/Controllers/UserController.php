@@ -102,25 +102,23 @@ class UserController extends Controller implements HasMiddleware
             return redirect('/home'); // or wherever you want to redirect them
         }
 
-        return view('auth.profile', ['token' => $token]);
+        return view('auth.profile', ['token' => $token, 'user' => $user]);
     }
 
-    public function saveProfile(Request $request)
+    public function saveProfile(Request $request, $token)
     {
-        $user = Auth::user();
+        $user = User::where('activation_token', $token)->first();
 
         $request->validate([
             'skills' => 'required',
         ]);
 
-        $user = User::create([
-            'skills' => $request->skills,
-        ]);
+        $user->skills = $request->skills;
         $user->activation_token = null;
         $user->profile_setup = true;
         $user->save();
 
-        return redirect('/dashboard')->with('success', 'Profile set up successfully!');
+        return redirect('/login')->with('success', 'Profile set up successfully!');
     }
 
     public function edit(User $user)

@@ -1,31 +1,36 @@
 <x-guest-layout>
-    <div class="container mx-auto p-5">
-        <div class="flex flex-wrap justify-center">
-            <div class="w-full p-6">
-                <div class="flex justify-between mb-4">
-                    <h4 class="text-lg font-bold">Activate Your Account</h4>
-                </div>
-                <div class="p-4">
-                    @if (session('error'))
-                        <p class="text-red-500">{{ session('error') }}</p>
-                    @endif
-                    <form method="POST" action="{{ route('set-password', $token) }}">
-                        @csrf
-                            
-                        <div class="mb-4">
-                            <label for="password" class="block mb-2 text-sm font-bold">Password</label>
-                            <input id="password" type="password" name="password" required class="w-full p-2 pl-10 text-sm text-gray-700"/>
-                        </div>
-                        <div class="mb-4">
-                            <label for="password_confirmation" class="block mb-2 text-sm font-bold">Confirm Password</label>
-                            <input id="password_confirmation" type="password" name="password_confirmation" required class="w-full p-2 pl-10 text-sm text-gray-700"/>
-                        </div>
-                        <div class="mb-4">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Set Password</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    @if (session('error'))
+        <p class="text-red-500">{{ session('error') }}</p>
+    @endif
+    <form method="POST" action="{{ route('set-password', $token) }}">
+        @csrf
+
+        <!-- Password -->
+        <div class="mt-4">
+            <x-input-label for="password" :value="__('Password')" />
+
+            <x-text-input id="password" class="block mt-1 w-full"
+                            type="password"
+                            name="password"/>
+
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
-    </div>
+
+        <!-- Confirm Password -->                        
+        <div class="mt-4">
+            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+
+            <x-text-input id="password_confirmation" class="block mt-1 w-full"
+                            type="password"
+                            name="password_confirmation"/>
+
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+            <x-primary-button class="ms-3">
+                {{ __('Activate Account') }}
+            </x-primary-button>
+        </div>
+    </form>
 </x-guest-layout>
