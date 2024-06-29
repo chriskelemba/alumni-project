@@ -33,7 +33,7 @@ Route::get('activate-account/{token}', [UserController::class, 'activateAccount'
 Route::post('activate-account/{token}', [UserController::class, 'setPassword'])->name('set-password');
 
 Route::get('create-profile/{token}', [UserController::class, 'createProfile'])->name('create-profile');
-Route::patch('save-profile/{token}', [UserController::class, 'saveProfile'])->name('save-profile');
+Route::post('save-profile/{token}', [UserController::class, 'saveProfile'])->name('save-profile');
 
 Route::get('jobs', [JobController::class, 'index']);
 Route::get('jobs/{job}/show', [JobController::class, 'show']);
