@@ -84,11 +84,43 @@ class UserController extends Controller implements HasMiddleware
         ]);
 
         $user->password = Hash::make($request->password);
-        $user->activation_token = null;
         $user->save();
 
-        // Log the user in or redirect to login page
-        return redirect('/login')->with('success', 'Account activated. You can now log in.');
+        return redirect(route('create-profile', ['token' => $token]))->with('success', 'Account activated. Setup your profile.');
+    }
+
+    public function createProfile(Request $request, $token)
+    {
+        $user = User::where('activation_token', $token)->first();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'Invalid activation token.');
+        }
+
+        // Check if the user has already set up their profile
+        if ($user->profile_setup) {
+            return redirect('/home'); // or wherever you want to redirect them
+        }
+
+        return view('auth.profile', ['token' => $token]);
+    }
+
+    public function saveProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'skills' => 'required',
+        ]);
+
+        $user = User::create([
+            'skills' => $request->skills,
+        ]);
+        $user->activation_token = null;
+        $user->profile_setup = true;
+        $user->save();
+
+        return redirect('/dashboard')->with('success', 'Profile set up successfully!');
     }
 
     public function edit(User $user)
