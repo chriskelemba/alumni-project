@@ -55,4 +55,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Project::class, 'user_id');
     }
+
+    public function skills()
+    {
+        return $this->hasMany(Skill::class);
+    }
+
+    public function syncSkills($skills)
+    {
+        $this->skills()->sync($skills);
+    }
 }

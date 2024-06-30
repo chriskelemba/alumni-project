@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SkillsController;
 
 Route::group(['middleware' => ['role:super-admin|admin']], function() {
     
@@ -26,6 +27,9 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
     Route::get('users/{userId}/restore', [UserController::class, 'restore']);
     Route::get('users/{userId}/forceDelete', [UserController::class, 'forceDelete']);
+
+    
+    Route::resource('skills', SkillsController::class);
 
 });
 
