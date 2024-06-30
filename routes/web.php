@@ -52,9 +52,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 Route::resource('projects', ProjectController::class);
 Route::get('projects/{projectId}/delete', [ProjectController::class, 'destroy']);
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::redirect('/', '/login');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
