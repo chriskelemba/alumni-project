@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
+use App\Models\Skill;
 
 use App\Notifications\AccountActivation;
 use Illuminate\Support\Str;
@@ -125,11 +126,17 @@ class UserController extends Controller implements HasMiddleware
     {
         $roles = Role::pluck('name', 'name')->all();
         $userRoles = $user->roles->pluck('name', 'name')->all();
+        $skills = Skill::pluck('name', 'name')->all();
+        $skillsArray = explode(',', $user->skills);
+        $skillNames = array_map('trim', $skillsArray);
+        $userSkills = array_combine($skillNames, $skillNames);
 
         return view('role-permission.user.edit', [
             'user' => $user,
             'roles' => $roles,
-            'userRoles' => $userRoles
+            'userRoles' => $userRoles,
+            'skills' => $skills,
+            'userSkills' => $userSkills
         ]);
     }
 
@@ -138,7 +145,8 @@ class UserController extends Controller implements HasMiddleware
         $request->validate([
             'name' => 'required|string|max:255',
             'password' => 'nullable|string|min:8|max:20',
-            'roles' => 'required'
+            'roles' => 'required',
+            'skills' => 'required'
         ]);
 
         $data = [
@@ -156,6 +164,7 @@ class UserController extends Controller implements HasMiddleware
 
         $user->update($data);
         $user->syncRoles($request->roles);
+        $user->syncSkills($request->skills);
 
         return redirect('/users')->with('status', 'User created and activation email sent.');
     }

@@ -55,6 +55,14 @@
                                 @enderror
                                 
                             </div>
+                            <div>
+                                <label for="skills">Select skills:</label>
+                                <select name="skills[]" id="skills" multiple>
+                                    @foreach($skills as $skill)
+                                        <option value="{{ $skill }}">{{ $skill }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="mb-4">
                                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
                             </div>

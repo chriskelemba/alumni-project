@@ -12,9 +12,16 @@
                         <h4 class="text-lg font-bold">Users</h4>
                         <div>
                             @can('delete user')
-                            <a href="{{ url('users/trash') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Recycling Bin</a>
+                            <a href="{{ url('users/trash') }}">
+                                <x-primary-button>{{ __('Recycling Bin') }}</x-primary-button>
+                            </a>
+                            <a href="{{ url('skills') }}">
+                                <x-primary-button>{{ __('Skills') }}</x-primary-button>
+                            </a>
                             @endcan
-                            <a href="{{ url('users/create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add User</a>
+                            <a href="{{ url('users/create') }}">
+                                <x-primary-button>{{ __('Add User') }}</x-primary-button>
+                            </a>
                         </div>
                     </div>
                     <div class="overflow-x-auto">
@@ -46,11 +53,15 @@
                                     @can('update user')
                                     <td class="py-4 px-6">
                                         @can('update user')
-                                            <a href="{{ url('users/'.$user->id.'/edit') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Edit</a>
+                                            <a href="{{ url('users/'.$user->id.'/edit') }}">
+                                                <x-secondary-button>{{ __('Edit') }}</x-secondary-button>
+                                            </a>
                                         @endcan
 
                                         @can('delete user')
-                                            <a href="{{ url('users/'.$user->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+                                            <a href="{{ url('users/'.$user->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this user?')">
+                                                <x-danger-button>{{ __('Delete') }}</x-danger-button>
+                                            </a>
                                         @endcan
                                     </td>
                                     @endcan
