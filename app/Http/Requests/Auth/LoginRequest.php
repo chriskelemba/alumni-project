@@ -49,6 +49,17 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        $user = Auth::user();
+
+        if (!is_null($user->activation_token)) {
+            Auth::logout();
+            RateLimiter::hit($this->throttleKey());
+    
+            throw ValidationException::withMessages([
+                'email' => trans('Account is not activated. Please check your email.'),
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 
