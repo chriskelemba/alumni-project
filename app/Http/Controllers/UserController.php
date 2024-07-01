@@ -160,13 +160,11 @@ class UserController extends Controller implements HasMiddleware
             ];
         }
 
-        $user->notify(new AccountActivation($user));
-
         $user->update($data);
         $user->syncRoles($request->roles);
         $user->syncSkills($request->skills);
 
-        return redirect('/users')->with('status', 'User created and activation email sent.');
+        return redirect('/users')->with('status', 'User Updated Successfully');
     }
 
     public function destroy($userId)
