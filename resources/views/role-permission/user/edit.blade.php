@@ -67,6 +67,7 @@
                                     @endforeach
                                 </select>
                             </div> --}}
+                            <label class="block mb-2 text-sm font-bold">Skills</label>
                             @foreach ($skills as $key => $skill)
                             <div class="w-1/2 md:w-1/3 xl:w-1/4 p-2">
                                 <label>
