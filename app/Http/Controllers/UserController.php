@@ -100,25 +100,30 @@ class UserController extends Controller implements HasMiddleware
 
         // Check if the user has already set up their profile
         if ($user->profile_setup) {
-            return redirect('/home'); // or wherever you want to redirect them
+            return redirect('/');
         }
 
-        return view('auth.profile', ['token' => $token, 'user' => $user]);
+        $skills = Skill::all();
+
+        return view('auth.profile', ['token' => $token, 'user' => $user, 'skills' => $skills]);
     }
 
     public function saveProfile(Request $request, $token)
     {
         $user = User::where('activation_token', $token)->first();
-
-        $request->validate([
-            'skills' => 'required',
-        ]);
-
-        $user->skills = $request->skills;
+    
+        if (!$user) {
+            return redirect('/')->with('error', 'Invalid activation token.');
+        }
+    
+        // Update the user
+        $user->profile_setup = 1;
         $user->activation_token = null;
-        $user->profile_setup = true;
         $user->save();
-
+    
+        // Store the selected skills
+        $user->skills()->sync($request->input('skills'));
+    
         return redirect('/login')->with('success', 'Profile set up successfully!');
     }
 
@@ -160,13 +165,11 @@ class UserController extends Controller implements HasMiddleware
             ];
         }
 
-        $user->notify(new AccountActivation($user));
-
         $user->update($data);
         $user->syncRoles($request->roles);
         $user->syncSkills($request->skills);
 
-        return redirect('/users')->with('status', 'User created and activation email sent.');
+        return redirect('/users')->with('status', 'User Updated Successfully');
     }
 
     public function destroy($userId)

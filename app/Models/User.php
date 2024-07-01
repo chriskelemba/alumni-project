@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Skill;
 use App\Models\Project;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -58,11 +59,14 @@ class User extends Authenticatable
 
     public function skills()
     {
-        return $this->hasMany(Skill::class);
+        return $this->belongsToMany(Skill::class, 'user_skill', 'user_id', 'skill_id');
     }
 
     public function syncSkills($skills)
     {
-        $this->skills()->sync($skills);
+        $this->skills()->delete();
+        foreach ($skills as $skill) {
+            $this->skills()->create(['name' => $skill]);
+        }
     }
 }

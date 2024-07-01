@@ -34,15 +34,18 @@
         <!-- Skills -->
         <div class="mt-4">
             <x-input-label for="skills" :value="__('Skills')" />
-        
-            <select id="skills" class="block mt-1 w-full" name="skills[]" multiple>
-                <option value="HTML">HTML</option>
-                <option value="CSS">CSS</option>
-                <option value="JavaScript">JavaScript</option>
-                <option value="PHP">PHP</option>
-                <option value="Laravel">Laravel</option>
-            </select>
-        
+            
+            <div class="flex flex-wrap">
+                @foreach ($skills as $skill)
+                    <div class="w-1/2 md:w-1/3 xl:w-1/4 p-2">
+                        <label>
+                            <input type="checkbox" name="skills[]" value="{{ $skill->id }}">
+                            {{ $skill->name }}
+                        </label>
+                    </div>
+                @endforeach
+            </div>
+            
             <x-input-error :messages="$errors->get('skills')" class="mt-2" />
         </div>
 
@@ -52,37 +55,4 @@
             </x-primary-button>
         </div>
     </form>
-    {{-- <div class="container mx-auto p-5">
-        <div class="flex flex-wrap justify-center">
-            <div class="w-full p-6">
-                <div class="flex justify-between mb-4">
-                    <h4 class="text-lg font-bold">Activate Your Account</h4>
-                </div>
-                <div class="p-4">
-                    @if (session('error'))
-                        <p class="text-red-500">{{ session('error') }}</p>
-                    @endif
-                    <form method="POST" action="{{ route('save-profile', $token) }}">
-                        @csrf
-                        <div>
-                            <label for="name">Name:</label>
-                            <input type="text" id="name" name="name" value="{{ old('name') }}">
-                        </div>
-                    
-                        <div>
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" value="{{ old('email') }}" readonly>
-                        </div>
-                    
-                        <div>
-                            <label for="skills">Skills:</label>
-                            <input type="text" id="skills" name="skills">
-                        </div>
-                    
-                        <button type="submit">Save profile</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 </x-guest-layout>
