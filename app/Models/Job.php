@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Skill;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Job extends Model
 {
@@ -17,4 +18,9 @@ class Job extends Model
         'qualifications',
         'aboutus',
     ];
+
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class, 'job_skills', 'job_id', 'skill_id');
+    }
 }
