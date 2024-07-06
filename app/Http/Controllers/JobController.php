@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Job;
+use App\Models\Skill;
 
-use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
 class JobController extends Controller implements HasMiddleware
 {
@@ -39,8 +40,8 @@ class JobController extends Controller implements HasMiddleware
 
     public function create()
     {
-        $jobs = Job::pluck('title', 'title')->all();
-        return view('jobs.create', ['jobs' => $jobs]);
+        $skills = Skill::pluck('name', 'name')->all();
+        return view('jobs.create', ['skills' => $skills]);
     }
 
     public function store(Request $request)
@@ -50,7 +51,8 @@ class JobController extends Controller implements HasMiddleware
             'description' => 'required|string',
             'responsibilities' => 'required|string',
             'qualifications' => 'required|string',
-            'aboutus' => 'required|string'
+            'aboutus' => 'required|string',
+            'skills' => 'required'
         ]);
 
         $job = Job::create([
@@ -61,12 +63,22 @@ class JobController extends Controller implements HasMiddleware
             'aboutus' => $request->aboutus,
         ]);
 
+        $skillId = Skill::whereIn('name', $request->skills)->pluck('id')->all();
+        $job->syncSkills($skillId);
+
         return redirect('/jobs')->with('status', 'Job Created Successfully');
     }
 
     public function edit(Job $job)
     {
-        return view('jobs.edit', ['job' => $job]);
+        $skills = Skill::all();
+        $jobSkills = $job->skills->pluck('name', 'name')->all();
+
+        return view('jobs.edit', [
+            'job' => $job,
+            'skills' => $skills,
+            'jobSkills' => $jobSkills
+        ]);
     }
 
     public function update(Request $request, Job $job)
@@ -76,7 +88,8 @@ class JobController extends Controller implements HasMiddleware
             'description' => 'required|string',
             'responsibilities' => 'required|string',
             'qualifications' => 'required|string',
-            'aboutus' => 'required|string'
+            'aboutus' => 'required|string',
+            'skills' => 'required'
         ]);
 
         $data = [
@@ -88,6 +101,7 @@ class JobController extends Controller implements HasMiddleware
         ];
 
         $job->update($data);
+        $job->syncSkills($request->skills);
 
         return redirect('/jobs')->with('status', 'Job Updated Successfully');
     }
@@ -131,5 +145,23 @@ class JobController extends Controller implements HasMiddleware
     public function apply(Job $job)
     {
         return view('jobs.apply', ['job' => $job]);
+    }
+
+    public function admin(Request $request)
+    {
+        $search = $request->input('search');
+
+        $jobs = Job::when($search, function ($query) use ($search) {
+            $query->where('title', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        })->paginate(10);
+
+        if ($jobs->isEmpty()) {
+            return redirect('/jobs/admin')->with('status', 'No Results Found');
+        } else {
+            $message = '';
+        }
+
+        return view('jobs.admin', ['jobs' => $jobs]);
     }
 }

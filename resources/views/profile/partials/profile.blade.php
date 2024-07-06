@@ -17,7 +17,16 @@
     <div class="mt-10 mb-5">
         <p class="my-2">{{ auth()->user()->name }}</p>
         <p class="my-2">{{ ("Role: ") }}<b>{{ auth()->user()->roles->first()->name }}</b>{{ (".") }}</p>
-        <p class="my-2">{{ ("Skills: ") }}<b>HTML, CSS, Laravel, PHP</b>{{ (".") }}</p>
+        <p class="my-2">
+            {{ __("Skills: ") }}
+            @if(auth()->user()->skills->count() > 0)
+                @foreach(auth()->user()->skills as $skill)
+                    <b>{{ $skill->name }}</b>{{ $loop->last ? '.' : ', ' }}
+                @endforeach
+            @else
+                {{ __("No skills added.") }}
+            @endif
+        </p>
     </div>
 
 </section>

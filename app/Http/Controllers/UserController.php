@@ -131,11 +131,9 @@ class UserController extends Controller implements HasMiddleware
     {
         $roles = Role::pluck('name', 'name')->all();
         $userRoles = $user->roles->pluck('name', 'name')->all();
-        $skills = Skill::pluck('name', 'name')->all();
-        $skillsArray = explode(',', $user->skills);
-        $skillNames = array_map('trim', $skillsArray);
-        $userSkills = array_combine($skillNames, $skillNames);
-
+        $skills = Skill::all();
+        $userSkills = $user->skills->pluck('name', 'name')->all();
+    
         return view('role-permission.user.edit', [
             'user' => $user,
             'roles' => $roles,

@@ -59,14 +59,15 @@ class User extends Authenticatable
 
     public function skills()
     {
-        return $this->belongsToMany(Skill::class, 'user_skill', 'user_id', 'skill_id');
+        return $this->belongsToMany(Skill::class, 'user_skills', 'user_id', 'skill_id');
     }
 
     public function syncSkills($skills)
     {
-        $this->skills()->delete();
+        $this->skills()->detach();
         foreach ($skills as $skill) {
-            $this->skills()->create(['name' => $skill]);
+            $existingSkill = Skill::firstOrCreate(['name' => $skill]);
+            $this->skills()->attach($existingSkill->id);
         }
     }
 }
