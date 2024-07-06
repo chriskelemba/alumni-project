@@ -23,4 +23,12 @@ class Job extends Model
     {
         return $this->belongsToMany(Skill::class, 'job_skills', 'job_id', 'skill_id');
     }
+
+    public function syncSkills($skills)
+    {
+        $this->skills()->delete();
+        foreach ($skills as $skill) {
+            $this->skills()->create(['name' => $skill]);
+        }
+    }
 }

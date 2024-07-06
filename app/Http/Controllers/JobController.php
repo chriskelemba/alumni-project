@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Job;
+use App\Models\Skill;
 
-use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
 class JobController extends Controller implements HasMiddleware
 {
@@ -66,7 +67,16 @@ class JobController extends Controller implements HasMiddleware
 
     public function edit(Job $job)
     {
-        return view('jobs.edit', ['job' => $job]);
+        $skills = Skill::pluck('name', 'name')->all();
+        $skillsArray = explode(',', $job->skills);
+        $skillNames = array_map('trim', $skillsArray);
+        $jobSkills = array_combine($skillNames, $skillNames);
+
+        return view('jobs.edit', [
+            'job' => $job,
+            'skills' => $skills,
+            'jobSkills' => $jobSkills
+        ]);
     }
 
     public function update(Request $request, Job $job)
@@ -76,7 +86,8 @@ class JobController extends Controller implements HasMiddleware
             'description' => 'required|string',
             'responsibilities' => 'required|string',
             'qualifications' => 'required|string',
-            'aboutus' => 'required|string'
+            'aboutus' => 'required|string',
+            'skills' => 'required'
         ]);
 
         $data = [
@@ -88,6 +99,7 @@ class JobController extends Controller implements HasMiddleware
         ];
 
         $job->update($data);
+        $job->syncSkills($request->skills);
 
         return redirect('/jobs')->with('status', 'Job Updated Successfully');
     }
