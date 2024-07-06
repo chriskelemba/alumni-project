@@ -146,4 +146,22 @@ class JobController extends Controller implements HasMiddleware
     {
         return view('jobs.apply', ['job' => $job]);
     }
+
+    public function admin(Request $request)
+    {
+        $search = $request->input('search');
+
+        $jobs = Job::when($search, function ($query) use ($search) {
+            $query->where('title', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        })->paginate(10);
+
+        if ($jobs->isEmpty()) {
+            return redirect('/jobs/admin')->with('status', 'No Results Found');
+        } else {
+            $message = '';
+        }
+
+        return view('jobs.admin', ['jobs' => $jobs]);
+    }
 }

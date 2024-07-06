@@ -15,9 +15,13 @@
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Search</button>
                         </form>
                         <div>
-                            @role('super-admin|admin')
-                            <a href="{{ url('jobs/admin') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Admin</a>
-                            @endrole
+                            <a href="{{ url('jobs') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Back</a>
+                            @can('delete job')
+                            <a href="{{ url('jobs/trash') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Recycling Bin</a>
+                            @endcan
+                            @can('create job')
+                            <a href="{{ url('jobs/create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Post Job</a>
+                            @endcan
                         </div>
                     </div>
                     <div class="overflow-x-auto">
@@ -39,6 +43,12 @@
                                 <div class="text-center mt-10">
                                     <a href={{ url('jobs/'.$job->id.'/show')}} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View More</a>
                                 </div>
+                                @can('update job')
+                                <div class="text-center mt-5">
+                                    <a href="{{ url('jobs/'.$job->id.'/edit') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Edit</a>
+                                    <a href="{{ url('jobs/'.$job->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this job?')">Delete</a>
+                                </div>
+                                @endcan
                             </div>
                             @endforeach
                         </div>
