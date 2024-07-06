@@ -32,6 +32,7 @@
                                     <th class="py-3 px-6">Name</th>
                                     <th class="py-3 px-6">Email</th>
                                     <th class="py-3 px-6">Roles</th>
+                                    <th class="py-3 px-6">Skills</th>
                                     @can('update user')
                                     <th class="py-3 px-6">Action</th>
                                     @endcan
@@ -48,6 +49,15 @@
                                             @foreach ($user->getRoleNames() as $rolename)
                                                 <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ $rolename }}</span>
                                             @endforeach
+                                        @endif
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        @if($user->skills->count() > 0)
+                                            @foreach($user->skills as $skill)
+                                                <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ $skill->name }}</span>
+                                            @endforeach
+                                        @else
+                                            {{ __("No Skills") }}
                                         @endif
                                     </td>
                                     @can('update user')
@@ -69,6 +79,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -64,9 +64,10 @@ class User extends Authenticatable
 
     public function syncSkills($skills)
     {
-        $this->skills()->delete();
+        $this->skills()->detach();
         foreach ($skills as $skill) {
-            $this->skills()->create(['name' => $skill]);
+            $existingSkill = Skill::firstOrCreate(['name' => $skill]);
+            $this->skills()->attach($existingSkill->id);
         }
     }
 }

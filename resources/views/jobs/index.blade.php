@@ -29,6 +29,16 @@
                             <div class="bg-gray-100 border-b mb-5 p-4">
                                 <h5 class="text-lg font-bold">{{ $job->title }}</h5>
                                 <p>{{ Str::limit($job->description, 200) }}</p>
+                                <br>
+                                <p class="text-center">
+                                    @if($job->skills->count() > 0)
+                                        @foreach($job->skills as $skill)
+                                            <span class="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{{ $skill->name }}</span>
+                                        @endforeach
+                                    @else
+                                        {{ __("No skills required.") }}
+                                    @endif
+                                </p>
                                 <div class="text-center mt-10">
                                     <a href={{ url('jobs/'.$job->id.'/show')}} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View More</a>
                                 </div>

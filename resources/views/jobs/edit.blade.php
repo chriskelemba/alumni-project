@@ -37,20 +37,22 @@
                                 <label for="" class="block mb-2 text-sm font-bold">About Us</label>
                                 <input type="text" name="aboutus" value="{{ $job->aboutus }}" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
                             </div>
-                            <label class="block mb-2 text-sm font-bold">Skills</label>
-                            @foreach ($skills as $key => $skill)
-                            <div class="w-1/2 md:w-1/3 xl:w-1/4 p-2">
-                                <label>
-                                    <input type="checkbox"
-                                    name="skills[]"
-                                    value="{{ $key }}"
-                                    {{ in_array($skill, $jobSkills)? 'checked':'' }}
-                                    />
-                                    {{ $skill }}
-                                </label>
-                            </div>
-                            @endforeach
                             <div class="mb-4">
+                                <label class="block mb-2 text-sm font-bold">Skills</label>
+                                @foreach ($skills as $skill)
+                                <div class="w-1/2 md:w-1/3 xl:w-1/4 p-2">
+                                    <label>
+                                        <input type="checkbox"
+                                        name="skills[]"
+                                        value="{{ $skill->name }}"  
+                                        @if($job->skills->contains($skill->id)) checked @endif  
+                                        />
+                                        {{ $skill->name }}
+                                    </label>
+                                </div>
+                                @endforeach
+                            </div>
+                            <div class="mt-4">
                                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
                             </div>
                         </form>

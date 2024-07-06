@@ -40,8 +40,8 @@ class JobController extends Controller implements HasMiddleware
 
     public function create()
     {
-        $jobs = Job::pluck('title', 'title')->all();
-        return view('jobs.create', ['jobs' => $jobs]);
+        $skills = Skill::pluck('name', 'name')->all();
+        return view('jobs.create', ['skills' => $skills]);
     }
 
     public function store(Request $request)
@@ -51,7 +51,8 @@ class JobController extends Controller implements HasMiddleware
             'description' => 'required|string',
             'responsibilities' => 'required|string',
             'qualifications' => 'required|string',
-            'aboutus' => 'required|string'
+            'aboutus' => 'required|string',
+            'skills' => 'required'
         ]);
 
         $job = Job::create([
@@ -62,15 +63,16 @@ class JobController extends Controller implements HasMiddleware
             'aboutus' => $request->aboutus,
         ]);
 
+        $skillId = Skill::whereIn('name', $request->skills)->pluck('id')->all();
+        $job->syncSkills($skillId);
+
         return redirect('/jobs')->with('status', 'Job Created Successfully');
     }
 
     public function edit(Job $job)
     {
-        $skills = Skill::pluck('name', 'name')->all();
-        $skillsArray = explode(',', $job->skills);
-        $skillNames = array_map('trim', $skillsArray);
-        $jobSkills = array_combine($skillNames, $skillNames);
+        $skills = Skill::all();
+        $jobSkills = $job->skills->pluck('name', 'name')->all();
 
         return view('jobs.edit', [
             'job' => $job,
