@@ -16,6 +16,18 @@
                                 <input type="text" name="title" class="w-full p-2 pl-10 text-sm text-gray-700"/>
                             </div>
                             <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">Company</label>
+                                <input type="text" name="company" class="w-full p-2 pl-10 text-sm text-gray-700"/>
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">Location</label>
+                                <input type="text" name="location" class="w-full p-2 pl-10 text-sm text-gray-700"/>
+                            </div>
+                            <div class="mb-4">
+                                <label for="" class="block mb-2 text-sm font-bold">Description</label>
+                                <textarea name="description" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
+                            </div>
+                            <div class="mb-4">
                                 <label for="" class="block mb-2 text-sm font-bold">Description</label>
                                 <textarea name="description" class="w-full p-2 pl-10 text-sm text-gray-700"></textarea>
                             </div>
