@@ -1,17 +1,18 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\Skill;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 use App\Notifications\AccountActivation;
-use Illuminate\Support\Str;
-
-use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
 class UserController extends Controller implements HasMiddleware
 {
@@ -85,40 +86,40 @@ class UserController extends Controller implements HasMiddleware
         ]);
 
         $user->password = Hash::make($request->password);
+        $user->activation_token = null;
         $user->save();
 
-        return redirect(route('create-profile', ['token' => $token]))->with('success', 'Account activated. Setup your profile.');
+        return redirect('/login')->with('success', 'Profile set up successfully!');
     }
 
-    public function createProfile(Request $request, $token)
+    public function createProfile(Request $request)
     {
-        $user = User::where('activation_token', $token)->first();
-
+        $user = Auth::user();
+    
         if (!$user) {
-            return redirect('/')->with('error', 'Invalid activation token.');
+            return redirect('/')->with('error', 'You must be logged in to set up your profile.');
         }
-
+    
         // Check if the user has already set up their profile
         if ($user->profile_setup) {
             return redirect('/');
         }
-
+    
         $skills = Skill::all();
-
-        return view('auth.profile', ['token' => $token, 'user' => $user, 'skills' => $skills]);
+    
+        return view('auth.profile', ['user' => $user, 'skills' => $skills]);
     }
-
-    public function saveProfile(Request $request, $token)
+    
+    public function saveProfile(Request $request)
     {
-        $user = User::where('activation_token', $token)->first();
+        $user = Auth::user();
     
         if (!$user) {
-            return redirect('/')->with('error', 'Invalid activation token.');
+            return redirect('/')->with('error', 'You must be logged in to set up your profile.');
         }
     
         // Update the user
         $user->profile_setup = 1;
-        $user->activation_token = null;
         $user->save();
     
         // Store the selected skills

@@ -12,11 +12,13 @@
                         <h4 class="text-lg font-bold">Jobs</h4>
                         <form action="{{ url('jobs') }}" method="GET">
                             <input type="search" name="search" placeholder="Search for a job" class="bg-gray-100">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Search</button>
+                            <x-primary-button>Search</x-primary-button>
                         </form>
                         <div>
                             @role('super-admin|admin')
-                            <a href="{{ url('jobs/admin') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Admin</a>
+                            <a href="{{ url('jobs/admin') }}">
+                                <x-primary-button>{{ __('Admin') }}</x-primary-button>
+                            </a>
                             @endrole
                         </div>
                     </div>
