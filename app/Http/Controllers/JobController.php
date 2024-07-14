@@ -48,6 +48,8 @@ class JobController extends Controller implements HasMiddleware
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'comapny' => 'required|string',
+            'location' => 'required|string',
             'description' => 'required|string',
             'responsibilities' => 'required|string',
             'qualifications' => 'required|string',
@@ -57,6 +59,8 @@ class JobController extends Controller implements HasMiddleware
 
         $job = Job::create([
             'title' => $request->title,
+            'company' => $request->company,
+            'location' => $request->location,
             'description' => $request->description,
             'responsibilities' => $request->responsibilities,
             'qualifications' => $request->qualifications,
@@ -86,6 +90,8 @@ class JobController extends Controller implements HasMiddleware
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'company' => 'required|string',
+            'location' => 'required|string',
             'responsibilities' => 'required|string',
             'qualifications' => 'required|string',
             'aboutus' => 'required|string',
@@ -94,6 +100,8 @@ class JobController extends Controller implements HasMiddleware
 
         $data = [
             'title' => $request->title,
+            'company' => $request->company,
+            'location' => $request->location,
             'description' => $request->description,
             'responsibilities' => $request->responsibilities,
             'qualifications' => $request->qualifications,
@@ -111,7 +119,7 @@ class JobController extends Controller implements HasMiddleware
         $job = Job::findOrFail($jobId);
         $job->delete();
 
-        return redirect('/jobs')->with('status', 'Jobs Deleted Successfully');
+        return redirect('/jobs/admin')->with('status', 'Jobs Deleted Successfully');
     }
 
     public function trash()

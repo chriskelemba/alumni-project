@@ -12,35 +12,50 @@
                         <h4 class="text-lg font-bold">Jobs</h4>
                         <form action="{{ url('jobs') }}" method="GET">
                             <input type="search" name="search" placeholder="Search for a job" class="bg-gray-100">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Search</button>
+                            <x-primary-button>Search</x-primary-button>
                         </form>
                         <div>
                             @role('super-admin|admin')
-                            <a href="{{ url('jobs/admin') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Admin</a>
+                            <a href="{{ url('jobs/admin') }}">
+                                <x-primary-button>{{ __('Admin') }}</x-primary-button>
+                            </a>
                             @endrole
                         </div>
                     </div>
                     <div class="overflow-x-auto">
                         <div class="grid grid-cols-3 gap-4 text-gray-500">
-                            @foreach ($jobs as $job)
-                            <div class="bg-gray-100 border-b mb-5 p-4">
-                                <h5 class="text-lg font-bold">{{ $job->title }}</h5>
-                                <p>{{ Str::limit($job->description, 200) }}</p>
-                                <br>
-                                <p class="text-center">
-                                    @if($job->skills->count() > 0)
-                                        @foreach($job->skills as $skill)
-                                            <span class="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{{ $skill->name }}</span>
-                                        @endforeach
-                                    @else
-                                        {{ __("No skills required.") }}
-                                    @endif
-                                </p>
-                                <div class="text-center mt-10">
-                                    <a href={{ url('jobs/'.$job->id.'/show')}} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View More</a>
+                            @foreach ($jobs as $index => $job)
+                            <div class="border mb-5 p-2 rounded-3xl">
+                                @php
+                                    $colors = ['bg-red-100', 'bg-yellow-100', 'bg-blue-100', 'bg-green-100', 'bg-purple-100'];
+                                    $color = $colors[$index % count($colors)];
+                                @endphp
+                                <div class="{{ $color }} p-5 rounded-3xl">
+                                    <p class="mb-8"><b class="bg-white p-2 rounded-3xl">{{ date('d M, Y', strtotime($job->created_at)) }}</b></p>
+                                    <p>{{ $job->company }}</p>
+                                    <h5 class="text-2xl font-bold mb-3">{{ $job->title }}</h5>
+                                    {{-- <p>{{ Str::limit($job->description, 200) }}</p> --}}
+                                    <br>
+                                    <p class="text-center">
+                                        @if($job->skills->count() > 0)
+                                            @foreach($job->skills as $skill)
+                                                <span class="border bg-white rounded-full px-3 py-1 text-sm font-semibold mr-2">{{ $skill->name }}</span>
+                                            @endforeach
+                                        @else
+                                            {{ __("No skills required.") }}
+                                        @endif
+                                    </p>
+                                </div>
+                                <div class="p-5 flex justify-between">
+                                    <div>
+                                        <p>{{ $job->location }}</p>
+                                    </div>
+                                    <a href="{{ url('jobs/'.$job->id.'/show')}}">
+                                        <x-primary-button>{{ __('Details') }}</x-primary-button>
+                                    </a>
                                 </div>
                             </div>
-                            @endforeach
+                        @endforeach
                         </div>
                     </div>
                 </div>

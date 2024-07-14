@@ -36,8 +36,8 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 Route::get('activate-account/{token}', [UserController::class, 'activateAccount'])->name('activate-account');
 Route::post('activate-account/{token}', [UserController::class, 'setPassword'])->name('set-password');
 
-Route::get('create-profile/{token}', [UserController::class, 'createProfile'])->name('create-profile');
-Route::post('save-profile/{token}', [UserController::class, 'saveProfile'])->name('save-profile');
+Route::get('create-profile', [UserController::class, 'createProfile'])->name('create-profile');
+Route::post('save-profile', [UserController::class, 'saveProfile'])->name('save-profile');
 
 Route::get('jobs', [JobController::class, 'index']);
 Route::get('jobs/{job}/show', [JobController::class, 'show']);
@@ -61,7 +61,7 @@ Route::redirect('/', '/login');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'checkProfileSetup'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
