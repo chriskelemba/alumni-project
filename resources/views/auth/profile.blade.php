@@ -1,8 +1,8 @@
 <x-app-layout>
     <div class="container mx-auto p-5">
         <div class="flex flex-wrap justify-center">
-            <div class="w-full p-6">
-                <div class="bg-white shadow-md rounded p-4">
+            <div class="w-full">
+                <x-input-title :value="__('Create your Profile')" />
                     @if (session('error'))
                         <p class="text-red-500">{{ session('error') }}</p>
                     @endif
@@ -59,7 +59,6 @@
                             </x-primary-button>
                         </div>
                     </form>
-                </div>
             </div>
         </div>
     </div>
