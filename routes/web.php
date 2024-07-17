@@ -27,7 +27,6 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
     Route::get('users/{userId}/restore', [UserController::class, 'restore']);
     Route::get('users/{userId}/forceDelete', [UserController::class, 'forceDelete']);
-
     
     Route::resource('skills', SkillsController::class);
 
@@ -39,9 +38,16 @@ Route::post('activate-account/{token}', [UserController::class, 'setPassword'])-
 Route::get('create-profile', [UserController::class, 'createProfile'])->name('create-profile');
 Route::post('save-profile', [UserController::class, 'saveProfile'])->name('save-profile');
 
-Route::get('jobs', [JobController::class, 'index']);
-Route::get('jobs/{job}/show', [JobController::class, 'show']);
-Route::get('jobs/{job}/apply', [JobController::class, 'apply']);
+Route::group(['middleware' => ['auth']], function() {
+
+    Route::get('jobs', [JobController::class, 'index']);
+    Route::get('jobs/{job}/show', [JobController::class, 'show']);
+    Route::get('jobs/{job}/apply', [JobController::class, 'apply']);
+    
+    Route::resource('projects', ProjectController::class);
+    Route::get('projects/{projectId}/delete', [ProjectController::class, 'destroy']);
+
+});
 
 Route::group(['middleware' => ['role:super-admin|admin']], function() {
 
@@ -53,9 +59,6 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('jobs/{jobId}/forceDelete', [JobController::class, 'forceDelete']);
 
 });
-
-Route::resource('projects', ProjectController::class);
-Route::get('projects/{projectId}/delete', [ProjectController::class, 'destroy']);
 
 Route::redirect('/', '/login');
 
