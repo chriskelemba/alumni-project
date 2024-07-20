@@ -60,7 +60,7 @@ class JobPostedNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'message' => "New job posted: {$this->job->title}",
+            //
         ];
     }
 }
