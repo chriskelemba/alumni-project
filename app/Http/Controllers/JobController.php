@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
-use App\Models\Skill;
+use App\Jobs\Notify;
 
+use App\Models\User;
+use App\Models\Skill;
+use App\Jobs\NotifyData;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -38,23 +41,29 @@ class JobController extends Controller implements HasMiddleware
         return view('jobs.index', ['jobs' => $jobs]);
     }
 
-    public function create()
+    public function create(Job $job)
     {
-        $skills = Skill::pluck('name', 'name')->all();
-        return view('jobs.create', ['skills' => $skills]);
+        $skills = Skill::all();
+        $jobSkills = $job->skills->pluck('name', 'name')->all();
+
+        return view('jobs.create', [
+            'job' => $job,
+            'skills' => $skills,
+            'jobSkills' => $jobSkills
+        ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'comapny' => 'required|string',
+            'company' => 'required|string',
             'location' => 'required|string',
             'description' => 'required|string',
             'responsibilities' => 'required|string',
             'qualifications' => 'required|string',
             'aboutus' => 'required|string',
-            'skills' => 'required'
+            'skills' => 'required|array|min:1'
         ]);
 
         $job = Job::create([
@@ -67,8 +76,18 @@ class JobController extends Controller implements HasMiddleware
             'aboutus' => $request->aboutus,
         ]);
 
-        $skillId = Skill::whereIn('name', $request->skills)->pluck('id')->all();
+        $skillId = $request->skills;
         $job->syncSkills($skillId);
+
+        // Get users who have the required skills
+        $users = User::whereHas('skills', function ($query) use ($skillId) {
+            $query->whereIn('skills.id', $skillId);
+        })->get();
+        
+        // Dispatch the Notify Job for each user
+        foreach ($users as $user) {
+            Notify::dispatch(new NotifyData($user, $job, 1)); // 1 represents the type of notification
+        }
 
         return redirect('/jobs')->with('status', 'Job Created Successfully');
     }
