@@ -32,7 +32,7 @@ class NotifyUsersListener
 
         // Notify each user
         foreach ($users as $user) {
-            $user->notify(new JobPostedNotification($job));
+            $user->notify(new JobPostedNotification($job, $user));
         }
     }
 }
