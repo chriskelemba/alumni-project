@@ -84,9 +84,9 @@ class JobController extends Controller implements HasMiddleware
             $query->whereIn('skills.id', $skillId);
         })->get();
         
-        // Dispatch the Notify Job for each user
         foreach ($users as $user) {
-            Notify::dispatch(new NotifyData($user, $job, 1)); // 1 represents the type of notification
+            \Log::info("Dispatching notification to user {$user->email}");
+            Notify::dispatch(new NotifyData($user, $job));
         }
 
         return redirect('/jobs')->with('status', 'Job Created Successfully');
