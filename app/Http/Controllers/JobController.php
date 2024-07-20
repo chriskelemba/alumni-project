@@ -8,6 +8,7 @@ use App\Jobs\Notify;
 use App\Models\User;
 use App\Models\Skill;
 use App\Jobs\NotifyData;
+use App\Events\JobCreated;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -79,15 +80,7 @@ class JobController extends Controller implements HasMiddleware
         $skillId = $request->skills;
         $job->syncSkills($skillId);
 
-        // Get users who have the required skills
-        $users = User::whereHas('skills', function ($query) use ($skillId) {
-            $query->whereIn('skills.id', $skillId);
-        })->get();
-        
-        foreach ($users as $user) {
-            \Log::info("Dispatching notification to user {$user->email}");
-            Notify::dispatch(new NotifyData($user, $job));
-        }
+        event(new JobCreated($job));
 
         return redirect('/jobs')->with('status', 'Job Created Successfully');
     }
