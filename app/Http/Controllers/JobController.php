@@ -7,7 +7,6 @@ use App\Jobs\Notify;
 
 use App\Models\User;
 use App\Models\Skill;
-use App\Jobs\NotifyData;
 use App\Events\JobCreated;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;

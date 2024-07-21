@@ -13,7 +13,7 @@ class JobPostedNotification extends Notification
 {
     use Queueable;
 
-    private $job;
+    public $job;
     public $user;
 
     /**
