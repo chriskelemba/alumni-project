@@ -61,7 +61,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 
 });
 
-Route::delete('notifications/clear', [NotificationController::class, 'clearAll'])->name('notifications.clear');
+Route::delete('notifications/clear', [NotificationController::class, 'clearAll']);
 
 Route::redirect('/', '/login');
 
