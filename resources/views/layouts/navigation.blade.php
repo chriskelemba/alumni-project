@@ -79,6 +79,13 @@
                                 {{ __('There are no new notifications') }}
                             </x-dropdown-link>
                         @endif
+                        <x-dropdown-link :href="url('notifications/clear')" onclick="event.preventDefault(); document.getElementById('clear-notifications-form').submit();">
+                            {{ __('Clear all notifications') }}
+                        </x-dropdown-link>
+                        <form id="clear-notifications-form" action="{{ url('notifications/clear') }}" method="post" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
                     </x-slot>
                 </x-dropdown>
 

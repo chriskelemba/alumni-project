@@ -63,6 +63,12 @@ class JobPostedNotification extends Notification
         ];
     }
 
+    public function clearAll()
+    {
+        auth()->user()->unreadNotifications->markAsRead();
+        return redirect()->back();
+    }
+
     /**
      * Get the array representation of the notification.
      *
