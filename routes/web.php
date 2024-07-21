@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SkillsController;
+use App\Http\Controllers\NotificationController;
 
 Route::group(['middleware' => ['role:super-admin|admin']], function() {
     
@@ -59,6 +60,8 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('jobs/{jobId}/forceDelete', [JobController::class, 'forceDelete']);
 
 });
+
+Route::delete('notifications/clear', [NotificationController::class, 'clearAll']);
 
 Route::redirect('/', '/login');
 

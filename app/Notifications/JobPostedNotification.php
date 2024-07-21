@@ -13,7 +13,7 @@ class JobPostedNotification extends Notification
 {
     use Queueable;
 
-    private $job;
+    public $job;
     public $user;
 
     /**
@@ -34,7 +34,7 @@ class JobPostedNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -50,6 +50,23 @@ class JobPostedNotification extends Notification
                     ->line("A new job has been posted: {$this->job->title}")
                     ->action('View Job', $url)
                     ->line("You have been notified because you have the required skills for this job.");
+    }
+
+    public function toDatabase(object $notifiable): array
+    {
+        return [
+            'job_title' => $this->job->title,
+            'job_description' => $this->job->description,
+            'job_url' => url('jobs/'.$this->job->id.'/show'),
+            'notifiable_type' => $notifiable->getMorphClass(),
+            'notifiable_id' => $notifiable->id,
+        ];
+    }
+
+    public function clearAll()
+    {
+        auth()->user()->unreadNotifications->markAsRead();
+        return redirect()->back();
     }
 
     /**

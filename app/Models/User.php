@@ -8,6 +8,7 @@ use App\Models\Project;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -69,5 +70,10 @@ class User extends Authenticatable
             $existingSkill = Skill::firstOrCreate(['name' => $skill]);
             $this->skills()->attach($existingSkill->id);
         }
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(DatabaseNotification::class, 'notifiable_id');
     }
 }
