@@ -57,7 +57,7 @@
                             </div>
                             <div class="relative">
                                 <span class="absolute bottom-1 right-1 inline-flex items-center justify-center w-4 h-4 text-xs font-bold leading-none text-red-600 bg-red-200 rounded-full">
-                                    0
+                                    {{ auth()->user()->unreadNotifications->count() }}
                                 </span>
                             </div>
                             <div class="ms-1">
@@ -68,10 +68,17 @@
                         </button>
                       </x-slot>
 
-                    <x-slot name="content">
-                        <x-dropdown-link :href="url('')" disabled>
-                            {{ __('There are no new notifications') }}
-                        </x-dropdown-link>
+                      <x-slot name="content">
+                        @foreach(auth()->user()->unreadNotifications as $notification)
+                            <x-dropdown-link :href="$notification->data['job_url']">
+                                {{ $notification->data['job_title'] }}
+                            </x-dropdown-link>
+                        @endforeach
+                        @if(auth()->user()->unreadNotifications->isEmpty())
+                            <x-dropdown-link :href="url('')" disabled>
+                                {{ __('There are no new notifications') }}
+                            </x-dropdown-link>
+                        @endif
                     </x-slot>
                 </x-dropdown>
 
