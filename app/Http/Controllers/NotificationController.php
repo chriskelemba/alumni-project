@@ -13,6 +13,7 @@ class NotificationController extends Controller
     
         if ($notification) {
             $notification->markAsRead();
+            $notification->update(['read' => true]);
         }
     
         return redirect()->back();
