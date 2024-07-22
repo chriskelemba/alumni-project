@@ -61,6 +61,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 
 });
 
+Route::patch('/notifications/{notificationId}', [NotificationController::class, 'markAsRead'])->name('notifications.read');
 Route::delete('notifications/clear', [NotificationController::class, 'clearAll']);
 
 Route::redirect('/', '/login');
