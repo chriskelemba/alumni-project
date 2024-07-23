@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Notifications\AccountActivation;
 use App\Notifications\DeactivateAccount;
+use App\Notifications\DeleteAccount;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
@@ -183,6 +184,7 @@ class UserController extends Controller implements HasMiddleware
         }
 
         $user->delete();
+        $user->notify(new DeleteAccount($user));
 
         return redirect('/users')->with('status', 'User Deleted Successfully');
     }
@@ -213,6 +215,11 @@ class UserController extends Controller implements HasMiddleware
     public function deactivateAccount($userId)
     {
         $user = User::findOrFail($userId);
+
+        // Checks if the user is already deactivated
+        if ($user->activation_token !== null) {
+            return redirect('/users')->with('status', 'Account is already deactivated');
+        }
 
         $user->activation_token = Str::random(60);
         $user->save();
