@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Skill;
 use App\Events\JobCreated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -23,24 +24,43 @@ class JobController extends Controller implements HasMiddleware
             new Middleware('permission:delete job', only: ['destroy', 'trash', 'restore', 'forceDelete']),
         ];
     }
-
+    
     public function index(Request $request)
     {
+        // Get search input from request
         $search = $request->input('search');
-
-        $jobs = Job::when($search, function ($query) use ($search) {
+    
+        // Initialize query builder for jobs
+        $query = Job::query();
+    
+        // Apply search filter if provided
+        if ($search) {
             $query->where('title', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%");
-        })->paginate(10);
-
-        if ($jobs->isEmpty()) {
-            return redirect('/jobs')->with('status', 'No Results Found');
-        } else {
-            $message = '';
+                  ->orWhere('description', 'like', "%{$search}%");
         }
-
+    
+        // Apply skills filter if requested
+        if ($request->has('filter_skills')) {
+            // Get authenticated user's skills
+            $userSkills = Auth::user()->skills()->pluck('skills.id')->toArray();
+    
+            $query->whereHas('skills', function ($query) use ($userSkills) {
+                $query->whereIn('skills.id', $userSkills);
+            });
+        }
+    
+        // Get paginated jobs based on the constructed query
+        $jobs = $query->paginate(10);
+    
+        // Check if jobs are empty after filtering
+        if ($jobs->isEmpty()) {
+            return redirect()->route('jobs.index')->with('status', 'No Results Found');
+        }
+    
+        // Return the view with jobs data
         return view('jobs.index', ['jobs' => $jobs]);
-    }
+    }    
+    
 
     public function create(Job $job)
     {

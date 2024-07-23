@@ -21,6 +21,18 @@
                             </a>
                             @endrole
                         </div>
+                        <div>
+                            @if(request()->has('filter_skills'))
+                                <a href="{{ url('jobs') }}">
+                                    <x-primary-button>Show All Jobs</x-primary-button>
+                                </a>
+                            @else
+                                <form action="{{ url('jobs') }}" method="GET">
+                                    <input type="hidden" name="filter_skills" value="1">
+                                    <x-primary-button>{{__('Filter by My Skills')}}</x-primary-button>
+                                </form>
+                            @endif
+                        </div>
                     </div>
                     <div class="overflow-x-auto">
                         <div class="grid grid-cols-3 gap-4 text-gray-500">
@@ -34,7 +46,6 @@
                                     <p class="mb-8"><b class="bg-white p-2 rounded-3xl">{{ date('d M, Y', strtotime($job->created_at)) }}</b></p>
                                     <p>{{ $job->company }}</p>
                                     <h5 class="text-2xl font-bold mb-3">{{ $job->title }}</h5>
-                                    {{-- <p>{{ Str::limit($job->description, 200) }}</p> --}}
                                     <br>
                                     <p class="text-center">
                                         @if($job->skills->count() > 0)
@@ -56,8 +67,11 @@
                                     </a>
                                 </div>
                             </div>
-                        @endforeach
+                            @endforeach
                         </div>
+                    </div>
+                    <div class="mt-4">
+                        {{ $jobs->links() }} <!-- Pagination links -->
                     </div>
                 </div>
             </div>
