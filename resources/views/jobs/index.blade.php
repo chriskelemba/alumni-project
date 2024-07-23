@@ -49,6 +49,7 @@
                                 <div class="p-5 flex justify-between">
                                     <div>
                                         <p>{{ $job->location }}</p>
+                                        <p>Views: {{ $job->views_count }}</p>
                                     </div>
                                     <a href="{{ url('jobs/'.$job->id.'/show')}}">
                                         <x-primary-button>{{ __('Details') }}</x-primary-button>

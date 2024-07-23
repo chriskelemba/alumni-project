@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Skill;
 use App\Events\JobCreated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
@@ -158,6 +159,18 @@ class JobController extends Controller implements HasMiddleware
 
     public function show(Job $job)
     {
+        $cacheKey = 'job_view_count_' . $job->id;
+    
+        // Increment the view count only if not cached for this job and within the cache duration
+        if (!Cache::has($cacheKey)) {
+            // Store the view count in cache for 1 minute
+            Cache::put($cacheKey, true, now()->addMinutes(1));
+    
+            $job->increment('views_count');
+        }
+    
+        $job->refresh();
+    
         return view('jobs.show', ['job' => $job]);
     }
 
