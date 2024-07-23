@@ -91,7 +91,7 @@ class UserController extends Controller implements HasMiddleware
         $user->activation_token = null;
         $user->save();
 
-        return redirect('/login')->with('success', 'Profile set up successfully!');
+        return redirect('/login')->with('success', 'Password set up successfully!');
     }
 
     public function createProfile(Request $request)
@@ -220,5 +220,30 @@ class UserController extends Controller implements HasMiddleware
         $user->notify(new DeactivateAccount($user));
 
         return redirect('/users')->with('status', 'User Deactivated');
+    }
+    
+    public function reactivateAccount($token)
+    {
+        $user = User::where('activation_token', $token)->first();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'Invalid activation token.');
+        }
+
+        return view('auth.reactivate', ['token' => $token]);
+    }
+
+    public function reactivate(Request $request, $token)
+    {
+        $user = User::where('activation_token', $token)->first();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'Invalid activation token.');
+        }
+
+        $user->activation_token = null;
+        $user->save();
+
+        return redirect('/login')->with('success', 'Account Reactivated!');
     }
 }

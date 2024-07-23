@@ -42,7 +42,7 @@ class DeactivateAccount extends Notification
      */
     public function toMail($notifiable)
     {
-        $url = url('/activate-account/'.$this->user->activation_token);
+        $url = url('/reactivate-account/'.$this->user->activation_token);
 
         return (new MailMessage)
                     ->subject('Your Account was Deactivated')
