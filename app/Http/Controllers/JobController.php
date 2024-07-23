@@ -8,7 +8,10 @@ use App\Jobs\Notify;
 use App\Models\User;
 use App\Models\Skill;
 use App\Events\JobCreated;
+use App\Models\JobFeedback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
@@ -22,24 +25,43 @@ class JobController extends Controller implements HasMiddleware
             new Middleware('permission:delete job', only: ['destroy', 'trash', 'restore', 'forceDelete']),
         ];
     }
-
+    
     public function index(Request $request)
     {
+        // Get search input from request
         $search = $request->input('search');
-
-        $jobs = Job::when($search, function ($query) use ($search) {
+    
+        // Initialize query builder for jobs
+        $query = Job::query();
+    
+        // Apply search filter if provided
+        if ($search) {
             $query->where('title', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%");
-        })->paginate(10);
-
-        if ($jobs->isEmpty()) {
-            return redirect('/jobs')->with('status', 'No Results Found');
-        } else {
-            $message = '';
+                  ->orWhere('description', 'like', "%{$search}%");
         }
-
+    
+        // Apply skills filter if requested
+        if ($request->has('filter_skills')) {
+            // Get authenticated user's skills
+            $userSkills = Auth::user()->skills()->pluck('skills.id')->toArray();
+    
+            $query->whereHas('skills', function ($query) use ($userSkills) {
+                $query->whereIn('skills.id', $userSkills);
+            });
+        }
+    
+        // Get paginated jobs based on the constructed query
+        $jobs = $query->paginate(10);
+    
+        // Check if jobs are empty after filtering
+        if ($jobs->isEmpty()) {
+            return redirect()->route('jobs.index')->with('status', 'No Results Found');
+        }
+    
+        // Return the view with jobs data
         return view('jobs.index', ['jobs' => $jobs]);
-    }
+    }    
+    
 
     public function create(Job $job)
     {
@@ -158,6 +180,18 @@ class JobController extends Controller implements HasMiddleware
 
     public function show(Job $job)
     {
+        $cacheKey = 'job_view_count_' . $job->id;
+    
+        // Increment the view count only if not cached for this job and within the cache duration
+        if (!Cache::has($cacheKey)) {
+            // Store the view count in cache for 1 minute
+            Cache::put($cacheKey, true, now()->addMinutes(1));
+    
+            $job->increment('views_count');
+        }
+    
+        $job->refresh();
+    
         return view('jobs.show', ['job' => $job]);
     }
 
@@ -182,5 +216,25 @@ class JobController extends Controller implements HasMiddleware
         }
 
         return view('jobs.admin', ['jobs' => $jobs]);
+    }
+
+    public function feedback(Job $job)
+    {
+        return view('jobs.feedback', ['job' => $job]);
+    }
+
+    public function submitFeedback(Request $request, Job $job)
+    {
+        $request->validate([
+            'feedback_text' => 'required|string',
+        ]);
+
+        JobFeedback::create([
+            'job_id' => $job->id,
+            'user_id' => Auth::id(),
+            'feedback_text' => $request->feedback_text,
+        ]);
+
+        return redirect('/jobs')->with('status', 'Feedback Submitted Successfully.');
     }
 }

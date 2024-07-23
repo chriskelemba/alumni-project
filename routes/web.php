@@ -48,6 +48,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('jobs', [JobController::class, 'index']);
     Route::get('jobs/{job}/show', [JobController::class, 'show']);
     Route::get('jobs/{job}/apply', [JobController::class, 'apply']);
+    Route::get('/jobs/{job}/feedback', [JobController::class, 'feedback']);
+    Route::post('/jobs/{job}/submit-feedback', [JobController::class, 'submitFeedback']);
     
     Route::resource('projects', ProjectController::class);
     Route::get('projects/{projectId}/delete', [ProjectController::class, 'destroy']);
