@@ -9,19 +9,18 @@
 
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
-                        <h4 class="text-lg font-bold">Jobs</h4>
                         <form action="{{ url('jobs') }}" method="GET">
                             <input type="search" name="search" placeholder="Search for a job" class="bg-gray-100">
                             <x-primary-button>Search</x-primary-button>
                         </form>
-                        <div>
-                            @role('super-admin|admin')
-                            <a href="{{ url('jobs/admin') }}">
-                                <x-primary-button>{{ __('Admin') }}</x-primary-button>
-                            </a>
-                            @endrole
-                        </div>
-                        <div>
+                        <div class="flex justify-between">
+                            <div class="mx-2">
+                                @role('super-admin|admin')
+                                <a href="{{ url('jobs/admin') }}">
+                                    <x-primary-button>{{ __('Admin') }}</x-primary-button>
+                                </a>
+                                @endrole
+                            </div>
                             @if(request()->has('filter_skills'))
                                 <a href="{{ url('jobs') }}">
                                     <x-primary-button>Show All Jobs</x-primary-button>
@@ -60,7 +59,13 @@
                                 <div class="p-5 flex justify-between">
                                     <div>
                                         <p>{{ $job->location }}</p>
-                                        <p>Views: {{ $job->views_count }}</p>
+                                        <p class="flex">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill mr-1 mt-1" viewBox="0 0 16 16">
+                                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                            </svg>
+                                            {{ $job->views_count }}
+                                        </p>
                                     </div>
                                     <a href="{{ url('jobs/'.$job->id.'/show')}}">
                                         <x-primary-button>{{ __('Details') }}</x-primary-button>
