@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 use App\Notifications\AccountActivation;
+use App\Notifications\DeactivateAccount;
+use App\Notifications\DeleteAccount;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
@@ -23,6 +25,7 @@ class UserController extends Controller implements HasMiddleware
             new Middleware('permission:create user', only: ['create', 'store']),
             new Middleware('permission:update user', only: ['update', 'edit']),
             new Middleware('permission:delete user', only: ['destroy', 'trash', 'restore', 'forceDelete']),
+            new Middleware('permission:deactivate user', only: ['deactivateAccount']),
         ];
     }
     
@@ -89,7 +92,7 @@ class UserController extends Controller implements HasMiddleware
         $user->activation_token = null;
         $user->save();
 
-        return redirect('/login')->with('success', 'Profile set up successfully!');
+        return redirect('/login')->with('success', 'Password set up successfully!');
     }
 
     public function createProfile(Request $request)
@@ -174,7 +177,14 @@ class UserController extends Controller implements HasMiddleware
     public function destroy($userId)
     {
         $user = User::findOrFail($userId);
+
+        // If the user is activated, user cannot be deleted
+        if ($user->activation_token === null) {
+            return redirect('/users')->with('status', 'User Cannot be Deleted');
+        }
+
         $user->delete();
+        $user->notify(new DeleteAccount($user));
 
         return redirect('/users')->with('status', 'User Deleted Successfully');
     }
@@ -200,5 +210,47 @@ class UserController extends Controller implements HasMiddleware
         $user->forceDelete();
 
         return redirect('/users/trash')->with('status', 'User Deleted Permanently');
+    }
+
+    public function deactivateAccount($userId)
+    {
+        $user = User::findOrFail($userId);
+
+        // Checks if the user is already deactivated
+        if ($user->activation_token !== null) {
+            return redirect('/users')->with('status', 'Account is already deactivated');
+        }
+
+        $user->activation_token = Str::random(60);
+        $user->save();
+
+        $user->notify(new DeactivateAccount($user));
+
+        return redirect('/users')->with('status', 'User Deactivated');
+    }
+    
+    public function reactivateAccount($token)
+    {
+        $user = User::where('activation_token', $token)->first();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'Invalid activation token.');
+        }
+
+        return view('auth.reactivate', ['token' => $token]);
+    }
+
+    public function reactivate(Request $request, $token)
+    {
+        $user = User::where('activation_token', $token)->first();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'Invalid activation token.');
+        }
+
+        $user->activation_token = null;
+        $user->save();
+
+        return redirect('/login')->with('success', 'Account Reactivated!');
     }
 }

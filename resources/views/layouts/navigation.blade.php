@@ -70,9 +70,13 @@
 
                       <x-slot name="content">
                         @foreach(auth()->user()->unreadNotifications as $notification)
-                            <x-dropdown-link :href="$notification->data['job_url']">
+                            <x-dropdown-link :href="$notification->data['job_url']" onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['job_url'] }}'; }, 100);">
                                 {{ $notification->data['job_title'] }}
                             </x-dropdown-link>
+                            <form id="mark-as-read-form-{{ $notification->id }}" action="{{ url('notifications/' . $notification->id) }}" method="post" style="display: none;">
+                                @csrf
+                                @method('PATCH')
+                            </form>
                         @endforeach
                         @if(auth()->user()->unreadNotifications->isEmpty())
                             <x-dropdown-link :href="url('')" disabled>

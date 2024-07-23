@@ -28,6 +28,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
     Route::get('users/{userId}/restore', [UserController::class, 'restore']);
     Route::get('users/{userId}/forceDelete', [UserController::class, 'forceDelete']);
+    Route::get('users/{userId}/deactivateAccount', [UserController::class, 'deactivateAccount']);
     
     Route::resource('skills', SkillsController::class);
 
@@ -35,6 +36,9 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 
 Route::get('activate-account/{token}', [UserController::class, 'activateAccount'])->name('activate-account');
 Route::post('activate-account/{token}', [UserController::class, 'setPassword'])->name('set-password');
+
+Route::get('reactivate-account/{token}', [UserController::class, 'reactivateAccount'])->name('reactivate-account');
+Route::post('reactivate-account/{token}', [UserController::class, 'reactivate'])->name('reactivate');
 
 Route::get('create-profile', [UserController::class, 'createProfile'])->name('create-profile');
 Route::post('save-profile', [UserController::class, 'saveProfile'])->name('save-profile');
@@ -61,6 +65,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
 
 });
 
+Route::patch('/notifications/{notificationId}', [NotificationController::class, 'markAsRead'])->name('notifications.read');
 Route::delete('notifications/clear', [NotificationController::class, 'clearAll']);
 
 Route::redirect('/', '/login');

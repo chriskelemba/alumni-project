@@ -58,15 +58,9 @@ class JobPostedNotification extends Notification
             'job_title' => $this->job->title,
             'job_description' => $this->job->description,
             'job_url' => url('jobs/'.$this->job->id.'/show'),
-            'notifiable_type' => $notifiable->getMorphClass(),
+            'notifiable_type' => get_class($this->user),
             'notifiable_id' => $notifiable->id,
         ];
-    }
-
-    public function clearAll()
-    {
-        auth()->user()->unreadNotifications->markAsRead();
-        return redirect()->back();
     }
 
     /**
