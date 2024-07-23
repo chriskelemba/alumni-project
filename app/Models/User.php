@@ -52,6 +52,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
+    public function getActiveAttribute()
+    {
+        return is_null($this->activation_token);
+    }
 
     public function projects()
     {

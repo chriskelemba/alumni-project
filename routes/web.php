@@ -28,6 +28,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
     Route::get('users/{userId}/restore', [UserController::class, 'restore']);
     Route::get('users/{userId}/forceDelete', [UserController::class, 'forceDelete']);
+    Route::get('users/{userId}/deactivateAccount', [UserController::class, 'deactivateAccount']);
     
     Route::resource('skills', SkillsController::class);
 

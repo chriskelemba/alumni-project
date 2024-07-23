@@ -33,6 +33,7 @@
                                     <th class="py-3 px-6">Email</th>
                                     <th class="py-3 px-6">Roles</th>
                                     <th class="py-3 px-6">Skills</th>
+                                    <th class="py-3 px-6">Status</th>
                                     @can('update user')
                                     <th class="py-3 px-6">Action</th>
                                     @endcan
@@ -60,6 +61,13 @@
                                             {{ __("No Skills") }}
                                         @endif
                                     </td>
+                                    <td class="py-4 px-6">
+                                        @if ($user->active)
+                                            <span class="bg-green-100 text-green-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Activated') }}</span>
+                                        @else
+                                            <span class="bg-red-100 text-red-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Deactivated') }}</span>
+                                        @endif
+                                    </td>
                                     @can('update user')
                                     <td class="py-4 px-6">
                                         @can('update user')
@@ -72,6 +80,12 @@
                                             <a href="{{ url('users/'.$user->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this user?')">
                                                 <x-danger-button>{{ __('Delete') }}</x-danger-button>
                                             </a>
+                                        @endcan
+
+                                        @can('deactivate user')
+                                        <a href="{{ url('users/'.$user->id.'/deactivateAccount') }}" onclick="return confirm('Are you sure you want to deactivate this user?')">
+                                            <x-primary-button>{{ __('Deactivate') }}</x-primary-button>
+                                        </a>
                                         @endcan
                                     </td>
                                     @endcan

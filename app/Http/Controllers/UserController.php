@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 use App\Notifications\AccountActivation;
+use App\Notifications\DeactivateAccount;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
@@ -23,6 +24,7 @@ class UserController extends Controller implements HasMiddleware
             new Middleware('permission:create user', only: ['create', 'store']),
             new Middleware('permission:update user', only: ['update', 'edit']),
             new Middleware('permission:delete user', only: ['destroy', 'trash', 'restore', 'forceDelete']),
+            new Middleware('permission:deactivate user', only: ['deactivateAccount']),
         ];
     }
     
@@ -200,5 +202,17 @@ class UserController extends Controller implements HasMiddleware
         $user->forceDelete();
 
         return redirect('/users/trash')->with('status', 'User Deleted Permanently');
+    }
+
+    public function deactivateAccount($userId)
+    {
+        $user = User::findOrFail($userId);
+
+        $user->activation_token = Str::random(60);
+        $user->save();
+
+        $user->notify(new DeactivateAccount($user));
+
+        return redirect('/users')->with('status', 'User Deactivated');
     }
 }
