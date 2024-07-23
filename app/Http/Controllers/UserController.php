@@ -176,6 +176,12 @@ class UserController extends Controller implements HasMiddleware
     public function destroy($userId)
     {
         $user = User::findOrFail($userId);
+
+        // If the user is activated, user cannot be deleted
+        if ($user->activation_token === null) {
+            return redirect('/users')->with('status', 'User Cannot be Deleted');
+        }
+
         $user->delete();
 
         return redirect('/users')->with('status', 'User Deleted Successfully');

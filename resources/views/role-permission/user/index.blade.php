@@ -77,15 +77,19 @@
                                         @endcan
 
                                         @can('delete user')
+                                        @if (!$user->active)
                                             <a href="{{ url('users/'.$user->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this user?')">
                                                 <x-danger-button>{{ __('Delete') }}</x-danger-button>
                                             </a>
+                                        @endif
                                         @endcan
 
                                         @can('deactivate user')
+                                        @if ($user->active)
                                         <a href="{{ url('users/'.$user->id.'/deactivateAccount') }}" onclick="return confirm('Are you sure you want to deactivate this user?')">
-                                            <x-primary-button>{{ __('Deactivate') }}</x-primary-button>
+                                            <x-danger-button>{{ __('Deactivate') }}</x-danger-button>
                                         </a>
+                                        @endif
                                         @endcan
                                     </td>
                                     @endcan
