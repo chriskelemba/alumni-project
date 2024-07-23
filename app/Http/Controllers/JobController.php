@@ -8,6 +8,7 @@ use App\Jobs\Notify;
 use App\Models\User;
 use App\Models\Skill;
 use App\Events\JobCreated;
+use App\Models\JobFeedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -215,5 +216,25 @@ class JobController extends Controller implements HasMiddleware
         }
 
         return view('jobs.admin', ['jobs' => $jobs]);
+    }
+
+    public function feedback(Job $job)
+    {
+        return view('jobs.feedback', ['job' => $job]);
+    }
+
+    public function submitFeedback(Request $request, Job $job)
+    {
+        $request->validate([
+            'feedback_text' => 'required|string',
+        ]);
+
+        JobFeedback::create([
+            'job_id' => $job->id,
+            'user_id' => Auth::id(),
+            'feedback_text' => $request->feedback_text,
+        ]);
+
+        return redirect('/jobs')->with('status', 'Feedback Submitted Successfully.');
     }
 }

@@ -19,6 +19,9 @@
                     <div class="text-center mb-12 mt-14">
                         <a href="{{ url('jobs/'.$job->id.'/apply') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-12 rounded">APPLY NOW</a>
                     </div>
+                    <a href="{{ url('jobs/'.$job->id.'/feedback')}}">
+                        <x-primary-button>{{ __('Feedback') }}</x-primary-button>
+                    </a>
                 </div>
             </div>
         </div>
