@@ -7,12 +7,13 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
+use App\Notifications\DeleteAccount;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use App\Notifications\AccountActivation;
 use App\Notifications\DeactivateAccount;
-use App\Notifications\DeleteAccount;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
@@ -129,14 +130,22 @@ class UserController extends Controller implements HasMiddleware
             return redirect('/')->with('error', 'You must be logged in to set up your profile.');
         }
     
-        // Update the user
+        $request->validate([
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+    
+        if ($request->hasFile('profile_picture')) {
+            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $user->profile_picture = $path;
+        }
+    
         $user->profile_setup = 1;
         $user->save();
     
         // Store the selected skills
         $user->skills()->sync($request->input('skills'));
     
-        return redirect('/')->with('status', 'Profile set up successfully!');
+        return redirect('/dashboard')->with('status', 'Profile set up successfully!');
     }
 
     public function edit(User $user)

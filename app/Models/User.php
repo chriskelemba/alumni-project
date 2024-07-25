@@ -28,6 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'activation_token',
         'skills',
         'profile_setup',
+        'profile_picture',
     ];
 
     /**
