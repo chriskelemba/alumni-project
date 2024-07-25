@@ -13,6 +13,11 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SkillsController;
 use App\Http\Controllers\NotificationController;
 
+Route::group(['middleware' => ['role:super-admin|admin|employee']], function() {
+
+    Route::get('users', [UserController::class, 'index']);
+
+});
 Route::group(['middleware' => ['role:super-admin|admin']], function() {
     
     Route::resource('permissions', PermissionController::class);
@@ -24,7 +29,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::put('roles/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole']);
 
     Route::get('users/trash', [UserController::class, 'trash']);
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class)->except(['index']);
     Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
     Route::get('users/{userId}/restore', [UserController::class, 'restore']);
     Route::get('users/{userId}/forceDelete', [UserController::class, 'forceDelete']);

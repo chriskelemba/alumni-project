@@ -15,7 +15,7 @@
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="">
-                    @include('profile.partials.projects')
+                    @include('profile.partials.show-projects')
                 </div>
             </div>
         </div>

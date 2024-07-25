@@ -9,9 +9,11 @@
             </p>
         </div>
 
-        <a href="{{ url('/project') }}">
-            <x-primary-button>{{ __('My Portfolio') }}</x-primary-button>
-        </a>
+        <div>
+            <a href="{{ url('/users') }}">
+                <x-danger-button>{{ __('Back') }}</x-danger-button>
+            </a>
+        </div>
     </header>
     
     <div class="mt-10 mb-5">
@@ -27,5 +29,8 @@
                 {{ __("No skills added.") }}
             @endif
         </p>
+        <a href="{{ url('/project') }}">
+            <x-primary-button>{{ __('View Portfolio') }}</x-primary-button>
+        </a>
     </div>
 </section>
