@@ -38,9 +38,21 @@
                     <x-nav-link :href="url('projects')" :active="request()->routeIs('jobs')">
                         {{ __('Projects') }}
                     </x-nav-link>
-                    <x-nav-link :href="url('portfolio')" :active="request()->routeIs('jobs')">
-                        {{ __('Portfolio') }}
+                    @can('view user')
+                    <x-nav-link :href="url('users')" :active="request()->routeIs('users')">
+                        {{ __('Users') }}
                     </x-nav-link>
+                    @endcan
+                    @can('view role')
+                    <x-nav-link :href="url('roles')" :active="request()->routeIs('roles')">
+                        {{ __('Roles') }}
+                    </x-nav-link>
+                    @endcan
+                    @can('view permission')
+                    <x-nav-link :href="url('permissions')" :active="request()->routeIs('permissions')">
+                        {{ __('Permissions') }}
+                    </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -136,26 +148,6 @@
                 </button>
             </div>
         </div>
-        
-        @role('super-admin|admin')
-        <div class="hidden space-x-8 sm:flex justify-center mt-7 border-t border-gray-100">
-            @can('view user')
-            <x-nav-link :href="url('users')" :active="request()->routeIs('users')">
-                {{ __('Users') }}
-            </x-nav-link>
-            @endcan
-            @can('view role')
-            <x-nav-link :href="url('roles')" :active="request()->routeIs('roles')">
-                {{ __('Roles') }}
-            </x-nav-link>
-            @endcan
-            @can('view permission')
-            <x-nav-link :href="url('permissions')" :active="request()->routeIs('permissions')">
-                {{ __('Permissions') }}
-            </x-nav-link>
-            @endcan
-        </div>
-        @endrole
     </div>
 
     <!-- Responsive Navigation Menu -->
