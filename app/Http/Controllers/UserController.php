@@ -97,9 +97,10 @@ class UserController extends Controller implements HasMiddleware
 
         $user->password = Hash::make($request->password);
         $user->activation_token = null;
+        $user->email_verified_at = now();
         $user->save();
 
-        return redirect('/login')->with('success', 'Password set up successfully!');
+        return redirect('/login')->with('status', 'Account has been activated! You can login.');
     }
 
     public function createProfile(Request $request)
@@ -135,7 +136,7 @@ class UserController extends Controller implements HasMiddleware
         // Store the selected skills
         $user->skills()->sync($request->input('skills'));
     
-        return redirect('/login')->with('success', 'Profile set up successfully!');
+        return redirect('/')->with('status', 'Profile set up successfully!');
     }
 
     public function edit(User $user)
@@ -229,6 +230,7 @@ class UserController extends Controller implements HasMiddleware
         }
 
         $user->activation_token = Str::random(60);
+        $user->email_verified_at = null;
         $user->save();
 
         $user->notify(new DeactivateAccount($user));
@@ -256,8 +258,9 @@ class UserController extends Controller implements HasMiddleware
         }
 
         $user->activation_token = null;
+        $user->email_verified_at = now();
         $user->save();
 
-        return redirect('/login')->with('success', 'Account Reactivated!');
+        return redirect('/login')->with('status', 'Account has been activated! You can login.');
     }
 }
