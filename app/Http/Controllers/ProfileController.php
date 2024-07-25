@@ -79,6 +79,14 @@ class ProfileController extends Controller
     public function show($userId)
     {
         $user = User::findOrFail($userId);
+        $alumniUsers = User::whereHas('roles', function ($query) {
+            $query->where('name', 'alumni');
+        })->get();
+
+        if (!$alumniUsers->contains($user)) {
+            abort(403, 'Unauthorized Action.');
+        }
+
         return view('profile.show', [
             'user' => $user,
             'projects' => $user->projects,
