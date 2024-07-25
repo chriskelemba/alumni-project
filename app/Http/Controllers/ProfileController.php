@@ -74,4 +74,14 @@ class ProfileController extends Controller
         $user = auth()->user();
         $projects = $user->projects;
     }
+
+    
+    public function show($userId)
+    {
+        $user = User::findOrFail($userId);
+        return view('profile.show', [
+            'user' => $user,
+            'projects' => $user->projects,
+        ]);
+    }
 }
