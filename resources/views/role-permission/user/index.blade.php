@@ -9,7 +9,14 @@
 
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
-                        <h4 class="text-lg font-bold">Users</h4>
+                        <div>
+                            @role('employee')
+                            <h4 class="text-lg font-bold">Users</h4>
+                            @endrole
+                            @role('super-admin|admin')
+                            <span class="bg-gray-100 text-black-700 text-sm font-bold mr-2 px-2.5 py-0.5 uppercase rounded">Click on the name to view user profile.</span>
+                            @endrole
+                        </div>
                         <div>
                             @role('super-admin|admin')
                             @can('delete user')
@@ -46,7 +53,11 @@
                                 @foreach ($users as $user)
                                 <tr class="bg-white border-b">
                                     <td class="py-4 px-6">{{ $user->id }}</td>
-                                    <td class="py-4 px-6">{{ $user->name }}</td>
+                                    <td class="py-4 px-">
+                                        <a href="{{ url('profile/'.$user->id) }}">
+                                            {{ $user->name }}
+                                        </a>
+                                    </td>
                                     <td class="py-4 px-6">{{ $user->email }}</td>
                                     <td class="py-4 px-6">
                                         @if (!empty($user->getRoleNames()))
@@ -108,7 +119,6 @@
                     <table class="w-full text-sm text-center text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
-                                <th class="py-3 px-6">Id</th>
                                 <th class="py-3 px-6">Name</th>
                                 <th class="py-3 px-6">Email</th>
                                 <th class="py-3 px-6">Skills</th>
@@ -116,9 +126,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
+                            @foreach ($alumniUsers as $user)
                             <tr class="bg-white border-b">
-                                <td class="py-4 px-6">{{ $user->id }}</td>
                                 <td class="py-4 px-6">{{ $user->name }}</td>
                                 <td class="py-4 px-6">{{ $user->email }}</td>
                                 <td class="py-4 px-6">

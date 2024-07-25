@@ -6,9 +6,9 @@
     </x-slot>
 
     <div class="py-12">
-        {{-- @if (session('status'))
+        @if (session('status'))
         <div class="bg-green-500 text-white font-bold rounded p-4 mb-4" role="alert">{{ session('status') }}</div>
-    @endif --}}
+        @endif
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

@@ -32,17 +32,22 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @role('employee')
+                    <x-nav-link :href="url('users')" :active="request()->routeIs('users')">
+                        {{ __('Alumnis') }}
+                    </x-nav-link>
+                    @endrole
                     <x-nav-link :href="url('jobs')" :active="request()->routeIs('jobs')">
                         {{ __('Jobs') }}
                     </x-nav-link>
                     <x-nav-link :href="url('projects')" :active="request()->routeIs('jobs')">
                         {{ __('Projects') }}
                     </x-nav-link>
-                    @can('view user')
+                    @role('super-admin|admin')
                     <x-nav-link :href="url('users')" :active="request()->routeIs('users')">
                         {{ __('Users') }}
                     </x-nav-link>
-                    @endcan
+                    @endrole
                     @can('view role')
                     <x-nav-link :href="url('roles')" :active="request()->routeIs('roles')">
                         {{ __('Roles') }}
@@ -68,7 +73,7 @@
                                 </svg>
                             </div>
                             <div class="relative">
-                                <span class="absolute bottom-1 right-1 inline-flex items-center justify-center w-4 h-4 text-xs font-bold leading-none text-red-600 bg-red-200 rounded-full">
+                                <span class="absolute bottom-1 right-1.5 inline-flex items-center justify-center w-4 h-4 text-xs font-bold leading-none text-red-600 bg-red-200 rounded-full">
                                     {{ auth()->user()->unreadNotifications->count() }}
                                 </span>
                             </div>

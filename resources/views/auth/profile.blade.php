@@ -6,7 +6,7 @@
                     @if (session('error'))
                         <p class="text-red-500">{{ session('error') }}</p>
                     @endif
-                    <form method="POST" action="{{ route('save-profile') }}">
+                    <form method="POST" action="{{ route('save-profile') }}" enctype="multipart/form-data">
                         @csrf
                             
                         <!-- Name -->
@@ -33,6 +33,15 @@
                                             readonly/>
 
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                        </div>
+
+                        <!-- Profile Picture -->
+                        <div class="mt-4">
+                            <x-input-label for="profile_picture" :value="__('Profile Picture')" />
+                            <x-text-input id="profile_picture" class="block mt-1 w-full"
+                                        type="file"
+                                        name="profile_picture" />
+                            <x-input-error :messages="$errors->get('profile_picture')" class="mt-2" />
                         </div>
 
                         <!-- Skills -->

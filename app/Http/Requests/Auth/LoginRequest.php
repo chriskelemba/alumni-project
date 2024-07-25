@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Notifications\AccountActivation;
 
 class LoginRequest extends FormRequest
 {
@@ -54,9 +55,11 @@ class LoginRequest extends FormRequest
         if (!is_null($user->activation_token)) {
             Auth::logout();
             RateLimiter::hit($this->throttleKey());
+
+            $user->notify(new AccountActivation($user));
     
             throw ValidationException::withMessages([
-                'email' => trans('Account is not activated. Please check your email.'),
+                'email' => trans('Account is not activated. An email has been sent to you for activation. Please check your email.'),
             ]);
         }
 

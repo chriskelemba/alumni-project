@@ -18,6 +18,7 @@ Route::group(['middleware' => ['role:super-admin|admin|employee']], function() {
     Route::get('users', [UserController::class, 'index']);
 
 });
+
 Route::group(['middleware' => ['role:super-admin|admin']], function() {
     
     Route::resource('permissions', PermissionController::class);

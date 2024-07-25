@@ -1,7 +1,5 @@
 <?php
 
-// app/Http/Controllers/ProjectController.php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -14,17 +12,6 @@ class ProjectController extends Controller
         $projects = Project::where('is_private', false)->get();
         return view('projects.index', ['projects' => $projects]);
     }
-
-    // public function index()
-    // {
-    //     $projects = Project::where('is_private', false)
-    //         ->orWhere(function ($query) {
-    //             $query->where('user_id', auth()->user()->id)
-    //                 ->where('is_private', true);
-    //         })
-    //         ->get();
-    //     return view('projects.index', ['projects' => $projects]);
-    // }
 
     public function create()
     {
@@ -50,37 +37,18 @@ class ProjectController extends Controller
         return redirect('/projects')->with('status', 'Project Created Successfully');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $project = Project::find($id);
         return view('projects.show', compact('project'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $project = Project::find($id);
         return view('projects.edit', compact('project'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $project = Project::find($id);
@@ -90,12 +58,6 @@ class ProjectController extends Controller
         return redirect()->route('projects.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $project = Project::find($id);

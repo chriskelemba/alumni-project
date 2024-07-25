@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Skill;
 use App\Models\Project;
 use Spatie\Permission\Traits\HasRoles;
@@ -12,7 +12,7 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
@@ -28,6 +28,7 @@ class User extends Authenticatable
         'activation_token',
         'skills',
         'profile_setup',
+        'profile_picture',
     ];
 
     /**

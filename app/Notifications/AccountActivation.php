@@ -47,7 +47,7 @@ class AccountActivation extends Notification
         return (new MailMessage)
                     ->subject('Activate Your Account')
                     ->greeting('Hello, '.$this->user->name)
-                    ->line('Thank you for registering. Please click the button below to activate your account and set your password.')
+                    ->line('Please click the button below to activate your account.')
                     ->action('Activate Account', $url)
                     ->line('If you did not create an account, no further action is required.');
     }
