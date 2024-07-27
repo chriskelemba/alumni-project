@@ -9,7 +9,9 @@
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
                         <h4 class="text-lg font-bold">Permissions</h4>
-                        <a href="{{ url('permissions/create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right">Add Permission</a>
+                        <a href="{{ url('permissions/create') }}">
+                            <x-primary-button>{{ __('Add Permission') }}</x-primary-button>
+                        </a>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-center text-gray-500">
@@ -30,11 +32,15 @@
                                     @can('update permission')
                                     <td class="py-4 px-6">
                                         @can('update permission')
-                                            <a href="{{ url('permissions/'.$permission->id.'/edit') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Edit</a>
+                                            <a href="{{ url('permissions/'.$permission->id.'/edit') }}">
+                                                <x-secondary-button>{{ __('Edit') }}</x-secondary-button>
+                                            </a>
                                         @endcan
 
                                         @can('delete permission')
-                                            <a href="{{ url('permissions/'.$permission->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this permission?')">Delete</a>
+                                            <a href="{{ url('permissions/'.$permission->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this permission?')">
+                                                <x-danger-button>{{ __('Delete') }}</x-danger-button>
+                                            </a>
                                         @endcan
                                     </td>
                                     @endcan

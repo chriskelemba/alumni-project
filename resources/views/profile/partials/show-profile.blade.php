@@ -10,13 +10,20 @@
         </div>
 
         <div>
+            @role('super-admin|admin|employee')
             <a href="{{ url('/users') }}">
                 <x-danger-button>{{ __('Back') }}</x-danger-button>
             </a>
+            @endrole
         </div>
     </header>
     
     <div class="mt-10 mb-5">
+        @if ($user->profile_picture)
+            <img src="{{ Storage::url($user->profile_picture) }}" alt="Profile Picture" class="rounded-full h-20 w-20 object-cover">
+        @else
+            <img src="{{ asset('images/default-profile.png') }}" alt="Default Profile Picture" class="rounded-full h-20 w-20 object-cover">
+        @endif
         <p class="my-2">{{ $user->name }}</p>
         <p class="my-2">{{ ("Role: ") }}<b>{{ $user->roles->first()->name }}</b>{{ (".") }}</p>
         <p class="my-2">
