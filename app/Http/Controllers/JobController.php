@@ -85,9 +85,15 @@ class JobController extends Controller implements HasMiddleware
             'responsibilities' => 'required|string',
             'qualifications' => 'required|string',
             'aboutus' => 'required|string',
-            'skills' => 'required|array|min:1'
+            'skills' => 'required|array|min:1',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        $logoPath = null;
+        if ($request->hasFile('logo')) {
+            $logoPath = $request->file('logo')->store('logos', 'public');
+        }
+    
         $job = Job::create([
             'title' => $request->title,
             'company' => $request->company,
@@ -96,6 +102,7 @@ class JobController extends Controller implements HasMiddleware
             'responsibilities' => $request->responsibilities,
             'qualifications' => $request->qualifications,
             'aboutus' => $request->aboutus,
+            'logo' => $logoPath,
         ]);
 
         $skillId = $request->skills;
@@ -128,9 +135,20 @@ class JobController extends Controller implements HasMiddleware
             'responsibilities' => 'required|string',
             'qualifications' => 'required|string',
             'aboutus' => 'required|string',
-            'skills' => 'required'
+            'skills' => 'required|array|min:1',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+    
+        if ($request->hasFile('logo')) {
+            if ($job->logo) {
+                Storage::delete($job->logo);
+            }
+            
+            $logoPath = $request->file('logo')->store('logos', 'public');
+        } else {
+            $logoPath = $job->logo;
+        }
+    
         $data = [
             'title' => $request->title,
             'company' => $request->company,
@@ -139,6 +157,7 @@ class JobController extends Controller implements HasMiddleware
             'responsibilities' => $request->responsibilities,
             'qualifications' => $request->qualifications,
             'aboutus' => $request->aboutus,
+            'logo' => $logoPath,
         ];
 
         $job->update($data);

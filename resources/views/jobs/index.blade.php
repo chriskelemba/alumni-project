@@ -53,7 +53,12 @@
                                 <div class="{{ $color }} p-5 rounded-3xl">
                                     <p class="mb-8"><b class="bg-white p-2 rounded-3xl">{{ date('d M, Y', strtotime($job->created_at)) }}</b></p>
                                     <p>{{ $job->company }}</p>
-                                    <h5 class="text-2xl font-bold mb-3">{{ $job->title }}</h5>
+                                    <div class="flex items-center">
+                                        <h5 class="text-2xl font-bold mb-3 flex-grow">{{ $job->title }}</h5>
+                                        @if ($job->logo)
+                                        <img src="{{ Storage::url($job->logo) }}" alt="Logo" class="rounded-full h-20 w-20 object-cover">
+                                        @endif
+                                    </div>                                    
                                     <br>
                                     <p class="text-center">
                                         @if($job->skills->count() > 0)

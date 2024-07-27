@@ -10,7 +10,7 @@
                         </a>
                     </div>
                     <div class="p-4">
-                        <form action="{{ url('jobs') }}" method="POST">
+                        <form action="{{ url('jobs') }}" method="POST" enctype="multipart/form-data" >
                             @csrf
                             
                             <div class="mb-4">
@@ -53,6 +53,14 @@
                                 <x-input-label for="aboutus" :value="__('About Us')" />
                                 <textarea id="aboutus" name="aboutus" class="block font-medium text-sm text-gray-700 mt-1 rounded w-full"></textarea>
                                 <x-input-error :messages="$errors->get('aboutus')" class="mt-2" />
+                            </div>
+
+                            <div class="mt-4">
+                                <x-input-label for="logo" :value="__('Logo')" />
+                                <x-text-input id="logo" class="block mt-1 w-full"
+                                    type="file"
+                                    name="logo" />
+                                <x-input-error :messages="$errors->get('logo')" class="mt-2" />
                             </div>
                             
                             <div class="mb-4">
