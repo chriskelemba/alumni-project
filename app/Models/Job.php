@@ -20,6 +20,7 @@ class Job extends Model
         'responsibilities',
         'qualifications',
         'aboutus',
+        'logo',
     ];
 
     public function skills()

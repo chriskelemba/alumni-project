@@ -53,7 +53,7 @@
                                 @foreach ($users as $user)
                                 <tr class="bg-white border-b">
                                     <td class="py-4 px-6">{{ $user->id }}</td>
-                                    <td class="py-4 px-">
+                                    <td class="py-4 px-6">
                                         <a href="{{ url('profile/'.$user->id) }}">
                                             {{ $user->name }}
                                         </a>

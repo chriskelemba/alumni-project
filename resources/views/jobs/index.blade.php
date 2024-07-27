@@ -16,11 +16,19 @@
                         <div class="flex justify-between">
                             <div class="mx-2">
                                 @role('super-admin|admin')
-                                <a href="{{ url('jobs/admin') }}">
-                                    <x-primary-button>{{ __('Admin') }}</x-primary-button>
+                                @can('delete job')
+                                <a href="{{ url('jobs/trash') }}">
+                                    <x-primary-button>{{ __('Recycling Bin') }}</x-primary-button>
                                 </a>
+                                @endcan
+                                @can('create job')
+                                <a href="{{ url('jobs/create') }}">
+                                    <x-primary-button>{{ __('Post Job') }}</x-primary-button>
+                                </a>
+                                @endcan
                                 @endrole
                             </div>
+                            @role('alumni')
                             @if(request()->has('filter_skills'))
                                 <a href="{{ url('jobs') }}">
                                     <x-primary-button>Show All Jobs</x-primary-button>
@@ -31,6 +39,7 @@
                                     <x-primary-button>{{__('Filter by My Skills')}}</x-primary-button>
                                 </form>
                             @endif
+                            @endrole
                         </div>
                     </div>
                     <div class="overflow-x-auto">
@@ -44,7 +53,12 @@
                                 <div class="{{ $color }} p-5 rounded-3xl">
                                     <p class="mb-8"><b class="bg-white p-2 rounded-3xl">{{ date('d M, Y', strtotime($job->created_at)) }}</b></p>
                                     <p>{{ $job->company }}</p>
-                                    <h5 class="text-2xl font-bold mb-3">{{ $job->title }}</h5>
+                                    <div class="flex items-center">
+                                        <h5 class="text-2xl font-bold mb-3 flex-grow">{{ $job->title }}</h5>
+                                        @if ($job->logo)
+                                        <img src="{{ Storage::url($job->logo) }}" alt="Logo" class="rounded-full h-20 w-20 object-cover">
+                                        @endif
+                                    </div>                                    
                                     <br>
                                     <p class="text-center">
                                         @if($job->skills->count() > 0)
@@ -67,9 +81,17 @@
                                             {{ $job->views_count }}
                                         </p>
                                     </div>
+                                    @can('update job')
+                                    <a href="{{ url('jobs/'.$job->id.'/edit') }}">
+                                        <x-secondary-button>{{ __('Edit') }}</x-secondary-button>
+                                    </a>
+                                    <a href="{{ url('jobs/'.$job->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this job?')">
+                                        <x-danger-button>{{ __('Delete') }}</x-danger-button>
+                                    </a>
+                                    @endcan  
                                     <a href="{{ url('jobs/'.$job->id.'/show')}}">
                                         <x-primary-button>{{ __('Details') }}</x-primary-button>
-                                    </a>
+                                    </a>                                  
                                 </div>
                             </div>
                             @endforeach

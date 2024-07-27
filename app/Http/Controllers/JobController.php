@@ -85,9 +85,15 @@ class JobController extends Controller implements HasMiddleware
             'responsibilities' => 'required|string',
             'qualifications' => 'required|string',
             'aboutus' => 'required|string',
-            'skills' => 'required|array|min:1'
+            'skills' => 'required|array|min:1',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        $logoPath = null;
+        if ($request->hasFile('logo')) {
+            $logoPath = $request->file('logo')->store('logos', 'public');
+        }
+    
         $job = Job::create([
             'title' => $request->title,
             'company' => $request->company,
@@ -96,6 +102,7 @@ class JobController extends Controller implements HasMiddleware
             'responsibilities' => $request->responsibilities,
             'qualifications' => $request->qualifications,
             'aboutus' => $request->aboutus,
+            'logo' => $logoPath,
         ]);
 
         $skillId = $request->skills;
@@ -128,9 +135,20 @@ class JobController extends Controller implements HasMiddleware
             'responsibilities' => 'required|string',
             'qualifications' => 'required|string',
             'aboutus' => 'required|string',
-            'skills' => 'required'
+            'skills' => 'required|array|min:1',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+    
+        if ($request->hasFile('logo')) {
+            if ($job->logo) {
+                Storage::delete($job->logo);
+            }
+            
+            $logoPath = $request->file('logo')->store('logos', 'public');
+        } else {
+            $logoPath = $job->logo;
+        }
+    
         $data = [
             'title' => $request->title,
             'company' => $request->company,
@@ -139,6 +157,7 @@ class JobController extends Controller implements HasMiddleware
             'responsibilities' => $request->responsibilities,
             'qualifications' => $request->qualifications,
             'aboutus' => $request->aboutus,
+            'logo' => $logoPath,
         ];
 
         $job->update($data);
@@ -152,7 +171,7 @@ class JobController extends Controller implements HasMiddleware
         $job = Job::findOrFail($jobId);
         $job->delete();
 
-        return redirect('/jobs/admin')->with('status', 'Jobs Deleted Successfully');
+        return redirect('/jobs')->with('status', 'Jobs Deleted Successfully');
     }
 
     public function trash()
@@ -198,24 +217,6 @@ class JobController extends Controller implements HasMiddleware
     public function apply(Job $job)
     {
         return view('jobs.apply', ['job' => $job]);
-    }
-
-    public function admin(Request $request)
-    {
-        $search = $request->input('search');
-
-        $jobs = Job::when($search, function ($query) use ($search) {
-            $query->where('title', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%");
-        })->paginate(10);
-
-        if ($jobs->isEmpty()) {
-            return redirect('/jobs/admin')->with('status', 'No Results Found');
-        } else {
-            $message = '';
-        }
-
-        return view('jobs.admin', ['jobs' => $jobs]);
     }
 
     public function feedback(Job $job)

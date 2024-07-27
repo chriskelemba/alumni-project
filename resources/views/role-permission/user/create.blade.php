@@ -5,27 +5,29 @@
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
                         <h4 class="text-lg font-bold">Create User</h4>
-                        <a href="{{ url('users') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Back</a>
+                        <a href="{{ url('users') }}">
+                            <x-danger-button>{{ __('Back')}}</x-danger-button>
+                        </a>
                     </div>
                     <div class="p-4">
                         <form action="{{ url('users') }}" method="POST">
                             @csrf
                             
                             <div class="mb-4">
-                                <label for="" class="block mb-2 text-sm font-bold">Name</label>
-                                <input type="text" name="name" class="w-full p-2 pl-10 text-sm text-gray-700"/>
+                                <x-input-label for="name" :value="__('Name')" />
+                                <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" />
                             </div>
                             <div class="mb-4">
-                                <label for="" class="block mb-2 text-sm font-bold">Email</label>
-                                <input type="email" name="email" class="w-full p-2 pl-10 text-sm text-gray-700"/>
+                                <x-input-label for="email" :value="__('Email')" />
+                                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" />
                             </div>
                             <div class="mb-4">
-                                <label for="" class="block mb-2 text-sm font-bold">Password</label>
-                                <input type="password" name="password" class="w-full p-2 pl-10 text-sm text-gray-700"/>
+                                <x-input-label for="password" :value="__('Password')" />
+                                <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" />
                             </div>
                             <div class="mb-4">
-                                <label for="" class="block mb-2 text-sm font-bold">Roles</label>
-                                <select name="roles[]" class="w-full p-2 pl-10 text-sm text-gray-700">
+                                <x-input-label for="roles" :value="__('Roles')" />
+                                <select id="roles" name="roles[]" class="block font-medium text-sm text-gray-700 mt-1 rounded w-full">
                                     <option value="">Select Role</option>
 
                                     @foreach ($roles as $role)
@@ -34,8 +36,10 @@
 
                                 </select>
                             </div>
-                            <div class="mb-4">
-                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
+                            <div class="mb-4 mt-6">
+                                <x-primary-button>
+                                    {{ __('Add User') }}
+                                </x-primary-button>
                             </div>
                         </form>
                     </div>
