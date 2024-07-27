@@ -5,27 +5,42 @@
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
                         <h4 class="text-lg font-bold">Apply for {{ $job->title }}</h4>
-                        <a href="{{ url('jobs/'.$job->id.'/show') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Back</a>
+                        <a href="{{ url('jobs/'.$job->id.'/show') }}">
+                            <x-danger-button>{{ __('Back') }}</x-danger-button>
+                        </a>
                     </div>
-                    <form method="POST" action="{{ url('jobs/'.$job->id) }}">
+                    <form method="POST" action="{{ url('jobs/'.$job->id) }}" enctype="multipart/form-data">
                         @csrf
+
                         <div class="mb-4">
-                            <label for="name" class="block text-sm font-bold mb-2">Name</label>
-                            <input type="text" id="name" name="name" class="w-full p-2 pl-10 text-sm text-gray-700" required>
+                            <x-input-label for="name" :value="__('Name')" />
+                            <x-text-input id="name" name="name" class="block mt-1 w-full" required />
+                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
+
                         <div class="mb-4">
-                            <label for="email" class="block text-sm font-bold mb-2">Email</label>
-                            <input type="email" id="email" name="email" class="w-full p-2 pl-10 text-sm text-gray-700" required>
+                            <x-input-label for="email" :value="__('Email')" />
+                            <x-text-input id="email" name="email" type="email" class="block mt-1 w-full" required />
+                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
+
                         <div class="mb-4">
-                            <label for="resume" class="block text-sm font-bold mb-2">Resume (PDF or DOCX)</label>
-                            <input type="file" id="resume" name="resume" class="w-full p-2 pl-10 text-sm text-gray-700" required>
+                            <x-input-label for="resume" :value="__('Resume (PDF or DOCX)')" />
+                            <x-text-input id="resume" name="resume" type="file" class="block mt-1 w-full" required />
+                            <x-input-error :messages="$errors->get('resume')" class="mt-2" />
                         </div>
+
                         <div class="mb-4">
-                            <label for="cover_letter" class="block text-sm font-bold mb-2">Cover Letter</label>
-                            <textarea id="cover_letter" name="cover_letter" class="w-full p-2 pl-10 text-sm text-gray-700" required></textarea>
+                            <x-input-label for="cover_letter" :value="__('Cover Letter')" />
+                            <textarea id="cover_letter" name="cover_letter" class="block mt-1 w-full p-2 text-sm text-gray-700" required></textarea>
+                            <x-input-error :messages="$errors->get('cover_letter')" class="mt-2" />
                         </div>
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Apply</button>
+
+                        <div class="flex items-center justify-end mt-4">
+                            <x-primary-button>
+                                {{ __('Apply') }}
+                            </x-primary-button>
+                        </div>
                     </form>
                 </div>
             </div>

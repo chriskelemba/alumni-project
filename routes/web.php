@@ -64,7 +64,6 @@ Route::group(['middleware' => ['auth']], function() {
 
 Route::group(['middleware' => ['role:super-admin|admin']], function() {
 
-    Route::get('jobs/admin', [JobController::class, 'admin']);
     Route::get('jobs/trash', [JobController::class, 'trash']);
     Route::resource('jobs', JobController::class)->except(['index']);
     Route::get('jobs/{jobId}/delete', [JobController::class, 'destroy']);

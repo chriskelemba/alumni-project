@@ -152,7 +152,7 @@ class JobController extends Controller implements HasMiddleware
         $job = Job::findOrFail($jobId);
         $job->delete();
 
-        return redirect('/jobs/admin')->with('status', 'Jobs Deleted Successfully');
+        return redirect('/jobs')->with('status', 'Jobs Deleted Successfully');
     }
 
     public function trash()
@@ -198,24 +198,6 @@ class JobController extends Controller implements HasMiddleware
     public function apply(Job $job)
     {
         return view('jobs.apply', ['job' => $job]);
-    }
-
-    public function admin(Request $request)
-    {
-        $search = $request->input('search');
-
-        $jobs = Job::when($search, function ($query) use ($search) {
-            $query->where('title', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%");
-        })->paginate(10);
-
-        if ($jobs->isEmpty()) {
-            return redirect('/jobs/admin')->with('status', 'No Results Found');
-        } else {
-            $message = '';
-        }
-
-        return view('jobs.admin', ['jobs' => $jobs]);
     }
 
     public function feedback(Job $job)

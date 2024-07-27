@@ -11,7 +11,9 @@
 
                     <div class="flex justify-between mb-4">
                         <h4 class="text-lg font-bold">Recycling Bin</h4>
-                        <a href="{{ url('users') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Back</a>
+                        <a href="{{ url('users') }}">
+                            <x-danger-button>{{ __('Back') }}</x-danger-button>
+                        </a>
                     </div>
 
                     <div class="overflow-x-auto">
@@ -31,8 +33,12 @@
                                     <td class="py-4 px-6">{{ $trashedUser->name }}</td>
                                     <td class="py-4 px-6">{{ $trashedUser->email }}</td>
                                     <td class="py-4 px-6">
-                                        <a href="{{ url('users/'.$trashedUser->id.'/restore') }}" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">Restore</a>
-                                        <a href="{{ url('users/'.$trashedUser->id.'/forceDelete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this user?')">Delete Permanently</a>
+                                        <a href="{{ url('users/'.$trashedUser->id.'/restore') }}">
+                                            <x-secondary-button>{{ __('Restore') }}</x-secondary-button>
+                                        </a>
+                                        <a href="{{ url('users/'.$trashedUser->id.'/forceDelete') }}" onclick="return confirm('Are you sure you want to delete this user?')">
+                                            <x-danger-button>{{ __('Delete Permanently') }}</x-danger-button>
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach
