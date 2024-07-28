@@ -11,7 +11,6 @@ use App\Notifications\DeleteAccount;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use App\Notifications\AccountActivation;
 use App\Notifications\DeactivateAccount;
 use Illuminate\Routing\Controllers\Middleware;
