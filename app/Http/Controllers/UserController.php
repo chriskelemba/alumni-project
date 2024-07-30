@@ -163,7 +163,7 @@ class UserController extends Controller implements HasMiddleware
 
         // Check if the user already has a portfolio
         if ($user->portfolios()->exists()) {
-            return redirect('projects.profile')->with('status', 'Portfolio already added. Please add your project.');
+            return redirect('create-project')->with('status', 'Portfolio already added. Please add your project.');
         }
 
         return view('portfolio.create');

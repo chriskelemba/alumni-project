@@ -1,7 +1,11 @@
 <x-profile-layout>
+    @if (session('status'))
+    <div class="bg-green-500 text-white font-bold rounded p-4 mb-4" role="alert">{{ session('status') }}</div>
+@endif
                         <form action="{{ route('save-project') }}" method="POST">
                             @csrf
 
+                            <h1 class="font-bold text-xl mb-5">Create your Portfolio</h1>
                             <div class="mb-4">
                                 <x-input-label for="title" :value="__('Title')" />
                                 <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" />

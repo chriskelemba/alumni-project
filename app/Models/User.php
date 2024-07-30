@@ -9,6 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -85,8 +86,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(DatabaseNotification::class, 'notifiable_id');
     }
 
-    public function portfolios(): HasMany
+    public function portfolio(): HasOne
     {
-        return $this->hasMany(Portfolio::class);
+        return $this->hasOne(Portfolio::class);
     }
 }

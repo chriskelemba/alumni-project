@@ -67,6 +67,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('projects', ProjectController::class);
     Route::get('projects/{projectId}/delete', [ProjectController::class, 'destroy']);
 
+    Route::get('/portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.show');
+
 });
 
 Route::group(['middleware' => ['role:super-admin|admin']], function() {

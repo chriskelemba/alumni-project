@@ -1,4 +1,7 @@
 <x-profile-layout>
+    @if (session('status'))
+    <div class="bg-green-500 text-white font-bold rounded p-4 mb-4" role="alert">{{ session('status') }}</div>
+@endif
                         <form action="{{ route('save-portfolio') }}" method="POST">
                             @csrf
 
