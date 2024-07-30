@@ -1,16 +1,5 @@
-<x-app-layout>
-    <div class="container mx-auto p-5">
-        <div class="flex flex-wrap justify-center">
-            <div class="w-full p-6">
-                <div class="bg-white shadow-md rounded p-4">
-                    <div class="flex justify-between mb-4">
-                        <h4 class="text-lg font-bold">Create Project</h4>
-                        <a href="{{ url('projects') }}">
-                            <x-danger-button>{{ __('Back') }}</x-danger-button>
-                        </a>
-                    </div>
-                    <div class="p-4">
-                        <form action="{{ url('projects') }}" method="POST">
+<x-profile-layout>
+                        <form action="{{ route('save-project') }}" method="POST">
                             @csrf
 
                             <div class="mb-4">
@@ -20,7 +9,7 @@
 
                             <div class="mb-4">
                                 <x-input-label for="description" :value="__('Description')" />
-                                <textarea id="description" name="description" class="block mt-1 w-full p-2 text-sm text-gray-700"></textarea>
+                                <textarea id="description" name="description" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"></textarea>
                             </div>
 
                             <div class="mb-4">
@@ -33,15 +22,16 @@
                                 </div>
                             </div>
 
-                            <div class="mb-4 mt-6">
+                            <div class="flex items-center justify-end mt-4">
                                 <x-primary-button>
-                                    {{ __('Save') }}
+                                    {{ __('Post Project') }}
                                 </x-primary-button>
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+                        <form method="POST" action="{{ route('logout') }}" class="flex items-center justify-end mt-4">
+                            @csrf
+                            <x-primary-button>
+                                {{ __('Logout') }}
+                            </x-primary-button>
+                        </form>
+</x-profile-layout>

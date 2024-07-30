@@ -12,6 +12,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SkillsController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PortfolioController;
 
 Route::group(['middleware' => ['role:super-admin|admin|employee']], function() {
 
@@ -48,6 +49,12 @@ Route::post('reactivate-account/{token}', [UserController::class, 'reactivate'])
 
 Route::get('create-profile', [UserController::class, 'createProfile'])->name('create-profile');
 Route::post('save-profile', [UserController::class, 'saveProfile'])->name('save-profile');
+
+Route::get('create-portfolio', [UserController::class, 'createPortfolio'])->name('create-portfolio');
+Route::post('save-portfolio', [UserController::class, 'savePortfolio'])->name('save-portfolio');
+
+Route::get('create-project', [UserController::class, 'createProject'])->name('create-project');
+Route::post('save-project', [UserController::class, 'saveProject'])->name('save-project');
 
 Route::group(['middleware' => ['auth']], function() {
 
