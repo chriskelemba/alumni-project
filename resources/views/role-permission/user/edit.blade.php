@@ -40,7 +40,7 @@
 
                             <div class="mb-4">
                                 <x-input-label for="roles" :value="__('Roles')" />
-                                <select id="roles" name="roles[]" class="block font-medium text-sm text-gray-700 mt-1 rounded w-full">
+                                <select id="roles" name="roles[]" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">
                                     <option value="">Select Role</option>
                                     @foreach ($roles as $role)
                                         <option value="{{ $role }}" {{ in_array($role, $userRoles) ? 'selected' : '' }}>

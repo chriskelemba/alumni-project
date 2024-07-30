@@ -5,6 +5,7 @@
     <form method="POST" action="{{ route('set-password', $token) }}">
         @csrf
 
+        <h1 class="font-bold text-xl mb-5">Create a Password</h1>
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />

@@ -100,6 +100,15 @@ class UserController extends Controller implements HasMiddleware
         $user->password = Hash::make($request->password);
         $user->activation_token = null;
         $user->email_verified_at = now();
+
+        // Check if user is a super-admin or admin
+        $roles = ['super-admin', 'admin'];
+        $userRoles = $user->getRoleNames();
+
+        if ($userRoles->intersect($roles)->isNotEmpty()) {
+            $user->profile_setup = 1;
+        }
+        
         $user->save();
 
         return redirect('/login')->with('status', 'Account has been activated! You can login.');
@@ -140,6 +149,14 @@ class UserController extends Controller implements HasMiddleware
             $user->profile_picture = $path;
         }
     
+        // Check if user is an employee
+        $roles = ['employee'];
+        $userRoles = $user->getRoleNames();
+
+        if ($userRoles->intersect($roles)->isNotEmpty()) {
+            $user->profile_setup = 1;
+        }
+        
         $user->save();
     
         // Store the selected skills
