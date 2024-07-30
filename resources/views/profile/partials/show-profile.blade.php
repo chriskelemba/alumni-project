@@ -36,7 +36,7 @@
                 {{ __("No skills added.") }}
             @endif
         </p>
-        <a href="{{ url('/project') }}">
+        <a href="{{ route('portfolio.show', ['id' => $user->id]) }}">
             <x-primary-button>{{ __('View Portfolio') }}</x-primary-button>
         </a>
     </div>

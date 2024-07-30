@@ -9,7 +9,7 @@
             </p>
         </div>
 
-        <a href="{{ url('/project') }}">
+        <a href="{{ route('portfolio.show', ['id' => $user->id]) }}">
             <x-primary-button>{{ __('My Portfolio') }}</x-primary-button>
         </a>
     </header>

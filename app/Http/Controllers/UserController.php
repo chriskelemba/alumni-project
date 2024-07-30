@@ -3,15 +3,16 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Skill;
+use App\Models\Project;
+use App\Models\Portfolio;
 use Illuminate\Support\Str;
+
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
 use App\Notifications\DeleteAccount;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use App\Notifications\AccountActivation;
 use App\Notifications\DeactivateAccount;
 use Illuminate\Routing\Controllers\Middleware;
@@ -99,6 +100,15 @@ class UserController extends Controller implements HasMiddleware
         $user->password = Hash::make($request->password);
         $user->activation_token = null;
         $user->email_verified_at = now();
+
+        // Check if user is a super-admin or admin
+        $roles = ['super-admin', 'admin'];
+        $userRoles = $user->getRoleNames();
+
+        if ($userRoles->intersect($roles)->isNotEmpty()) {
+            $user->profile_setup = 1;
+        }
+        
         $user->save();
 
         return redirect('/login')->with('status', 'Account has been activated! You can login.');
@@ -139,13 +149,114 @@ class UserController extends Controller implements HasMiddleware
             $user->profile_picture = $path;
         }
     
-        $user->profile_setup = 1;
+        // Check if user is an employee
+        $roles = ['employee'];
+        $userRoles = $user->getRoleNames();
+
+        if ($userRoles->intersect($roles)->isNotEmpty()) {
+            $user->profile_setup = 1;
+        }
+        
         $user->save();
     
         // Store the selected skills
         $user->skills()->sync($request->input('skills'));
     
-        return redirect('/dashboard')->with('status', 'Profile set up successfully!');
+        return redirect('create-portfolio')->with('status', 'Profile updated. Please add your portfolio.');
+    }
+
+    public function createPortfolio(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to add your portfolio.');
+        }
+
+        // Check if the user has already set up their profile
+        if ($user->profile_setup) {
+            return redirect('/');
+        }
+
+        // Check if the user already has a portfolio
+        if ($user->portfolios()->exists()) {
+            return redirect('create-project')->with('status', 'Portfolio already added. Please add your project.');
+        }
+
+        return view('portfolio.create');
+    }
+
+    public function savePortfolio(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to add your portfolio.');
+        }
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'skills' => 'nullable|string',
+            'achievements' => 'nullable|string',
+            'work_experience' => 'nullable|string',
+            'education' => 'nullable|string',
+        ]);
+
+        $portfolio = new Portfolio($request->all());
+        $portfolio->user_id = $user->id;
+        $portfolio->save();
+
+        // Redirect to the project creation step
+        return redirect('create-project')->with('status', 'Portfolio added. Please add your project.');
+    }
+
+    public function createProject(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to add your project.');
+        }
+
+        // Check if the user has already set up their profile
+        if ($user->profile_setup) {
+            return redirect('/');
+        }
+
+        return view('projects.profile');
+    }
+
+    public function saveProject(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to add your project.');
+        }
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        $project = Project::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'user_id' => auth()->user()->id,
+            'posted_by' => auth()->user()->name,
+            'posted_on' => now(),
+            'is_private' => $request->is_private,
+        ]);
+
+        $project->user_id = $user->id;
+        $project->save();
+
+        // Mark profile setup as complete
+        $user->profile_setup = 1;
+        $user->save();
+
+        return redirect('/dashboard')->with('status', 'Project added. Profile setup complete!');
     }
 
     public function edit(User $user)
