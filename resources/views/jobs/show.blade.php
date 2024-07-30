@@ -19,11 +19,15 @@
                     <h1 class="text-gray-600 text-center text-2xl font-bold p-5 mt-10">About Us</h1>
                     <p class="text-gray-600">{{ $job->aboutus }}</p>
                     <div class="text-center mb-12 mt-14">
-                        <a href="{{ url('jobs/'.$job->id.'/apply') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-12 rounded">APPLY NOW</a>
+                        <a href="{{ url('jobs/'.$job->id.'/apply') }}">
+                            <x-primary-button>{{ __('Apply Now') }}</x-primary-button>
+                        </a>
                     </div>
-                    <a href="{{ url('jobs/'.$job->id.'/feedback')}}">
-                        <x-primary-button>{{ __('Feedback') }}</x-primary-button>
-                    </a>
+                    <div class="text-center hover:text-red-400">
+                        <a href="{{ url('jobs/'.$job->id.'/feedback')}}">
+                            Send Feedback
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
