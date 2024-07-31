@@ -8,6 +8,7 @@ use App\Jobs\Notify;
 use App\Models\User;
 use App\Models\Skill;
 use App\Events\JobCreated;
+use App\Models\Application;
 use App\Models\JobFeedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -218,7 +219,39 @@ class JobController extends Controller implements HasMiddleware
 
     public function apply(Job $job)
     {
-        return view('jobs.apply', ['job' => $job]);
+        $user = Auth::user();
+
+        return view('jobs.apply', [
+            'job' => $job,
+            'user' => $user,
+        ]);
+    }
+
+    public function storeApplication(Request $request, Job $job)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'resume' => 'required|mimes:pdf,docx|max:2048',
+            'cover_letter' => 'required|string',
+        ]);
+
+        if ($request->hasFile('resume')) {
+            $resumePath = $request->file('resume')->store('resumes', 'public');
+        } else {
+            return redirect()->back()->withErrors(['resume' => 'Resume is required.']);
+        }
+
+        $application = new Application();
+        $application->job_id = $job->id;
+        $application->user_id = Auth::id();
+        $application->name = $request->name;
+        $application->email = $request->email;
+        $application->resume = $resumePath;
+        $application->cover_letter = $request->cover_letter;
+        $application->save();
+
+        return redirect('/jobs')->with('status', 'Application Submitted Successfully.');
     }
 
     public function feedback(Job $job)

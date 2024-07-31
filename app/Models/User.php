@@ -6,6 +6,7 @@ use App\Models\Skill;
 use App\Models\Social;
 use App\Models\Project;
 use App\Models\Portfolio;
+use App\Models\Application;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -95,5 +96,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function social()
     {
         return $this->hasOne(Social::class);
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
     }
 }

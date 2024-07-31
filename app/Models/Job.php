@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Skill;
 use App\Models\JobView;
+use App\Models\Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -47,4 +48,8 @@ class Job extends Model
         return $this->views()->count();
     }
 
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
 }

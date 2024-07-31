@@ -283,16 +283,22 @@ class UserController extends Controller implements HasMiddleware
         }
 
         $request->validate([
-            'instagram' => 'nullable|string|max:255',
-            'youtube' => 'nullable|string|max:255',
-            'twitter' => 'nullable|string|max:255',
-            'tiktok' => 'nullable|string|max:255',
-            'linkedin' => 'nullable|string|max:255',
+            'instagram' => 'nullable|url',
+            'youtube' => 'nullable|url',
+            'twitter' => 'nullable|url',
+            'tiktok' => 'nullable|url',
+            'linkedin' => 'nullable|url',
         ]);
-
+    
         $social = Social::updateOrCreate(
             ['user_id' => $user->id],
-            $request->only('instagram', 'youtube', 'twitter', 'tiktok', 'linkedin')
+            [
+                'instagram' => $request->instagram,
+                'youtube' => $request->youtube,
+                'twitter' => $request->twitter,
+                'tiktok' => $request->tiktok,
+                'linkedin' => $request->linkedin,
+            ]
         );
 
         // Mark profile setup as complete
