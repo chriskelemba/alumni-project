@@ -24,5 +24,40 @@
                 </div>
             </div>
         </div>
+
+        @role('super-admin|admin')
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-8">
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                <div class="p-6">
+                    @php
+                        $totalApplications = \App\Models\Application::count();
+                        $totalJobFeedback = \App\Models\JobFeedback::count();
+                    @endphp
+                    <h1 class="text-3xl font-extrabold text-gray-800 mb-4">Job Analytics</h1>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-blue-100 p-4 rounded-lg shadow">
+                            <h2 class="text-xl font-semibold text-gray-700">Total Job Applications</h2>
+                            <p class="text-2xl font-bold text-blue-600">{{ $totalApplications }}</p>
+                            <a href="{{ url('profile/view') }}">
+                                <x-primary-button class="mt-4">
+                                    View Applications
+                                </x-primary-button>
+                            </a>
+                        </div>
+                        <div class="bg-green-100 p-4 rounded-lg shadow">
+                            <h2 class="text-xl font-semibold text-gray-700">Total Job Feedbacks</h2>
+                            <p class="text-2xl font-bold text-green-600">{{ $totalJobFeedback }}</p>
+                            <a href="{{ url('profile/view') }}">
+                                <x-primary-button class="mt-4">
+                                    View Feedbacks
+                                </x-primary-button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endrole
+        
     </div>
 </x-app-layout>

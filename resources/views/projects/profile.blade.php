@@ -5,7 +5,7 @@
                         <form action="{{ route('save-project') }}" method="POST">
                             @csrf
 
-                            <h1 class="font-bold text-xl mb-5">Create your Portfolio</h1>
+                            <h1 class="font-bold text-xl mb-5">Post your Project</h1>
                             <div class="mb-4">
                                 <x-input-label for="title" :value="__('Title')" />
                                 <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" />
