@@ -32,6 +32,12 @@
                                 </x-primary-button>
                             </div>
                         </form>
+                        <form method="GET" action="{{ route('social') }}" class="flex items-center justify-end mt-4">
+                            @csrf
+                            <x-primary-button>
+                                {{ __('Skip') }}
+                            </x-primary-button>
+                        </form>
                         <form method="POST" action="{{ route('logout') }}" class="flex items-center justify-end mt-4">
                             @csrf
                             <x-primary-button>

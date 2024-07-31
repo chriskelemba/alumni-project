@@ -3,13 +3,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Skill;
+use App\Models\Social;
 use App\Models\Project;
 use App\Models\Portfolio;
+
 use Illuminate\Support\Str;
-
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 
+use Spatie\Permission\Models\Role;
 use App\Notifications\DeleteAccount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -179,7 +180,7 @@ class UserController extends Controller implements HasMiddleware
         }
 
         // Check if the user already has a portfolio
-        if ($user->portfolios()->exists()) {
+        if ($user->portfolio) {
             return redirect('create-project')->with('status', 'Portfolio already added. Please add your project.');
         }
 
@@ -252,11 +253,53 @@ class UserController extends Controller implements HasMiddleware
         $project->user_id = $user->id;
         $project->save();
 
+        $user->save();
+
+        return redirect('social')->with('status', 'Project added. Profile setup complete!');
+    }
+
+    public function social(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to add your social media links.');
+        }
+
+        // Check if the user has already set up their profile
+        if ($user->profile_setup) {
+            return redirect('/');
+        }
+
+        return view('social.create');
+    }
+
+    public function saveSocial(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to add your social media links.');
+        }
+
+        $request->validate([
+            'instagram' => 'nullable|string|max:255',
+            'youtube' => 'nullable|string|max:255',
+            'twitter' => 'nullable|string|max:255',
+            'tiktok' => 'nullable|string|max:255',
+            'linkedin' => 'nullable|string|max:255',
+        ]);
+
+        $social = Social::updateOrCreate(
+            ['user_id' => $user->id],
+            $request->only('instagram', 'youtube', 'twitter', 'tiktok', 'linkedin')
+        );
+
         // Mark profile setup as complete
         $user->profile_setup = 1;
         $user->save();
 
-        return redirect('/dashboard')->with('status', 'Project added. Profile setup complete!');
+        return redirect('/dashboard')->with('status', 'Profile setup complete.');
     }
 
     public function edit(User $user)

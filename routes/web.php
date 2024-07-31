@@ -14,6 +14,27 @@ use App\Http\Controllers\SkillsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PortfolioController;
 
+Route::get('activate-account/{token}', [UserController::class, 'activateAccount'])->name('activate-account');
+Route::post('activate-account/{token}', [UserController::class, 'setPassword'])->name('set-password');
+
+Route::get('reactivate-account/{token}', [UserController::class, 'reactivateAccount'])->name('reactivate-account');
+Route::post('reactivate-account/{token}', [UserController::class, 'reactivate'])->name('reactivate');
+
+Route::get('create-profile', [UserController::class, 'createProfile'])->name('create-profile');
+Route::post('save-profile', [UserController::class, 'saveProfile'])->name('save-profile');
+
+Route::get('create-portfolio', [UserController::class, 'createPortfolio'])->name('create-portfolio');
+Route::post('save-portfolio', [UserController::class, 'savePortfolio'])->name('save-portfolio');
+
+Route::get('create-project', [UserController::class, 'createProject'])->name('create-project');
+Route::post('save-project', [UserController::class, 'saveProject'])->name('save-project');
+
+Route::get('social', [UserController::class, 'social'])->name('social');
+Route::post('save-social', [UserController::class, 'saveSocial'])->name('save-social');
+
+Route::patch('/notifications/{notificationId}', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+Route::delete('notifications/clear', [NotificationController::class, 'clearAll']);
+
 Route::group(['middleware' => ['role:super-admin|admin|employee']], function() {
 
     Route::get('users', [UserController::class, 'index']);
@@ -36,27 +57,18 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('users/{userId}/restore', [UserController::class, 'restore']);
     Route::get('users/{userId}/forceDelete', [UserController::class, 'forceDelete']);
     Route::get('users/{userId}/deactivateAccount', [UserController::class, 'deactivateAccount']);
+
+    Route::get('jobs/trash', [JobController::class, 'trash']);
+    Route::resource('jobs', JobController::class)->except(['index']);
+    Route::get('jobs/{jobId}/delete', [JobController::class, 'destroy']);
+    Route::get('jobs/{jobId}/restore', [JobController::class, 'restore']);
+    Route::get('jobs/{jobId}/forceDelete', [JobController::class, 'forceDelete']);
     
     Route::resource('skills', SkillsController::class);
 
 });
 
-Route::get('activate-account/{token}', [UserController::class, 'activateAccount'])->name('activate-account');
-Route::post('activate-account/{token}', [UserController::class, 'setPassword'])->name('set-password');
-
-Route::get('reactivate-account/{token}', [UserController::class, 'reactivateAccount'])->name('reactivate-account');
-Route::post('reactivate-account/{token}', [UserController::class, 'reactivate'])->name('reactivate');
-
-Route::get('create-profile', [UserController::class, 'createProfile'])->name('create-profile');
-Route::post('save-profile', [UserController::class, 'saveProfile'])->name('save-profile');
-
-Route::get('create-portfolio', [UserController::class, 'createPortfolio'])->name('create-portfolio');
-Route::post('save-portfolio', [UserController::class, 'savePortfolio'])->name('save-portfolio');
-
-Route::get('create-project', [UserController::class, 'createProject'])->name('create-project');
-Route::post('save-project', [UserController::class, 'saveProject'])->name('save-project');
-
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
 
     Route::get('jobs', [JobController::class, 'index']);
     Route::get('jobs/{job}/show', [JobController::class, 'show']);
@@ -71,18 +83,6 @@ Route::group(['middleware' => ['auth']], function() {
 
 });
 
-Route::group(['middleware' => ['role:super-admin|admin']], function() {
-
-    Route::get('jobs/trash', [JobController::class, 'trash']);
-    Route::resource('jobs', JobController::class)->except(['index']);
-    Route::get('jobs/{jobId}/delete', [JobController::class, 'destroy']);
-    Route::get('jobs/{jobId}/restore', [JobController::class, 'restore']);
-    Route::get('jobs/{jobId}/forceDelete', [JobController::class, 'forceDelete']);
-
-});
-
-Route::patch('/notifications/{notificationId}', [NotificationController::class, 'markAsRead'])->name('notifications.read');
-Route::delete('notifications/clear', [NotificationController::class, 'clearAll']);
 
 Route::redirect('/', '/login');
 
@@ -90,7 +90,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified', 'checkProfileSetup'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'checkProfileSetup')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

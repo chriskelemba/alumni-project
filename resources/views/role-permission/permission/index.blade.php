@@ -8,7 +8,7 @@
 
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
-                        <h4 class="text-lg font-bold">Permissions</h4>
+                        <h4 class="text-lg font-bold"></h4>
                         <a href="{{ url('permissions/create') }}">
                             <x-primary-button>{{ __('Add Permission') }}</x-primary-button>
                         </a>

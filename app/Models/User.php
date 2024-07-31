@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Skill;
+use App\Models\Social;
 use App\Models\Project;
 use App\Models\Portfolio;
 use Spatie\Permission\Traits\HasRoles;
@@ -89,5 +90,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function portfolio(): HasOne
     {
         return $this->hasOne(Portfolio::class);
+    }
+
+    public function social()
+    {
+        return $this->hasOne(Social::class);
     }
 }
