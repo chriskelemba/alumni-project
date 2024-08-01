@@ -74,6 +74,9 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::get('jobs/{job}/show', [JobController::class, 'show']);
     Route::get('jobs/{job}/apply', [JobController::class, 'apply']);
     Route::post('jobs/{job}', [JobController::class, 'storeApplication'])->name('jobs.storeApplication');
+    Route::get('/applications', [JobController::class, 'showApplications'])->name('show-applications');
+    Route::get('applications/{application}', [ApplicationController::class, 'showApplication'])->name('applications.show');
+
     Route::get('/jobs/{job}/feedback', [JobController::class, 'feedback']);
     Route::post('/jobs/{job}/submit-feedback', [JobController::class, 'submitFeedback']);
     
@@ -81,6 +84,9 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::get('projects/{projectId}/delete', [ProjectController::class, 'destroy']);
 
     Route::get('/portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.show');
+
+    Route::get('/social/edit', [UserController::class, 'editSocial'])->name('social.edit');
+    Route::post('/social/update', [UserController::class, 'updateSocial'])->name('social.update');
 
 });
 

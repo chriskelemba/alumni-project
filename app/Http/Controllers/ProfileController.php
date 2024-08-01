@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Social;
 use App\Models\Project;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -96,6 +97,7 @@ class ProfileController extends Controller
     public function show($userId)
     {
         $user = User::findOrFail($userId);
+        $socials = Social::where('user_id', $userId)->first();
         $alumniUsers = User::whereHas('roles', function ($query) {
             $query->where('name', 'alumni');
         })->get();
@@ -107,6 +109,7 @@ class ProfileController extends Controller
         return view('profile.show', [
             'user' => $user,
             'projects' => $user->projects,
+            'socials' => $socials,
         ]);
     }
 }

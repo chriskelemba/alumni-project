@@ -70,4 +70,10 @@
             @endif
         </div>
     </form>
+
+    <div class="mt-3">
+        <a href="{{ route('social.edit') }}">
+            <x-primary-button>{{ __('Edit Socials') }}</x-primary-button>
+        </a>
+    </div>
 </section>

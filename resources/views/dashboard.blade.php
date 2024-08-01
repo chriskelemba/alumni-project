@@ -38,7 +38,7 @@
                         <div class="bg-blue-100 p-4 rounded-lg shadow">
                             <h2 class="text-xl font-semibold text-gray-700">Total Job Applications</h2>
                             <p class="text-2xl font-bold text-blue-600">{{ $totalApplications }}</p>
-                            <a href="{{ url('profile/view') }}">
+                            <a href="{{ route('show-applications') }}">
                                 <x-primary-button class="mt-4">
                                     View Applications
                                 </x-primary-button>

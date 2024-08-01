@@ -254,6 +254,20 @@ class JobController extends Controller implements HasMiddleware
         return redirect('/jobs')->with('status', 'Application Submitted Successfully.');
     }
 
+    public function showApplications()
+    {
+        $applications = Application::all();
+        return view('reports.applicants', ['applications' => $applications]);
+    }
+
+    public function showApplcation(Application $application)
+    {
+        $this->authorize('view', $application);
+
+        return view('applications.show', ['application' => $application]);
+    }
+
+
     public function feedback(Job $job)
     {
         return view('jobs.feedback', ['job' => $job]);

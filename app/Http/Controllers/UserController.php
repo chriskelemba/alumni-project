@@ -308,6 +308,47 @@ class UserController extends Controller implements HasMiddleware
         return redirect('/dashboard')->with('status', 'Profile setup complete.');
     }
 
+    public function editSocial()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to edit your social media links.');
+        }
+
+        $social = Social::where('user_id', $user->id)->firstOrFail();
+
+        return view('social.edit', ['social' => $social]);
+    }
+
+    public function updateSocial(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to edit your social media links.');
+        }
+
+        $request->validate([
+            'instagram' => 'nullable|url',
+            'youtube' => 'nullable|url',
+            'twitter' => 'nullable|url',
+            'tiktok' => 'nullable|url',
+            'linkedin' => 'nullable|url',
+        ]);
+
+        $social = Social::where('user_id', $user->id)->firstOrFail();
+        $social->update([
+            'instagram' => $request->instagram,
+            'youtube' => $request->youtube,
+            'twitter' => $request->twitter,
+            'tiktok' => $request->tiktok,
+            'linkedin' => $request->linkedin,
+        ]);
+
+        return redirect('/dashboard')->with('status', 'Social media links updated successfully.');
+    }
+
     public function edit(User $user)
     {
         $roles = Role::pluck('name', 'name')->all();
