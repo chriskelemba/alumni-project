@@ -16,9 +16,12 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class JobController extends Controller implements HasMiddleware
 {
+    use AuthorizesRequests;
+    
     public static function middleware(): array
     {
         return [
@@ -260,11 +263,11 @@ class JobController extends Controller implements HasMiddleware
         return view('reports.applicants', ['applications' => $applications]);
     }
 
-    public function showApplcation(Application $application)
+    public function showApplication(Application $application)
     {
         $this->authorize('view', $application);
 
-        return view('applications.show', ['application' => $application]);
+        return view('reports.show', ['application' => $application]);
     }
 
 
