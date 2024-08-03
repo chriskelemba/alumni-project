@@ -4,9 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Skill;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class SkillsController extends Controller
+class SkillsController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view skill', only: ['index']),
+            new Middleware('permission:create skill', only: ['create', 'store']),
+            new Middleware('permission:update skill', only: ['update', 'edit']),
+            new Middleware('permission:delete skill', only: ['destroy', 'trash', 'restore', 'forceDelete']),
+        ];
+    }
+
     public function index()
     {
         $skills = Skill::get();

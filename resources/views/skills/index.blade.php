@@ -28,22 +28,32 @@
                                 <tr>
                                     <th class="py-3 px-6">Id</th>
                                     <th class="py-3 px-6 w-50">Name</th>
+                                    @can('update skill')
                                     <th class="py-3 px-6">Action</th>
+                                    @endcan
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($skills as $skill)
                                 <tr class="bg-white border-b">
                                     <td class="py-4 px-6">{{ $skill->id }}</td>
-                                    <td class="py-4 px-6">{{ $skill->name }}</td>
+                                    <td class="py-4 px-6"> {{ $skill->name }}</td>
+                                    @can('update skill')
                                     <td class="py-4 px-6">
-                                        <a href="{{ url('skills/'.$skill->id.'/edit') }}">
-                                            <x-secondary-button>{{ __('Edit') }}</x-secondary-button>
-                                        </a>
-                                        <a href="{{ url('skills/'.$skill->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this skill?')">
-                                            <x-danger-button>{{ __('Delete') }}</x-danger-button>
-                                        </a>
+                                        @can('update skill')
+                                            <a href="{{ url('skills/'.$skill->id.'/edit') }}">
+                                                <x-secondary-button>{{ __('Edit') }}</x-secondary-button>
+                                            </a>
+                                        @endcan
+
+                                        @can('delete skill')
+                                            <a href="{{ url('skills/'.$skill->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this skill?')">
+                                                <x-danger-button>{{ __('Delete') }}</x-danger-button>
+                                            </a>
+                                        @endcan
+                                                                       
                                     </td>
+                                    @endcan
                                 </tr>
                                 @endforeach
                             </tbody>
