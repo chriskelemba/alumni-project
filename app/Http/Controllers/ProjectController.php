@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Project;
+use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
@@ -37,10 +38,13 @@ class ProjectController extends Controller
         return redirect('/projects')->with('status', 'Project Created Successfully');
     }
 
-    public function show($id)
+    public function show($projectId)
     {
-        $project = Project::find($id);
-        return view('projects.show', compact('project'));
+        $project = Project::with('user')->findOrFail($projectId);
+
+        return view('projects.show', [
+            'project' => $project,
+        ]);
     }
 
     public function edit($id)

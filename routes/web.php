@@ -85,6 +85,7 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::post('/jobs/{job}/submit-feedback', [JobController::class, 'submitFeedback']);
     
     Route::resource('projects', ProjectController::class);
+    Route::get('projects/{projectId}/show', [ProjectController::class, 'show']);
     Route::get('projects/{projectId}/delete', [ProjectController::class, 'destroy']);
 
     Route::get('/portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.show');
