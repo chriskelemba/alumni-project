@@ -71,7 +71,7 @@ class UserController extends Controller implements HasMiddleware
 
         $user->syncRoles($request->roles);
 
-        return redirect('/users')->with('status', 'User created successfully with roles');
+        return redirect('/users')->with('status', 'User Created Successfully with Roles');
     }
     
     public function activateAccount($token)
@@ -79,7 +79,7 @@ class UserController extends Controller implements HasMiddleware
         $user = User::where('activation_token', $token)->first();
 
         if (!$user) {
-            return redirect('/')->with('error', 'Invalid activation token.');
+            return redirect('/')->with('error', 'Invalid Activation Token.');
         }
 
         // Show a form to set the password
@@ -91,7 +91,7 @@ class UserController extends Controller implements HasMiddleware
         $user = User::where('activation_token', $token)->first();
 
         if (!$user) {
-            return redirect('/')->with('error', 'Invalid activation token.');
+            return redirect('/')->with('error', 'Invalid Activation Token.');
         }
 
         $request->validate([
@@ -305,7 +305,7 @@ class UserController extends Controller implements HasMiddleware
         $user->profile_setup = 1;
         $user->save();
 
-        return redirect('/dashboard')->with('status', 'Profile setup complete.');
+        return redirect('/dashboard')->with('status', 'Profile Setup Complete.');
     }
 
     public function editSocial()
@@ -346,7 +346,7 @@ class UserController extends Controller implements HasMiddleware
             'linkedin' => $request->linkedin,
         ]);
 
-        return redirect('/dashboard')->with('status', 'Social media links updated successfully.');
+        return redirect('/dashboard')->with('status', 'Social Media Links Updated Successfully.');
     }
 
     public function edit(User $user)

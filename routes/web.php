@@ -64,7 +64,11 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('jobs/{jobId}/restore', [JobController::class, 'restore']);
     Route::get('jobs/{jobId}/forceDelete', [JobController::class, 'forceDelete']);
     
+    Route::get('skills/trash', [SkillsController::class, 'trash']);
     Route::resource('skills', SkillsController::class);
+    Route::get('skills/{skillId}/delete', [SkillsController::class, 'destroy']);
+    Route::get('skills/{skillId}/restore', [SkillsController::class, 'restore']);
+    Route::get('skills/{skillId}/forceDelete', [SkillsController::class, 'forceDelete']);
 
 });
 

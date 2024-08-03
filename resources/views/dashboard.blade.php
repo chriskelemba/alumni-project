@@ -29,6 +29,21 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-8">
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div class="p-6">
+                    <h1 class="text-3xl font-extrabold text-gray-800 mb-4">Skills</h1>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-blue-100 p-4 rounded-lg shadow">
+                            <h2 class="text-xl font-semibold text-gray-700">Skills</h2>
+                            <a href="{{ url('/skills') }}">
+                                <x-primary-button class="mt-4">
+                                    View Skills
+                                </x-primary-button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                <div class="p-6">
                     @php
                         $totalApplications = \App\Models\Application::count();
                         $totalJobFeedback = \App\Models\JobFeedback::count();

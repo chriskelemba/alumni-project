@@ -34,37 +34,29 @@ class JobController extends Controller implements HasMiddleware
     
     public function index(Request $request)
     {
-        // Get search input from request
         $search = $request->input('search');
     
-        // Initialize query builder for jobs
         $query = Job::query();
     
-        // Apply search filter if provided
         if ($search) {
             $query->where('title', 'like', "%{$search}%")
                   ->orWhere('description', 'like', "%{$search}%");
         }
     
-        // Apply skills filter if requested
         if ($request->has('filter_skills')) {
-            // Get authenticated user's skills
             $userSkills = Auth::user()->skills()->pluck('skills.id')->toArray();
     
             $query->whereHas('skills', function ($query) use ($userSkills) {
                 $query->whereIn('skills.id', $userSkills);
             });
         }
-    
-        // Get paginated jobs based on the constructed query
+
         $jobs = $query->paginate(10);
     
-        // Check if jobs are empty after filtering
         if ($jobs->isEmpty()) {
             return redirect()->route('jobs.index')->with('status', 'No Results Found');
         }
     
-        // Return the view with jobs data
         return view('jobs.index', ['jobs' => $jobs]);
     }    
     
