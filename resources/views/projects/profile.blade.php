@@ -5,7 +5,7 @@
                         <form action="{{ route('save-project') }}" method="POST">
                             @csrf
 
-                            <h1 class="font-bold text-xl mb-5">Create your Portfolio</h1>
+                            <h1 class="font-bold text-xl mb-5">Post your Project</h1>
                             <div class="mb-4">
                                 <x-input-label for="title" :value="__('Title')" />
                                 <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" />
@@ -31,6 +31,12 @@
                                     {{ __('Post Project') }}
                                 </x-primary-button>
                             </div>
+                        </form>
+                        <form method="GET" action="{{ route('social') }}" class="flex items-center justify-end mt-4">
+                            @csrf
+                            <x-primary-button>
+                                {{ __('Skip') }}
+                            </x-primary-button>
                         </form>
                         <form method="POST" action="{{ route('logout') }}" class="flex items-center justify-end mt-4">
                             @csrf

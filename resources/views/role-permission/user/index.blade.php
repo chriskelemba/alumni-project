@@ -23,9 +23,6 @@
                             <a href="{{ url('users/trash') }}">
                                 <x-primary-button>{{ __('Recycling Bin') }}</x-primary-button>
                             </a>
-                            <a href="{{ url('skills') }}">
-                                <x-primary-button>{{ __('Skills') }}</x-primary-button>
-                            </a>
                             @endcan
                             <a href="{{ url('users/create') }}">
                                 <x-primary-button>{{ __('Add User') }}</x-primary-button>

@@ -14,13 +14,13 @@
 
                         <div class="mb-4">
                             <x-input-label for="name" :value="__('Name')" />
-                            <x-text-input id="name" name="name" class="block mt-1 w-full" required />
+                            <x-text-input id="name" name="name" class="block mt-1 w-full" value="{{ $user->name }}" required />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
                         <div class="mb-4">
                             <x-input-label for="email" :value="__('Email')" />
-                            <x-text-input id="email" name="email" type="email" class="block mt-1 w-full" required />
+                            <x-text-input id="email" name="email" type="email" class="block mt-1 w-full" value="{{ $user->email }}" readonly />
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
 
@@ -32,7 +32,7 @@
 
                         <div class="mb-4">
                             <x-input-label for="cover_letter" :value="__('Cover Letter')" />
-                            <textarea id="cover_letter" name="cover_letter" class="block mt-1 w-full p-2 text-sm text-gray-700" required></textarea>
+                            <textarea id="cover_letter" name="cover_letter" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full" required></textarea>
                             <x-input-error :messages="$errors->get('cover_letter')" class="mt-2" />
                         </div>
 

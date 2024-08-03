@@ -15,26 +15,27 @@
                             <x-danger-button>{{ __('Back') }}</x-danger-button>
                         </a>
                     </div>
-                    <p class="mt-2 text-gray-600">{{ $portfolio->description }}</p>
+                    <h4 class="text-xl font-semibold mt-5">About</h4>
+                    <p class="text-gray-600">{{ $portfolio->description }}</p>
 
                     <div class="mt-4">
                         <h4 class="text-xl font-semibold">Skills</h4>
-                        <p>{{ $portfolio->skills }}</p>
+                        <p class="text-gray-600">{{ $portfolio->skills }}</p>
                     </div>
 
                     <div class="mt-4">
                         <h4 class="text-xl font-semibold">Achievements</h4>
-                        <p>{{ $portfolio->achievements }}</p>
+                        <p class="text-gray-600">{{ $portfolio->achievements }}</p>
                     </div>
 
                     <div class="mt-4">
                         <h4 class="text-xl font-semibold">Work Experience</h4>
-                        <p>{{ $portfolio->work_experience }}</p>
+                        <p class="text-gray-600">{{ $portfolio->work_experience }}</p>
                     </div>
 
                     <div class="mt-4">
                         <h4 class="text-xl font-semibold">Education</h4>
-                        <p>{{ $portfolio->education }}</p>
+                        <p class="text-gray-600">{{ $portfolio->education }}</p>
                     </div>
                 </div>
             </div>

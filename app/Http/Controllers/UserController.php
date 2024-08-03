@@ -3,13 +3,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Skill;
+use App\Models\Social;
 use App\Models\Project;
 use App\Models\Portfolio;
+
 use Illuminate\Support\Str;
-
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 
+use Spatie\Permission\Models\Role;
 use App\Notifications\DeleteAccount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -70,7 +71,7 @@ class UserController extends Controller implements HasMiddleware
 
         $user->syncRoles($request->roles);
 
-        return redirect('/users')->with('status', 'User created successfully with roles');
+        return redirect('/users')->with('status', 'User Created Successfully with Roles');
     }
     
     public function activateAccount($token)
@@ -78,7 +79,7 @@ class UserController extends Controller implements HasMiddleware
         $user = User::where('activation_token', $token)->first();
 
         if (!$user) {
-            return redirect('/')->with('error', 'Invalid activation token.');
+            return redirect('/')->with('error', 'Invalid Activation Token.');
         }
 
         // Show a form to set the password
@@ -90,7 +91,7 @@ class UserController extends Controller implements HasMiddleware
         $user = User::where('activation_token', $token)->first();
 
         if (!$user) {
-            return redirect('/')->with('error', 'Invalid activation token.');
+            return redirect('/')->with('error', 'Invalid Activation Token.');
         }
 
         $request->validate([
@@ -179,7 +180,7 @@ class UserController extends Controller implements HasMiddleware
         }
 
         // Check if the user already has a portfolio
-        if ($user->portfolios()->exists()) {
+        if ($user->portfolio) {
             return redirect('create-project')->with('status', 'Portfolio already added. Please add your project.');
         }
 
@@ -252,11 +253,100 @@ class UserController extends Controller implements HasMiddleware
         $project->user_id = $user->id;
         $project->save();
 
+        $user->save();
+
+        return redirect('social')->with('status', 'Project added. Profile setup complete!');
+    }
+
+    public function social(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to add your social media links.');
+        }
+
+        // Check if the user has already set up their profile
+        if ($user->profile_setup) {
+            return redirect('/');
+        }
+
+        return view('social.create');
+    }
+
+    public function saveSocial(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to add your social media links.');
+        }
+
+        $request->validate([
+            'instagram' => 'nullable|url',
+            'youtube' => 'nullable|url',
+            'twitter' => 'nullable|url',
+            'tiktok' => 'nullable|url',
+            'linkedin' => 'nullable|url',
+        ]);
+    
+        $social = Social::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'instagram' => $request->instagram,
+                'youtube' => $request->youtube,
+                'twitter' => $request->twitter,
+                'tiktok' => $request->tiktok,
+                'linkedin' => $request->linkedin,
+            ]
+        );
+
         // Mark profile setup as complete
         $user->profile_setup = 1;
         $user->save();
 
-        return redirect('/dashboard')->with('status', 'Project added. Profile setup complete!');
+        return redirect('/dashboard')->with('status', 'Profile Setup Complete.');
+    }
+
+    public function editSocial()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to edit your social media links.');
+        }
+
+        $social = Social::where('user_id', $user->id)->firstOrFail();
+
+        return view('social.edit', ['social' => $social]);
+    }
+
+    public function updateSocial(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to edit your social media links.');
+        }
+
+        $request->validate([
+            'instagram' => 'nullable|url',
+            'youtube' => 'nullable|url',
+            'twitter' => 'nullable|url',
+            'tiktok' => 'nullable|url',
+            'linkedin' => 'nullable|url',
+        ]);
+
+        $social = Social::where('user_id', $user->id)->firstOrFail();
+        $social->update([
+            'instagram' => $request->instagram,
+            'youtube' => $request->youtube,
+            'twitter' => $request->twitter,
+            'tiktok' => $request->tiktok,
+            'linkedin' => $request->linkedin,
+        ]);
+
+        return redirect('/dashboard')->with('status', 'Social Media Links Updated Successfully.');
     }
 
     public function edit(User $user)

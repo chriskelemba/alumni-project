@@ -8,6 +8,7 @@ use App\Jobs\Notify;
 use App\Models\User;
 use App\Models\Skill;
 use App\Events\JobCreated;
+use App\Models\Application;
 use App\Models\JobFeedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,9 +16,12 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class JobController extends Controller implements HasMiddleware
 {
+    use AuthorizesRequests;
+    
     public static function middleware(): array
     {
         return [
@@ -30,37 +34,29 @@ class JobController extends Controller implements HasMiddleware
     
     public function index(Request $request)
     {
-        // Get search input from request
         $search = $request->input('search');
     
-        // Initialize query builder for jobs
         $query = Job::query();
     
-        // Apply search filter if provided
         if ($search) {
             $query->where('title', 'like', "%{$search}%")
                   ->orWhere('description', 'like', "%{$search}%");
         }
     
-        // Apply skills filter if requested
         if ($request->has('filter_skills')) {
-            // Get authenticated user's skills
             $userSkills = Auth::user()->skills()->pluck('skills.id')->toArray();
     
             $query->whereHas('skills', function ($query) use ($userSkills) {
                 $query->whereIn('skills.id', $userSkills);
             });
         }
-    
-        // Get paginated jobs based on the constructed query
+
         $jobs = $query->paginate(10);
     
-        // Check if jobs are empty after filtering
         if ($jobs->isEmpty()) {
             return redirect()->route('jobs.index')->with('status', 'No Results Found');
         }
     
-        // Return the view with jobs data
         return view('jobs.index', ['jobs' => $jobs]);
     }    
     
@@ -218,8 +214,54 @@ class JobController extends Controller implements HasMiddleware
 
     public function apply(Job $job)
     {
-        return view('jobs.apply', ['job' => $job]);
+        $user = Auth::user();
+
+        return view('jobs.apply', [
+            'job' => $job,
+            'user' => $user,
+        ]);
     }
+
+    public function storeApplication(Request $request, Job $job)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'resume' => 'required|mimes:pdf,docx|max:2048',
+            'cover_letter' => 'required|string',
+        ]);
+
+        if ($request->hasFile('resume')) {
+            $resumePath = $request->file('resume')->store('resumes', 'public');
+        } else {
+            return redirect()->back()->withErrors(['resume' => 'Resume is required.']);
+        }
+
+        $application = new Application();
+        $application->job_id = $job->id;
+        $application->user_id = Auth::id();
+        $application->name = $request->name;
+        $application->email = $request->email;
+        $application->resume = $resumePath;
+        $application->cover_letter = $request->cover_letter;
+        $application->save();
+
+        return redirect('/jobs')->with('status', 'Application Submitted Successfully.');
+    }
+
+    public function showApplications()
+    {
+        $applications = Application::all();
+        return view('reports.applicants', ['applications' => $applications]);
+    }
+
+    public function showApplication(Application $application)
+    {
+        $this->authorize('view', $application);
+
+        return view('reports.show', ['application' => $application]);
+    }
+
 
     public function feedback(Job $job)
     {

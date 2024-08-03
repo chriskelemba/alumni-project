@@ -2,13 +2,14 @@
     <div class="container mx-auto p-5">
         <div class="flex flex-wrap justify-center">
             <div class="w-full p-6">
+
                 @if (session('status'))
                     <div class="bg-green-500 text-white font-bold py-2 px-4 rounded mb-4">{{ session('status') }}</div>
                 @endif
 
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
-                        <h4 class="text-lg font-bold">Roles</h4>
+                        <span class="bg-gray-100 text-black-700 text-sm font-bold mr-2 px-2.5 py-0.5 uppercase rounded">Click on the role name to add/remove permissions.</span>
                         <a href="{{ url('roles/create') }}">
                             <x-primary-button>{{ __('Add Role') }}</x-primary-button>
                         </a>

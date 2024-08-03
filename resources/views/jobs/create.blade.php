@@ -75,7 +75,6 @@
                                     </div>
                                     @endforeach
                                 </div>
-                                <x-input-error :messages="$errors->get('skills')" class="mt-2" />
                             </div>
 
                             <div class="mb-4">
