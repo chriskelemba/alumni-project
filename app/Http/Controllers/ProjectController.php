@@ -10,7 +10,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::where('is_private', false)->get();
+        $projects = Project::where('is_published', true)->get();
         return view('projects.index', ['projects' => $projects]);
     }
 
@@ -47,25 +47,51 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function edit($id)
+    public function edit($projectId)
     {
-        $project = Project::find($id);
+        $project = Project::find($projectId);
         return view('projects.edit', compact('project'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $projectId)
     {
-        $project = Project::find($id);
+        $project = Project::find($projectId);
         $project->title = $request->input('title');
         $project->description = $request->input('description');
         $project->save();
+        
         return redirect()->route('projects.index');
     }
 
-    public function destroy($id)
+    public function destroy($projectId)
     {
-        $project = Project::find($id);
+        $project = Project::find($projectId);
+
         $project->delete();
+
         return redirect()->route('projects.index');
+    }
+
+    public function trash()
+    {
+        $trashedProjects = Project::onlyTrashed()->get();
+
+        return view('projects.trash', ['trashedProjects' => $trashedProjects]);
+    }
+
+    public function restore($projectId)
+    {
+        $project = Project::withTrashed()->findOrFail($projectId);
+        $project->restore();
+
+        return redirect('/projects/trash')->with('status', 'Project Restored Successfully');
+    }
+
+    public function forceDelete($projectId)
+    {
+        $project = Project::withTrashed()->findOrFail($projectId);
+        $project->forceDelete();
+
+        return redirect('/projects/trash')->with('status', 'Project Deleted Permanently');
     }
 }

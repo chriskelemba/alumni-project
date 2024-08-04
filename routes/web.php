@@ -84,9 +84,12 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::get('/jobs/{job}/feedback', [JobController::class, 'feedback']);
     Route::post('/jobs/{job}/submit-feedback', [JobController::class, 'submitFeedback']);
     
+    Route::get('projects/trash', [ProjectController::class, 'trash']);
     Route::resource('projects', ProjectController::class);
     Route::get('projects/{projectId}/show', [ProjectController::class, 'show']);
     Route::get('projects/{projectId}/delete', [ProjectController::class, 'destroy']);
+    Route::get('projects/{projectId}/restore', [ProjectController::class, 'restore']);
+    Route::get('projects/{projectId}/forceDelete', [ProjectController::class, 'forceDelete']);
 
     Route::get('/portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.show');
 
