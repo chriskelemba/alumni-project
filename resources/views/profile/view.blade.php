@@ -13,6 +13,9 @@
                     <a href="{{ url('/profile') }}">
                         <x-primary-button>{{ __('Edit Profile') }}</x-primary-button>
                     </a>
+                    <a href="{{ url('profile/'.$user->id) }}">
+                        <x-primary-button>{{ __('View Public Profile') }}</x-primary-button>
+                    </a>
                 </div>
             </div>
 

@@ -93,7 +93,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Portfolio::class);
     }
 
-    public function social()
+    public function socials()
     {
         return $this->hasOne(Social::class);
     }

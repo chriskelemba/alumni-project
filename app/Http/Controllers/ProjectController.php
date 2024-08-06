@@ -59,7 +59,7 @@ class ProjectController extends Controller
         $project->title = $request->input('title');
         $project->description = $request->input('description');
         $project->save();
-        
+
         return redirect()->route('projects.index');
     }
 
@@ -93,5 +93,19 @@ class ProjectController extends Controller
         $project->forceDelete();
 
         return redirect('/projects/trash')->with('status', 'Project Deleted Permanently');
+    }
+
+    public function publish($projectId)
+    {
+        $project = Project::findOrFail($projectId);
+
+        if (auth()->user()->id !== $project->user_id) {
+            abort(403, 'Unauthorized Action.');
+        }
+
+        $project->is_published = true;
+        $project->save();
+
+        return redirect()->back()->with('status', 'Project Published Successfully!');
     }
 }

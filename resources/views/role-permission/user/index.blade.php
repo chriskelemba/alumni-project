@@ -31,7 +31,15 @@
                         </div>
                     </div>
                     @role('super-admin|admin')
-                    <div class="overflow-x-auto">
+                    @php
+                        [$alumniUsers, $otherUsers] = $users->partition(function ($user) {
+                            return $user->hasRole('alumni');
+                        });
+                    @endphp
+                
+                    <!-- Alumni Users Section -->
+                    <h2 class="text-lg font-bold mb-4">{{ __('Alumnis') }}</h2>
+                    <div class="overflow-x-auto mb-8">
                         <table class="w-full text-sm text-center text-gray-500">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
@@ -47,7 +55,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $user)
+                                @foreach ($alumniUsers as $user)
                                 <tr class="bg-white border-b">
                                     <td class="py-4 px-6">{{ $user->id }}</td>
                                     <td class="py-4 px-6">
@@ -57,11 +65,9 @@
                                     </td>
                                     <td class="py-4 px-6">{{ $user->email }}</td>
                                     <td class="py-4 px-6">
-                                        @if (!empty($user->getRoleNames()))
-                                            @foreach ($user->getRoleNames() as $rolename)
-                                                <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ $rolename }}</span>
-                                            @endforeach
-                                        @endif
+                                        @foreach ($user->getRoleNames() as $rolename)
+                                            <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ $rolename }}</span>
+                                        @endforeach
                                     </td>
                                     <td class="py-4 px-6">
                                         @if($user->skills->count() > 0)
@@ -81,12 +87,9 @@
                                     </td>
                                     @can('update user')
                                     <td class="py-4 px-6">
-                                        @can('update user')
-                                            <a href="{{ url('users/'.$user->id.'/edit') }}">
-                                                <x-secondary-button>{{ __('Edit') }}</x-secondary-button>
-                                            </a>
-                                        @endcan
-
+                                        <a href="{{ url('users/'.$user->id.'/edit') }}">
+                                            <x-secondary-button>{{ __('Edit') }}</x-secondary-button>
+                                        </a>
                                         @can('delete user')
                                         @if (!$user->active)
                                             <a href="{{ url('users/'.$user->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this user?')">
@@ -94,7 +97,6 @@
                                             </a>
                                         @endif
                                         @endcan
-
                                         @can('deactivate user')
                                         @if ($user->active)
                                         <a href="{{ url('users/'.$user->id.'/deactivateAccount') }}" onclick="return confirm('Are you sure you want to deactivate this user?')">
@@ -109,7 +111,67 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                
+                    <!-- Other Users Section -->
+                    <h2 class="text-lg font-bold mb-4">{{ __('Admins and Employees') }}</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-center text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th class="py-3 px-6">Id</th>
+                                    <th class="py-3 px-6">Name</th>
+                                    <th class="py-3 px-6">Email</th>
+                                    <th class="py-3 px-6">Roles</th>
+                                    <th class="py-3 px-6">Status</th>
+                                    @can('update user')
+                                    <th class="py-3 px-6">Action</th>
+                                    @endcan
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($otherUsers as $user)
+                                <tr class="bg-white border-b">
+                                    <td class="py-4 px-6">{{ $user->id }}</td>
+                                    <td class="py-4 px-6">{{ $user->name }}</td>
+                                    <td class="py-4 px-6">{{ $user->email }}</td>
+                                    <td class="py-4 px-6">
+                                        @foreach ($user->getRoleNames() as $rolename)
+                                            <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ $rolename }}</span>
+                                        @endforeach
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        @if ($user->active)
+                                            <span class="bg-green-100 text-green-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Activated') }}</span>
+                                        @else
+                                            <span class="bg-red-100 text-red-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Deactivated') }}</span>
+                                        @endif
+                                    </td>
+                                    @can('update user')
+                                    <td class="py-4 px-6">
+                                        <a href="{{ url('users/'.$user->id.'/edit') }}">
+                                            <x-secondary-button>{{ __('Edit') }}</x-secondary-button>
+                                        </a>
+                                        @can('delete user')
+                                        @if (!$user->active)
+                                            <a href="{{ url('users/'.$user->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this user?')">
+                                                <x-danger-button>{{ __('Delete') }}</x-danger-button>
+                                            </a>
+                                        @endif
+                                        @endcan
+                                        @can('deactivate user')
+                                        @if ($user->active)
+                                        <a href="{{ url('users/'.$user->id.'/deactivateAccount') }}" onclick="return confirm('Are you sure you want to deactivate this user?')">
+                                            <x-danger-button>{{ __('Deactivate') }}</x-danger-button>
+                                        </a>
+                                        @endif
+                                        @endcan
+                                    </td>
+                                    @endcan
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 @endrole
                 @role('employee')
                 <div class="overflow-x-auto">

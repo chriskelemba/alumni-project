@@ -17,13 +17,15 @@ class ProfileController extends Controller
 {
     public function view(Request $request): View
     {
-        $user = auth()->user()->load('projects');
+        $user = auth()->user()->load('projects', 'socials');
     
         return view('profile.view', [
             'user' => $user,
             'projects' => $user->projects,
+            'socials' => $user->socials,
         ]);
     }
+    
     /**
      * Display the user's profile form.
      */

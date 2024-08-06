@@ -15,6 +15,15 @@
                 <h3 class="font-bold">{{ $project->title }}</h3>
                 <p>{{ $project->description }}</p>
                 <p class="mt-10">{{ 'Posted On: ' }}<b>{{ date('M d, Y', strtotime($project->posted_on)) }}</b></p>
+
+                @if(auth()->user()->id === $project->user_id && !$project->is_published)
+                    <form action="{{ route('projects.publish', $project->id) }}" method="POST">
+                        @csrf
+                        <x-primary-button>
+                            {{ __('Publish') }}
+                        </x-primary-button>
+                    </form>
+                @endif
             </li>
         @endforeach
     </ul>
