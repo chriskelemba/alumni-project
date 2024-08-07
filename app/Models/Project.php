@@ -18,6 +18,11 @@ class Project extends Model
         'posted_on',
         'is_private',
         'is_published',
+        'url',
+        'video_url',
+        'github_repo_url',
+        'tools_used',
+        'programming_language_used',
     ];
 
     public function user()

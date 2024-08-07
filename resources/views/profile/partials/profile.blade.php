@@ -22,7 +22,7 @@
         @if ($user->profile_picture)
             <img src="{{ Storage::url($user->profile_picture) }}" alt="Profile Picture" class="rounded-full h-64 w-64 object-cover">
         @else
-            <img src="{{ asset('images/default-profile.png') }}" alt="Default Profile Picture" class="rounded-full h-20 w-20 object-cover">
+            <img src="{{ asset('images/default-profile.png') }}" alt="Default Profile Picture" class="rounded-full h-64 w-64 object-cover">
         @endif
         <p class="my-2 text-2xl font-semibold">{{ $user->name }}</p>
         <p class="my-2">

@@ -24,6 +24,10 @@ class ProjectController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'video_url' => 'nullable|url',
+            'github_repo_url' => 'nullable|url',
+            'tools_used' => 'nullable|string',
+            'programming_language_used' => 'nullable|string',
         ]);
 
         $project = Project::create([
@@ -33,6 +37,10 @@ class ProjectController extends Controller
             'posted_by' => auth()->user()->name,
             'posted_on' => now(),
             'is_private' => $request->is_private,
+            'video_url' => $request->video_url,
+            'github_repo_url' => $request->github_repo_url,
+            'tools_used' => $request->tools_used,
+            'programming_language_used' => $request->programming_language_used,
         ]);
 
         return redirect('/projects')->with('status', 'Project Created Successfully');
@@ -50,14 +58,27 @@ class ProjectController extends Controller
     public function edit($projectId)
     {
         $project = Project::find($projectId);
-        return view('projects.edit', compact('project'));
+        return view('projects.edit', ['project' => $project]);
     }
 
     public function update(Request $request, $projectId)
     {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'video_url' => 'nullable|url',
+            'github_repo_url' => 'nullable|url',
+            'tools_used' => 'nullable|string',
+            'programming_language_used' => 'nullable|string',
+        ]);
+
         $project = Project::find($projectId);
         $project->title = $request->input('title');
         $project->description = $request->input('description');
+        $project->video_url = $request->input('video_url');
+        $project->github_repo_url = $request->input('github_repo_url');
+        $project->tools_used = $request->input('tools_used');
+        $project->programming_language_used = $request->input('programming_language_used');
         $project->save();
 
         return redirect()->route('projects.index');
@@ -66,7 +87,6 @@ class ProjectController extends Controller
     public function destroy($projectId)
     {
         $project = Project::find($projectId);
-
         $project->delete();
 
         return redirect()->route('projects.index');

@@ -25,6 +25,26 @@
                             </div>
 
                             <div class="mb-4">
+                                <x-input-label for="video_url" :value="__('Video URL')" />
+                                <x-text-input id="video_url" class="block mt-1 w-full" type="url" name="video_url" value="{{ old('video_url', $project->video_url) }}" />
+                            </div>
+
+                            <div class="mb-4">
+                                <x-input-label for="github_repo_url" :value="__('GitHub Repo URL')" />
+                                <x-text-input id="github_repo_url" class="block mt-1 w-full" type="url" name="github_repo_url" value="{{ old('github_repo_url', $project->github_repo_url) }}" />
+                            </div>
+
+                            <div class="mb-4">
+                                <x-input-label for="tools_used" :value="__('Tools Used')" />
+                                <x-text-input id="tools_used" class="block mt-1 w-full" type="text" name="tools_used" value="{{ old('tools_used', $project->tools_used) }}" />
+                            </div>
+
+                            <div class="mb-4">
+                                <x-input-label for="programming_language_used" :value="__('Programming Language Used')" />
+                                <x-text-input id="programming_language_used" class="block mt-1 w-full" type="text" name="programming_language_used" value="{{ old('programming_language_used', $project->programming_language_used) }}" />
+                            </div>
+
+                            <div class="mb-4">
                                 <x-input-label for="is_private" :value="__('Project Type')" />
                                 <div class="flex items-center mt-1">
                                     <input type="radio" id="public_project" name="is_private" value="0" class="mr-2" {{ old('is_private', $project->is_private) == 0 ? 'checked' : '' }}>

@@ -3,10 +3,12 @@
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('My Projects') }}
         </h2>
-
-        <a href="{{ url('/projects/create') }}">
-            <x-primary-button>{{ __('New Project') }}</x-primary-button>
-        </a>
+    
+        @if(auth()->user()->id === $user->id)
+            <a href="{{ url('/projects/create') }}">
+                <x-primary-button>{{ __('New Project') }}</x-primary-button>
+            </a>
+        @endif
     </header>
 
     <ul>
