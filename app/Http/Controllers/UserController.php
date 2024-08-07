@@ -143,7 +143,7 @@ class UserController extends Controller implements HasMiddleware
     
         $request->validate([
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'phone_number' => 'nullable|integer|digits_between:10,15',
+            'phone_number' => 'nullable|numeric|digits_between:10,15',
             'location' => 'nullable|string|max:255',
         ]);
     
@@ -186,7 +186,7 @@ class UserController extends Controller implements HasMiddleware
 
         // Check if the user already has a portfolio
         if ($user->portfolio) {
-            return redirect('create-project')->with('status', 'Portfolio already added. Please add your project.');
+            return redirect('confirm-project')->with('status', 'Portfolio already added. Please add your project.');
         }
 
         return view('portfolio.create');
@@ -213,9 +213,35 @@ class UserController extends Controller implements HasMiddleware
         $portfolio->user_id = $user->id;
         $portfolio->save();
 
-        // Redirect to the project creation step
-        return redirect('create-project')->with('status', 'Portfolio added. Please add your project.');
+        return redirect('confirm-project')->with('status', 'Portfolio added. Please add your project.');
     }
+
+    public function confirmProject(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to add your project.');
+        }
+
+        // Check if the user has already set up their profile
+        if ($user->profile_setup) {
+            return redirect('/');
+        }
+
+        return view('projects.confirm');
+    }
+
+    public function saveConfirmProject(Request $request)
+    {
+        $user = Auth::user();
+    
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to add your project.');
+        }
+    
+        return redirect('create-project');
+    }    
 
     public function createProject(Request $request)
     {

@@ -26,6 +26,9 @@ Route::post('save-profile', [UserController::class, 'saveProfile'])->name('save-
 Route::get('create-portfolio', [UserController::class, 'createPortfolio'])->name('create-portfolio');
 Route::post('save-portfolio', [UserController::class, 'savePortfolio'])->name('save-portfolio');
 
+Route::get('confirm-project', [UserController::class, 'confirmProject'])->name('confirm-project');
+Route::post('saveConfirm-project', [UserController::class, 'saveConfirmProject'])->name('saveConfirm-project');
+
 Route::get('create-project', [UserController::class, 'createProject'])->name('create-project');
 Route::post('save-project', [UserController::class, 'saveProject'])->name('save-project');
 
