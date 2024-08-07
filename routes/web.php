@@ -26,6 +26,9 @@ Route::post('save-profile', [UserController::class, 'saveProfile'])->name('save-
 Route::get('create-portfolio', [UserController::class, 'createPortfolio'])->name('create-portfolio');
 Route::post('save-portfolio', [UserController::class, 'savePortfolio'])->name('save-portfolio');
 
+Route::get('confirm-project', [UserController::class, 'confirmProject'])->name('confirm-project');
+Route::post('saveConfirm-project', [UserController::class, 'saveConfirmProject'])->name('saveConfirm-project');
+
 Route::get('create-project', [UserController::class, 'createProject'])->name('create-project');
 Route::post('save-project', [UserController::class, 'saveProject'])->name('save-project');
 
@@ -84,9 +87,13 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::get('/jobs/{job}/feedback', [JobController::class, 'feedback']);
     Route::post('/jobs/{job}/submit-feedback', [JobController::class, 'submitFeedback']);
     
+    Route::get('projects/trash', [ProjectController::class, 'trash']);
     Route::resource('projects', ProjectController::class);
     Route::get('projects/{projectId}/show', [ProjectController::class, 'show']);
     Route::get('projects/{projectId}/delete', [ProjectController::class, 'destroy']);
+    Route::get('projects/{projectId}/restore', [ProjectController::class, 'restore']);
+    Route::get('projects/{projectId}/forceDelete', [ProjectController::class, 'forceDelete']);
+    Route::post('/projects/{project}/publish', [ProjectController::class, 'publish'])->name('projects.publish');
 
     Route::get('/portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.show');
 

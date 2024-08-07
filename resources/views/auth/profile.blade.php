@@ -26,6 +26,20 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- Phone Number -->
+        <div class="mb-4">
+            <x-input-label for="phone_number" :value="__('Phone Number')" />
+            <x-text-input id="phone_number" class="block mt-1 w-full" type="text" name="phone_number" value="{{ $user->phone_number }}" />
+            <x-input-error :messages="$errors->get('phone_number')" class="mt-2" />
+        </div>
+
+        <!-- Location -->
+        <div class="mb-4">
+            <x-input-label for="location" :value="__('Location')" />
+            <x-text-input id="location" class="block mt-1 w-full" type="text" name="location" value="{{ $user->location }}" />
+            <x-input-error :messages="$errors->get('location')" class="mt-2" />
+        </div>
+
         <!-- Profile Picture -->
         <div class="mb-4">
             <x-input-label for="profile_picture" :value="__('Profile Picture')" />

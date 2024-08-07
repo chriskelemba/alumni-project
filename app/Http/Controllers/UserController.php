@@ -143,12 +143,17 @@ class UserController extends Controller implements HasMiddleware
     
         $request->validate([
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'phone_number' => 'nullable|numeric|digits_between:10,15',
+            'location' => 'nullable|string|max:255',
         ]);
     
         if ($request->hasFile('profile_picture')) {
             $path = $request->file('profile_picture')->store('profile_pictures', 'public');
             $user->profile_picture = $path;
         }
+    
+        $user->phone_number = $request->input('phone_number');
+        $user->location = $request->input('location');
     
         // Check if user is an employee
         $roles = ['employee'];
@@ -164,7 +169,7 @@ class UserController extends Controller implements HasMiddleware
         $user->skills()->sync($request->input('skills'));
     
         return redirect('create-portfolio')->with('status', 'Profile updated. Please add your portfolio.');
-    }
+    }    
 
     public function createPortfolio(Request $request)
     {
@@ -181,7 +186,7 @@ class UserController extends Controller implements HasMiddleware
 
         // Check if the user already has a portfolio
         if ($user->portfolio) {
-            return redirect('create-project')->with('status', 'Portfolio already added. Please add your project.');
+            return redirect('confirm-project')->with('status', 'Portfolio already added. Please add your project.');
         }
 
         return view('portfolio.create');
@@ -208,9 +213,35 @@ class UserController extends Controller implements HasMiddleware
         $portfolio->user_id = $user->id;
         $portfolio->save();
 
-        // Redirect to the project creation step
-        return redirect('create-project')->with('status', 'Portfolio added. Please add your project.');
+        return redirect('confirm-project')->with('status', 'Portfolio added. Please add your project.');
     }
+
+    public function confirmProject(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to add your project.');
+        }
+
+        // Check if the user has already set up their profile
+        if ($user->profile_setup) {
+            return redirect('/');
+        }
+
+        return view('projects.confirm');
+    }
+
+    public function saveConfirmProject(Request $request)
+    {
+        $user = Auth::user();
+    
+        if (!$user) {
+            return redirect('/')->with('error', 'You must be logged in to add your project.');
+        }
+    
+        return redirect('create-project');
+    }    
 
     public function createProject(Request $request)
     {
@@ -231,32 +262,38 @@ class UserController extends Controller implements HasMiddleware
     public function saveProject(Request $request)
     {
         $user = Auth::user();
-
+    
         if (!$user) {
             return redirect('/')->with('error', 'You must be logged in to add your project.');
         }
-
+    
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'url' => 'nullable|url',
+            'video_url' => 'nullable|url',
+            'github_repo_url' => 'nullable|url',
+            'tools_used' => 'nullable|string',
+            'programming_language_used' => 'nullable|string',
+            'is_private' => 'required|boolean',
         ]);
-
+    
         $project = Project::create([
             'title' => $request->title,
             'description' => $request->description,
-            'user_id' => auth()->user()->id,
-            'posted_by' => auth()->user()->name,
+            'user_id' => $user->id,
+            'posted_by' => $user->name,
             'posted_on' => now(),
             'is_private' => $request->is_private,
+            'url' => $request->url,
+            'video_url' => $request->video_url,
+            'github_repo_url' => $request->github_repo_url,
+            'tools_used' => $request->tools_used,
+            'programming_language_used' => $request->programming_language_used,
         ]);
-
-        $project->user_id = $user->id;
-        $project->save();
-
-        $user->save();
-
+    
         return redirect('social')->with('status', 'Project added. Profile setup complete!');
-    }
+    }    
 
     public function social(Request $request)
     {
