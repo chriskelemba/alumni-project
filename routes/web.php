@@ -94,6 +94,7 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::get('projects/{projectId}/restore', [ProjectController::class, 'restore']);
     Route::get('projects/{projectId}/forceDelete', [ProjectController::class, 'forceDelete']);
     Route::post('/projects/{project}/publish', [ProjectController::class, 'publish'])->name('projects.publish');
+    Route::post('/projects/{project}/unpublish', [ProjectController::class, 'unpublish'])->name('projects.unpublish');
 
     Route::get('/portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.show');
 
