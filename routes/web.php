@@ -94,12 +94,16 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::get('projects/{projectId}/restore', [ProjectController::class, 'restore']);
     Route::get('projects/{projectId}/forceDelete', [ProjectController::class, 'forceDelete']);
     Route::post('/projects/{project}/publish', [ProjectController::class, 'publish'])->name('projects.publish');
+    Route::post('/projects/{project}/unpublish', [ProjectController::class, 'unpublish'])->name('projects.unpublish');
 
-    Route::get('/portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.show');
+    Route::get('portfolio/{id}/edit', [PortfolioController::class, 'edit'])->name('edit-portfolio');
+    Route::put('portfolio/{id}', [PortfolioController::class, 'update'])->name('update-portfolio');
 
     Route::get('/social/edit', [UserController::class, 'editSocial'])->name('social.edit');
     Route::post('/social/update', [UserController::class, 'updateSocial'])->name('social.update');
 
+    Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit2');
+    Route::put('/profile2', [UserController::class, 'updateProfile'])->name('update-profile2');
 });
 
 

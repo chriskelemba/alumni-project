@@ -122,10 +122,28 @@ class ProjectController extends Controller
         if (auth()->user()->id !== $project->user_id) {
             abort(403, 'Unauthorized Action.');
         }
-
+    
+        if ($project->is_private) {
+            return redirect()->back()->withErrors(['status' => 'Cannot publish a private project.']);
+        }
+    
         $project->is_published = true;
         $project->save();
+    
+        return redirect()->back()->with('status', 'Project Published Successfully!');
+    }
 
+    public function unpublish($projectId)
+    {
+        $project = Project::findOrFail($projectId);
+
+        if (auth()->user()->id !== $project->user_id) {
+            abort(403, 'Unauthorized Action.');
+        }
+    
+        $project->is_published = false;
+        $project->save();
+    
         return redirect()->back()->with('status', 'Project Published Successfully!');
     }
 }

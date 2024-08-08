@@ -103,7 +103,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        {{ $jobs->links() }} <!-- Pagination links -->
+                        {{ $jobs->links() }}
                     </div>
                 </div>
             </div>

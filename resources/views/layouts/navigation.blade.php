@@ -114,6 +114,15 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            @role('alumni')
+                            <div class="mr-2">
+                                @if (Auth::user()->profile_picture)
+                                    <img src="{{ Storage::url(Auth::user()->profile_picture) }}" alt="Profile Picture" class="w-8 h-8 rounded-full">
+                                @else
+                                    <img src="{{ asset('images/default-profile.png') }}" alt="Default Profile Picture" class="w-8 h-8 rounded-full">
+                                @endif
+                            </div>
+                            @endrole                          
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
