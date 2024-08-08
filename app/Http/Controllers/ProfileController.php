@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Social;
 use App\Models\Project;
+use App\Models\Portfolio;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +44,6 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        // Handle profile picture upload
         if ($request->hasFile('profile_picture')) {
             $request->validate([
                 'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -88,18 +88,12 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
-  
-    public function myProjects()
-    {
-        $user = auth()->user();
-        $projects = $user->projects;
-    }
 
-    
     public function show($userId)
     {
         $user = User::findOrFail($userId);
         $socials = Social::where('user_id', $userId)->first();
+        $portfolio = Portfolio::where('user_id', $userId)->first();
         $alumniUsers = User::whereHas('roles', function ($query) {
             $query->where('name', 'alumni');
         })->get();
@@ -112,6 +106,7 @@ class ProfileController extends Controller
             'user' => $user,
             'projects' => $user->projects,
             'socials' => $socials,
+            'portfolio' => $portfolio,
         ]);
     }
 }

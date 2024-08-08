@@ -1,23 +1,4 @@
 <section>
-    <header class="flex justify-between">
-        <div>
-            <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Profile Information') }}
-            </h2>
-            <p class="mt-1 text-sm text-gray-600">
-                {{ __("User account details.") }}
-            </p>
-        </div>
-
-        <div>
-            @role('super-admin|admin|employee')
-            <a href="{{ url('/users') }}">
-                <x-danger-button>{{ __('Back') }}</x-danger-button>
-            </a>
-            @endrole
-        </div>
-    </header>
-    
     <div class="mt-10 mb-5">
         @if ($user->profile_picture)
             <img src="{{ Storage::url($user->profile_picture) }}" alt="Profile Picture" class="rounded-full h-64 w-64 object-cover">
@@ -26,20 +7,46 @@
         @endif
         <p class="my-2 text-2xl font-semibold">{{ $user->name }}</p>
         <p class="my-2">
-            {{ __("Skills: ") }}
             @if($user->skills->count() > 0)
+            {{ __("Skills: ") }}
                 @foreach($user->skills as $skill)
-                    <b>{{ $skill->name }}</b>{{ $loop->last ? '.' : ', ' }}
+                    <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ $skill->name }}</span>
                 @endforeach
             @else
-                {{ __("No skills added.") }}
+                {{ __("") }}
             @endif
-        </p>
+        </p>        
+        <div class="flex py-1 items-center">
+        @if ($user->phone_number || $user->location)
+            <div class="flex py-1 items-center">
+                <p class="text-blue-500 font-semibold mr-2">Contact Info:</p>
+                
+                @if ($user->phone_number)
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill mr-1 my-1" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
+                    </svg>
+                    <p>{{ $user->phone_number }}</p>
+                @endif
+                
+                @if ($user->phone_number || $user->location)
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot mx-1" viewBox="0 0 16 16">
+                        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                    </svg>
+                @endif
+                
+                @if ($user->location)
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill mr-1 my-1" viewBox="0 0 16 16">
+                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                    </svg>
+                    <p>{{ $user->location }}</p>
+                @endif
+            </div>
+        @endif        
+        </div>        
         <div class="flex">
-            <a href="{{ route('portfolio.show', ['id' => $user->id]) }}">
-                <x-primary-button>{{ __('View Portfolio') }}</x-primary-button>
+            <a href="">
+                <x-primary-button>{{ __('Message') }}</x-primary-button>
             </a>
-            <a href="" class="text-blue-500 hover:underline font-semibold mt-1.5 mx-3" target="_blank">Contact Info</a>
         </div>
 
         <div class="flex space-x-4 mt-4">

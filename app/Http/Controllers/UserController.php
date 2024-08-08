@@ -201,7 +201,6 @@ class UserController extends Controller implements HasMiddleware
         }
 
         $request->validate([
-            'title' => 'required|string|max:255',
             'description' => 'required|string',
             'skills' => 'nullable|string',
             'achievements' => 'nullable|string',
