@@ -1,5 +1,5 @@
 <section>
-    <header class="flex justify-between">
+    <header class="flex justify-between mb-10">
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('My Projects') }}
         </h2>
@@ -35,7 +35,7 @@
                             </div>
                         </div>
     
-                        <p>{{ $project->description }}</p>
+                        <p>{{ \Illuminate\Support\Str::limit($project->description, 150, '...') }}</p>
     
                         <p class="mt-10">
                             {{ 'Posted On: ' }}<b class="bg-white p-2 rounded-3xl">{{ date('M d, Y', strtotime($project->posted_on)) }}</b>

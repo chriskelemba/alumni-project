@@ -1,8 +1,14 @@
 <section>
     <header class="flex justify-between">
-        <h3 class="text-2xl font-bold">
+        <h2 class="text-lg font-medium text-gray-900">
             {{ __('About') }}
-        </h3>
+        </h2>
+    
+        @if(auth()->user()->id === $user->id)
+            <a href="{{ url('portfolio/'.$portfolio->id.'/edit') }}">
+                <x-primary-button>{{ __('Edit Portfolio') }}</x-primary-button>
+            </a>
+        @endif
     </header>
     
     <div class="mt-10 mb-5">

@@ -7,10 +7,6 @@
 
                             <h1 class="font-bold text-xl mb-5">Create your Portfolio</h1>
                             <div class="mb-4">
-                                <x-input-label for="title" :value="__('Title')" />
-                                <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" />
-                            </div>
-                            <div class="mb-4">
                                 <x-input-label for="description" :value="__('Description')" />
                                 <textarea id="description" name="description" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"></textarea>
                             </div>

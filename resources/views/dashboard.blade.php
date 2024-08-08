@@ -15,13 +15,15 @@
                 <div class="p-6 text-gray-900">
                     {{ ("You are logged in as ") }}<b>{{ auth()->user()->roles->first()->name }}</b>{{ (".") }}
                 </div>
+                @role('alumni')
                 <div class="pb-6 px-6">
-                    <a href="{{ url('profile/view') }}">
+                    <a href="{{ url('profile/'.auth()->user()->id) }}">
                         <x-primary-button>
                             {{ "View your Profile"}}
                         </x-primary-button>
                     </a>
                 </div>
+                @endrole
             </div>
         </div>
 

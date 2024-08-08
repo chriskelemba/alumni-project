@@ -5,8 +5,8 @@
         @else
             <img src="{{ asset('images/default-profile.png') }}" alt="Default Profile Picture" class="rounded-full h-64 w-64 object-cover">
         @endif
-        <p class="my-2 text-2xl font-semibold">{{ $user->name }}</p>
-        <p class="my-2">
+        <p class="my-3 text-2xl font-semibold">{{ $user->name }}</p>
+        <p class="my-3">
             @if($user->skills->count() > 0)
             {{ __("Skills: ") }}
                 @foreach($user->skills as $skill)
@@ -42,12 +42,21 @@
                 @endif
             </div>
         @endif        
-        </div>        
-        <div class="flex">
+        </div>
+        @if(auth()->check() && auth()->user()->id !== $user->id)
+        <div class="mt-3">
             <a href="">
                 <x-primary-button>{{ __('Message') }}</x-primary-button>
             </a>
         </div>
+        @endif
+        @if(auth()->check() && auth()->user()->id === $user->id)
+        <div class="mt-3">
+            <a href="{{ url('/profile') }}">
+                <x-primary-button>{{ __('Edit Profile') }}</x-primary-button>
+            </a>
+        </div>
+        @endif
 
         <div class="flex space-x-4 mt-4">
             @if ($socials && $socials->instagram)
