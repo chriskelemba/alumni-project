@@ -134,7 +134,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.view')">
+                        <x-dropdown-link :href="url('profile/'.auth()->user()->id)">
                             {{ __('Profile') }}
                         </x-dropdown-link>
 

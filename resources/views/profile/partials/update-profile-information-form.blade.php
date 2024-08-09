@@ -1,12 +1,19 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Profile Information') }}
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
-        </p>
+        <div class="flex justify-between">
+            <div>
+                <h2 class="text-lg font-medium text-gray-900">
+                    {{ __('Profile Information') }}
+                </h2>
+        
+                <p class="mt-1 text-sm text-gray-600">
+                    {{ __("Update your account's profile information and email address.") }}
+                </p>
+            </div>
+            <a href="{{ route('social.edit') }}">
+                <x-primary-button>{{ __('Edit Socials') }}</x-primary-button>
+            </a>
+        </div>
     </header>
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
@@ -17,12 +24,14 @@
         @csrf
         @method('patch')
 
+        <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
+        <!-- Email -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
@@ -47,13 +56,32 @@
             @endif
         </div>
 
+        <!-- Phone Number -->
+        <div>
+            <x-input-label for="phone_number" :value="__('Phone Number')" />
+            <x-text-input id="phone_number" name="phone_number" value="{{ old('phone_number', $user->phone_number) }}" class="block mt-1 w-full" />
+            <x-input-error :messages="$errors->get('phone_number')" class="mt-2" />
+        </div>
+
+        <!-- Location -->
+        <div>
+            <x-input-label for="location" :value="__('Location')" />
+            <x-text-input id="location" name="location" value="{{ old('location', $user->location) }}" class="block mt-1 w-full" />
+            <x-input-error :messages="$errors->get('location')" class="mt-2" />
+        </div>
+
         <!-- Profile Picture -->
-        <div class="mt-4">
+        <div>
             <x-input-label for="profile_picture" :value="__('Profile Picture')" />
             <x-text-input id="profile_picture" class="block mt-1 w-full"
                 type="file"
                 name="profile_picture" />
             <x-input-error :messages="$errors->get('profile_picture')" class="mt-2" />
+            @if ($user->profile_picture)
+                <div class="mt-2">
+                    <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture" class="rounded-full w-24 h-24 object-cover">
+                </div>
+            @endif
         </div>
 
         <div class="flex items-center gap-4">
@@ -70,10 +98,4 @@
             @endif
         </div>
     </form>
-
-    <div class="mt-3">
-        <a href="{{ route('social.edit') }}">
-            <x-primary-button>{{ __('Edit Socials') }}</x-primary-button>
-        </a>
-    </div>
 </section>

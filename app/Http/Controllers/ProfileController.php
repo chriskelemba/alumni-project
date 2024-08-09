@@ -43,7 +43,7 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-
+    
         if ($request->hasFile('profile_picture')) {
             $request->validate([
                 'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -56,17 +56,21 @@ class ProfileController extends Controller
             $path = $request->file('profile_picture')->store('profile_pictures', 'public');
             $user->profile_picture = $path;
         }
-
-        $request->user()->fill($request->validated());
-
+    
+        $user->fill($request->validated());
+    
+        $user->phone_number = $request->input('phone_number');
+        $user->location = $request->input('location');
+    
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
-
-        $request->user()->save();
-
+    
+        $user->save();
+    
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
+    
 
     /**
      * Delete the user's account.

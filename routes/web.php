@@ -101,9 +101,6 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
 
     Route::get('/social/edit', [UserController::class, 'editSocial'])->name('social.edit');
     Route::post('/social/update', [UserController::class, 'updateSocial'])->name('social.update');
-
-    Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit2');
-    Route::put('/profile2', [UserController::class, 'updateProfile'])->name('update-profile2');
 });
 
 
