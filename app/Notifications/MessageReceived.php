@@ -25,9 +25,9 @@ class MessageReceived extends Notification
     {
         return [
             'message_id' => $this->message->id,
-            'sender_id' => $this->message->sender_id,
+            'sender_name' => $this->message->sender->name,
             'message_excerpt' => \Illuminate\Support\Str::limit($this->message->content, 50),
-            'message_url' => url('/messages/' . $this->message->id),
+            'message_url' => url('/messages'),
         ];
     }
 }

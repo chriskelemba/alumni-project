@@ -58,6 +58,9 @@
                         {{ __('Permissions') }}
                     </x-nav-link>
                     @endcan
+                    <x-nav-link :href="url('messages')" :active="request()->routeIs('messages')">
+                        {{ __('Messages') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -100,8 +103,7 @@
                                                   onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['message_url'] }}'; }, 100);">
                                     {{ $senderName }} {{ __('has sent you a message.') }}
                                 </x-dropdown-link>
-                            @endif
-                    
+                            @endif                
                             <form id="mark-as-read-form-{{ $notification->id }}" action="{{ url('notifications/' . $notification->id) }}" method="post" style="display: none;">
                                 @csrf
                                 @method('PATCH')

@@ -1,7 +1,12 @@
 <x-app-layout>
     <div class="container mx-auto p-6">
         <div class="bg-white shadow-md rounded p-4">
-            <h2 class="text-xl font-bold mb-4">Messages with {{ $user->name }}</h2>
+            <div class="flex justify-between">
+                <h2 class="text-xl font-bold mb-4">Messages with {{ $user->name }}</h2>
+                <a href="{{ url('messages') }}">
+                    <x-danger-button>{{ __('Back') }}</x-danger-button>
+                </a>
+            </div>
 
             <div class="overflow-y-auto max-h-96">
                 @forelse($messages as $message)
@@ -9,15 +14,15 @@
                         <div class="flex items-center {{ $message->sender_id == auth()->id() ? 'justify-end' : 'justify-start' }}">
                             @if($message->sender_id != auth()->id())
                                 <div class="mr-4">
-                                    <img src="{{ Storage::exists('profile_pictures/' . $user->profile_picture) ? Storage::url('profile_pictures/' . $user->profile_picture) : asset('images/default-profile.png') }}" alt="{{ $user->name }}" class="w-8 h-8 rounded-full">
+                                    <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('images/default-profile.png') }}" alt="{{ $user->name }}" class="w-8 h-8 rounded-full">
                                 </div>
                             @endif
-                            <div class="bg-gray-100 p-3 rounded-lg {{ $message->sender_id == auth()->id() ? 'bg-blue-500 text-white' : '' }}">
+                            <div class="bg-gray-100 p-3 rounded-lg {{ $message->sender_id == auth()->id() ? 'bg-blue-500 text-gray-700' : '' }}">
                                 {{ $message->message }}
                             </div>
                             @if($message->sender_id == auth()->id())
                                 <div class="ml-4">
-                                    <img src="{{ Storage::exists('profile_pictures/' . auth()->user()->profile_picture) ? Storage::url('profile_pictures/' . auth()->user()->profile_picture) : asset('images/default-profile.png') }}" alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full">
+                                    <img src="{{ auth()->user()->profile_picture ? Storage::url(auth()->user()->profile_picture) : asset('images/default-profile.png') }}" alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full">
                                 </div>
                             @endif
                         </div>

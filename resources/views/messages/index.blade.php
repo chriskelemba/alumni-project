@@ -19,7 +19,9 @@
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-semibold">{{ $sender->name }}</h3>
-                                    <a href="{{ url('/messages/'.$sender->id) }}" class="text-indigo-600 hover:underline">{{ __('View Messages') }}</a>
+                                    <a href="{{ url('/messages/'.$sender->id) }}">
+                                        <x-primary-button>{{ __('Open Chat') }}</x-primary-button>
+                                    </a>
                                 </div>
                             </div>
                         </li>
