@@ -77,6 +77,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function syncSkills($skills)
     {
+        if (is_null($skills)) {
+            $skills = [];
+        }
         $this->skills()->detach();
         foreach ($skills as $skill) {
             $existingSkill = Skill::firstOrCreate(['name' => $skill]);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Skill;
 use App\Models\Social;
 use App\Models\Project;
 use App\Models\Portfolio;
@@ -30,10 +31,17 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function edit(Request $request, User $user): View
     {
+        $userRoles = $user->roles->pluck('name', 'name')->all();
+        $skills = Skill::all();
+        $userSkills = $user->skills->pluck('name', 'name')->all();
+
         return view('profile.edit', [
             'user' => $request->user(),
+            'userRoles' => $userRoles,
+            'skills' => $skills,
+            'userSkills' => $userSkills
         ]);
     }
 
@@ -43,7 +51,7 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-
+    
         if ($request->hasFile('profile_picture')) {
             $request->validate([
                 'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -56,17 +64,22 @@ class ProfileController extends Controller
             $path = $request->file('profile_picture')->store('profile_pictures', 'public');
             $user->profile_picture = $path;
         }
-
-        $request->user()->fill($request->validated());
-
+    
+        $user->fill($request->validated());
+    
+        $user->phone_number = $request->input('phone_number');
+        $user->location = $request->input('location');
+    
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
-
-        $request->user()->save();
-
+    
+        $user->save();
+        $user->syncSkills($request->skills);
+    
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
+    
 
     /**
      * Delete the user's account.

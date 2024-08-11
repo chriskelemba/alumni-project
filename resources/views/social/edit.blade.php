@@ -1,16 +1,15 @@
 <x-app-layout>
-    @if ($errors->any())
-        <div class="bg-red-500 text-white font-bold rounded p-4 mb-4">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <div class="container mx-auto p-5">
         <div class="flex flex-wrap justify-center">
+            @if ($errors->any())
+            <div class="w-full bg-red-500 text-white font-bold rounded p-4 mb-4">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
             <div class="w-full p-6">
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">

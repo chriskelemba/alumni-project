@@ -32,7 +32,7 @@
 
                         <div class="mb-4">
                             <x-input-label for="cover_letter" :value="__('Cover Letter')" />
-                            <textarea id="cover_letter" name="cover_letter" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full" required></textarea>
+                            <textarea id="cover_letter" name="cover_letter" rows="10" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full" required></textarea>
                             <x-input-error :messages="$errors->get('cover_letter')" class="mt-2" />
                         </div>
 

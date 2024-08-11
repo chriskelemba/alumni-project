@@ -18,6 +18,7 @@
                     <p class="text-gray-600">{{ $job->qualifications }}</p>
                     <h1 class="text-gray-600 text-center text-2xl font-bold p-5 mt-10">About Us</h1>
                     <p class="text-gray-600">{{ $job->aboutus }}</p>
+                    @role('alumni')
                     <div class="text-center mb-12 mt-14">
                         <a href="{{ url('jobs/'.$job->id.'/apply') }}">
                             <x-primary-button>{{ __('Apply Now') }}</x-primary-button>
@@ -28,6 +29,7 @@
                             Send Feedback
                         </a>
                     </div>
+                    @endrole
                 </div>
             </div>
         </div>

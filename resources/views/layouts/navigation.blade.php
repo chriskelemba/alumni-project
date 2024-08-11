@@ -41,7 +41,7 @@
                         {{ __('Jobs') }}
                     </x-nav-link>
                     <x-nav-link :href="url('projects')" :active="request()->routeIs('jobs')">
-                        {{ __('Projects') }}
+                        {{ __('Published Projects') }}
                     </x-nav-link>
                     @role('super-admin|admin')
                     <x-nav-link :href="url('users')" :active="request()->routeIs('users')">
@@ -58,6 +58,14 @@
                         {{ __('Permissions') }}
                     </x-nav-link>
                     @endcan
+                    @role('alumni')
+                    <x-nav-link :href="url('my-applications')" :active="request()->routeIs('applications')">
+                        {{ __('View My Applications') }}
+                    </x-nav-link>
+                    @endrole
+                    <x-nav-link :href="url('messages')" :active="request()->routeIs('messages')">
+                        {{ __('Messages') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -87,27 +95,47 @@
 
                       <x-slot name="content">
                         @foreach(auth()->user()->unreadNotifications as $notification)
-                            <x-dropdown-link :href="$notification->data['job_url']" onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['job_url'] }}'; }, 100);">
-                                {{ $notification->data['job_title'] }}
-                            </x-dropdown-link>
+                            @if(isset($notification->data['job_url']))
+                                <x-dropdown-link :href="$notification->data['job_url']"
+                                                  onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['job_url'] }}'; }, 100);">
+                                    {{ $notification->data['job_title'] }}
+                                </x-dropdown-link>
+                            @elseif(isset($notification->data['message_url']))
+                                @php
+                                    $senderName = $notification->data['sender_name'] ?? 'A user';
+                                @endphp
+                                <x-dropdown-link :href="$notification->data['message_url']"
+                                                  onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['message_url'] }}'; }, 100);">
+                                    {{ $senderName }} {{ __('has sent you a message.') }}
+                                </x-dropdown-link>
+                            @elseif(isset($notification->data['application_url']))
+                                <x-dropdown-link :href="$notification->data['application_url']"
+                                                  onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['application_url'] }}'; }, 100);">
+                                    {{ __('Your application for the job position') }} {{ $notification->data['job_title'] }} {{ __('has been approved.') }}
+                                </x-dropdown-link>
+                            @endif                
                             <form id="mark-as-read-form-{{ $notification->id }}" action="{{ url('notifications/' . $notification->id) }}" method="post" style="display: none;">
                                 @csrf
                                 @method('PATCH')
                             </form>
                         @endforeach
+                    
                         @if(auth()->user()->unreadNotifications->isEmpty())
                             <x-dropdown-link :href="url('')" disabled>
                                 {{ __('There are no new notifications') }}
                             </x-dropdown-link>
                         @endif
-                        <x-dropdown-link :href="url('notifications/clear')" onclick="event.preventDefault(); document.getElementById('clear-notifications-form').submit();">
-                            {{ __('Clear all notifications') }}
-                        </x-dropdown-link>
-                        <form id="clear-notifications-form" action="{{ url('notifications/clear') }}" method="post" style="display: none;">
-                            @csrf
-                            @method('DELETE')
-                        </form>
-                    </x-slot>
+                    
+                        @if(auth()->user()->unreadNotifications->isNotEmpty())
+                            <x-dropdown-link :href="url('notifications/clear')" onclick="event.preventDefault(); document.getElementById('clear-notifications-form').submit();">
+                                {{ __('Clear all notifications') }}
+                            </x-dropdown-link>
+                            <form id="clear-notifications-form" action="{{ url('notifications/clear') }}" method="post" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                        @endif
+                    </x-slot>                                                                            
                 </x-dropdown>
 
                 {{-- Settings --}}
@@ -134,9 +162,16 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.view')">
+                        @role('alumni')
+                        <x-dropdown-link :href="url('profile/'.auth()->user()->id)">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+                        @endrole
+                        @role('super-admin|admin|employee')
+                        <x-dropdown-link :href="url('profile')">
+                            {{ __('Profile') }}
+                        </x-dropdown-link>
+                        @endrole
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">

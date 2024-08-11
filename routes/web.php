@@ -2,17 +2,19 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\JobController;
-use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\SkillsController;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('activate-account/{token}', [UserController::class, 'activateAccount'])->name('activate-account');
 Route::post('activate-account/{token}', [UserController::class, 'setPassword'])->name('set-password');
@@ -73,6 +75,14 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('skills/{skillId}/restore', [SkillsController::class, 'restore']);
     Route::get('skills/{skillId}/forceDelete', [SkillsController::class, 'forceDelete']);
 
+    Route::get('projects/trash', [ProjectController::class, 'trash']);
+    Route::get('projects/{projectId}/restore', [ProjectController::class, 'restore']);
+    Route::get('projects/{projectId}/forceDelete', [ProjectController::class, 'forceDelete']);
+
+    Route::get('/admin/applications/{applicationId}', [ApplicationController::class, 'show'])->name('admin.application.show');
+    Route::get('/admin/applications/{applicationId}/review', [ApplicationController::class, 'review'])->name('admin.application.review');
+    Route::get('/admin/applications/{applicationId}/approve', [ApplicationController::class, 'approve'])->name('admin.application.approve');
+
 });
 
 Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
@@ -87,12 +97,9 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::get('/jobs/{job}/feedback', [JobController::class, 'feedback']);
     Route::post('/jobs/{job}/submit-feedback', [JobController::class, 'submitFeedback']);
     
-    Route::get('projects/trash', [ProjectController::class, 'trash']);
     Route::resource('projects', ProjectController::class);
     Route::get('projects/{projectId}/show', [ProjectController::class, 'show']);
     Route::get('projects/{projectId}/delete', [ProjectController::class, 'destroy']);
-    Route::get('projects/{projectId}/restore', [ProjectController::class, 'restore']);
-    Route::get('projects/{projectId}/forceDelete', [ProjectController::class, 'forceDelete']);
     Route::post('/projects/{project}/publish', [ProjectController::class, 'publish'])->name('projects.publish');
     Route::post('/projects/{project}/unpublish', [ProjectController::class, 'unpublish'])->name('projects.unpublish');
 
@@ -102,10 +109,15 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::get('/social/edit', [UserController::class, 'editSocial'])->name('social.edit');
     Route::post('/social/update', [UserController::class, 'updateSocial'])->name('social.update');
 
-    Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit2');
-    Route::put('/profile2', [UserController::class, 'updateProfile'])->name('update-profile2');
-});
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::get('/messages/send/{user}', [MessageController::class, 'send'])->name('messages.send');
+    Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+    Route::get('messages/{user}', [MessageController::class, 'showMessages'])->name('messages.show');
+    Route::delete('messages/{id}', [MessageController::class, 'destroy'])->name('messages.destroy');
 
+    Route::get('/my-applications', [ApplicationController::class, 'showApplications'])->name('my-applications');
+
+});
 
 Route::redirect('/', '/login');
 

@@ -5,7 +5,7 @@
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
                         <h4 class="text-lg font-bold">Edit Project</h4>
-                        <a href="{{ url('projects') }}">
+                        <a href="{{ url('profile/'.auth()->user()->id) }}">
                             <x-danger-button>{{ __('Back') }}</x-danger-button>
                         </a>
                     </div>

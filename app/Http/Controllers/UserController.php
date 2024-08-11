@@ -509,46 +509,4 @@ class UserController extends Controller implements HasMiddleware
 
         return redirect('/login')->with('status', 'Account has been activated! You can login.');
     }
-
-    public function editProfile()
-    {
-        $user = Auth::user();
-        $skills = Skill::all();
-        $userSkills = $user->skills->pluck('name', 'name')->all();
-
-        return view('profile.update', [
-            'user' => $user,
-            'skills' => $skills,
-            'userSkills' => $userSkills
-        ]);
-    }
-
-    public function updateProfile(Request $request)
-    {
-        $user = Auth::user();
-
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone_number' => 'nullable|string|max:20',
-            'location' => 'nullable|string|max:255',
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'skills' => 'required',
-        ]);
-
-        if ($request->hasFile('profile_picture')) {  
-            if ($user->profile_picture) {
-                Storage::delete($user->profile_picture);
-            }
-    
-            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
-            $user->profile_picture = $path;
-        }
-
-        $user->update($data);
-        $user->syncRoles($request->roles);
-        $user->syncSkills($request->skills);
-
-        return redirect()->url('/profile')->with('success', 'Profile updated successfully.');
-    }
 }

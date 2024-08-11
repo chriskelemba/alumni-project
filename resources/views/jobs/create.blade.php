@@ -33,29 +33,29 @@
 
                             <div class="mb-4">
                                 <x-input-label for="description" :value="__('Description')" />
-                                <textarea id="description" name="description" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"></textarea>
+                                <textarea id="description" name="description" rows="8" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"></textarea>
                                 <x-input-error :messages="$errors->get('description')" class="mt-2" />
                             </div>
                             
                             <div class="mb-4">
                                 <x-input-label for="responsibilities" :value="__('Responsibilities')" />
-                                <textarea id="responsibilities" name="responsibilities" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"></textarea>
+                                <textarea id="responsibilities" name="responsibilities" rows="8" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"></textarea>
                                 <x-input-error :messages="$errors->get('responsibilities')" class="mt-2" />
                             </div>
                             
                             <div class="mb-4">
                                 <x-input-label for="qualifications" :value="__('Qualifications')" />
-                                <textarea id="qualifications" name="qualifications" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"></textarea>
+                                <textarea id="qualifications" name="qualifications" rows="8" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"></textarea>
                                 <x-input-error :messages="$errors->get('qualifications')" class="mt-2" />
                             </div>
 
                             <div class="mb-4">
                                 <x-input-label for="aboutus" :value="__('About Us')" />
-                                <textarea id="aboutus" name="aboutus" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"></textarea>
+                                <textarea id="aboutus" name="aboutus" rows="8" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"></textarea>
                                 <x-input-error :messages="$errors->get('aboutus')" class="mt-2" />
                             </div>
 
-                            <div class="mt-4">
+                            <div class="mb-4">
                                 <x-input-label for="logo" :value="__('Logo')" />
                                 <x-text-input id="logo" class="block mt-1 w-full"
                                     type="file"

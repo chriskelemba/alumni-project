@@ -45,13 +45,16 @@
         </div>
         @if(auth()->check() && auth()->user()->id !== $user->id)
         <div class="mt-3">
-            <a href="">
+            <a href="{{ route('messages.send', $user->id) }}">
                 <x-primary-button>{{ __('Message') }}</x-primary-button>
             </a>
         </div>
         @endif
         @if(auth()->check() && auth()->user()->id === $user->id)
-        <div class="mt-3">
+        <div class="flex mt-3">
+            <a href="{{ url('/messages') }}" class="mr-2">
+                <x-primary-button>{{ __('View Messages') }}</x-primary-button>
+            </a>
             <a href="{{ url('/profile') }}">
                 <x-primary-button>{{ __('Edit Profile') }}</x-primary-button>
             </a>

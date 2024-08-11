@@ -21,12 +21,31 @@
                         </div>
                         <div class="bg-gray-100 p-4 rounded-lg shadow-inner">
                             <h2 class="text-lg font-semibold text-gray-700">Resume</h2>
-                            <a href="{{ url('storage/'.$application->resume) }}" class="text-blue-500 hover:underline" target="_blank">View Resume</a>
+                            <a href="{{ Storage::url($application->resume) }}" class="text-blue-500 hover:underline" target="_blank">View Resume</a>
                         </div>
                         <div class="bg-gray-100 p-4 rounded-lg shadow-inner">
                             <h2 class="text-lg font-semibold text-gray-700">Cover Letter</h2>
                             <p class="text-gray-900">{{ $application->cover_letter }}</p>
                         </div>
+                    </div>
+
+                    <!-- Status and Actions -->
+                    <div class="mt-6">
+                        <p class="text-gray-700 mb-4">Status: 
+                            @if($application->status == 'pending')
+                                <span class="text-yellow-600">Pending</span>
+                            @elseif($application->status == 'reviewed')
+                                <span class="text-blue-600">Reviewed</span>
+                            @elseif($application->status == 'approved')
+                                <span class="text-green-600">Approved</span>
+                            @endif
+                        </p>
+                        @if($application->status == 'pending')
+                            <div class="flex space-x-4">
+                                <a href="{{ route('admin.application.review', $application->id) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Review</a>
+                                <a href="{{ route('admin.application.approve', $application->id) }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Approve</a>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
