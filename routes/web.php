@@ -2,17 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\JobController;
-use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\SkillsController;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('activate-account/{token}', [UserController::class, 'activateAccount'])->name('activate-account');
 Route::post('activate-account/{token}', [UserController::class, 'setPassword'])->name('set-password');
@@ -101,7 +102,12 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
 
     Route::get('/social/edit', [UserController::class, 'editSocial'])->name('social.edit');
     Route::post('/social/update', [UserController::class, 'updateSocial'])->name('social.update');
-    
+
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::get('/messages/send/{user}', [MessageController::class, 'send'])->name('messages.send');
+    Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+    Route::get('messages/{user}', [MessageController::class, 'showMessages'])->name('messages.show');
+
 });
 
 
