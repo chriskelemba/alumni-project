@@ -43,6 +43,10 @@
                     </div>                
     
                     <div class="flex">
+                        <a href="{{ url('projects/'.$project->id.'/show') }}" class="mr-2">
+                            <x-primary-button>{{ __('view') }}</x-primary-button>
+                        </a>
+
                         @if(auth()->check() && auth()->user()->id === $project->user_id)
                             @if(!$project->is_published)
                                 <form action="{{ route('projects.publish', $project->id) }}" class="mr-2" method="POST">
@@ -54,9 +58,9 @@
                             @else
                                 <form action="{{ route('projects.unpublish', $project->id) }}" class="mr-2" method="POST">
                                     @csrf
-                                    <x-primary-button>
+                                    <x-secondary-button>
                                         {{ __('UnPublish') }}
-                                    </x-primary-button>
+                                    </x-secondary-button>
                                 </form>
                             @endif
     

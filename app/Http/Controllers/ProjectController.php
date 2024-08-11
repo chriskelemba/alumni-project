@@ -49,9 +49,11 @@ class ProjectController extends Controller
     public function show($projectId)
     {
         $project = Project::with('user')->findOrFail($projectId);
+        $user = $project->user;
 
         return view('projects.show', [
             'project' => $project,
+            'user' => $user
         ]);
     }
 

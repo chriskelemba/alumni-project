@@ -1,4 +1,10 @@
 <x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ ('Projects') }}
+        </h2>
+    </x-slot>
+
     <div class="container mx-auto p-5">
         <div class="flex flex-wrap justify-center">
             <div class="w-full p-6">
@@ -9,33 +15,45 @@
 
                 <div class="bg-white shadow-md rounded p-4">
                     <div class="flex justify-between mb-4">
-                        <h4 class="text-lg font-bold">Projects</h4>
+                        <h4 class="text-lg font-bold">Published Projects</h4>
                         <div>
                             @can('delete project')
-                            <a href="{{ url('projects/trash') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Recycling Bin</a>
+                            <a href="{{ url('projects/trash') }}">
+                                <x-primary-button>Recycling Bin</x-primary-button>
+                            </a>
                             @endcan
                         </div>
                     </div>
-                    <div class="overflow-x-auto">
-                        <div class="grid grid-cols-3 gap-4 text-gray-500">
-                            @foreach ($projects as $project)
-                            <div class="bg-gray-100 border-b mb-5 p-4">
-                                <h5 class="text-lg font-bold">{{ $project->title }}</h5>
-                                <p>{{ Str::limit($project->description, 200) }}</p>
-                                <p class="mt-10">{{ 'Posted By: ' }}<b>{{ $project->posted_by }}</b></p>
-                                <p>{{ 'Posted On: ' }}<b>{{ date('M d, Y', strtotime($project->posted_on)) }}</b></p>
-                                <div class="text-center mt-10">
-                                    <a href={{ url('projects/'.$project->id.'/show')}} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View More</a>
+                    <div class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        @foreach ($projects as $project)
+                        <div class="bg-gray-100 border border-gray-200 rounded-lg p-4 flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
+                            <h5 class="text-xl font-semibold text-gray-800 mb-2">{{ $project->title }}</h5>
+                            <p class="text-gray-600 mb-4">{{ Str::limit($project->description, 150) }}</p>
+                            <div class="flex flex-col flex-grow">
+                                <div class="flex items-center space-x-2 mb-4">
+                                    <!-- Profile Picture -->
+                                    @if ($project->user->profile_picture)
+                                        <img src="{{ Storage::url($project->user->profile_picture) }}" alt="Profile Picture" class="rounded-full h-12 w-12 object-cover border-2 border-gray-200">
+                                    @else
+                                        <img src="{{ asset('images/default-profile.png') }}" alt="Default Profile Picture" class="rounded-full h-12 w-12 object-cover border-2 border-gray-200">
+                                    @endif              
+                                    <!-- User Name -->
+                                    <a href="{{ url('profile/'.$project->user->id) }}" class="text-blue-500 hover:underline text-xl font-medium">
+                                        {{ $project->user->name }}
+                                    </a>
                                 </div>
-                                @can('update project')
-                                <div class="text-center mt-5">
-                                    <a href="{{ url('projects/'.$project->id.'/edit') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Edit</a>
-                                    <a href="{{ url('projects/'.$project->id.'/delete') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this project?')">Delete</a>
-                                </div>
-                                @endcan
+                                <p class="text-gray-600">
+                                    {{ 'Posted On: ' }}<b class="bg-white p-2 rounded-3xl">{{ date('M d, Y', strtotime($project->posted_on)) }}</b>
+                                </p>
                             </div>
-                            @endforeach
+                            <div class="mt-6 text-center">
+                                <a href="{{ url('projects/'.$project->id.'/show') }}">
+                                    <x-primary-button>View More</x-primary-button>
+                                </a>
+                            </div>
                         </div>
+                    @endforeach
+                    
                     </div>
                 </div>
             </div>
