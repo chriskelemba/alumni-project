@@ -10,15 +10,50 @@
                             <x-danger-button>{{ __('Back') }}</x-danger-button>
                         </a>
                     </div>
+                    
+                    <!-- Project Description -->
                     <h1 class="text-gray-600 text-center text-2xl font-bold p-5 mt-10">Project Description</h1>
                     <p class="text-gray-600">{{ $project->description }}</p>
+                    
+                    <!-- Posted By -->
                     <h1 class="text-gray-600 text-center text-2xl font-bold p-5 mt-10">Posted By</h1>
-                    <p class="text-gray-600">{{ $project->posted_by }}</p>
                     <a href="{{ url('profile/'.$project->user->id) }}">
                         {{ $project->user->name }}
                     </a>
+                    
+                    <!-- Posted On -->
                     <h1 class="text-gray-600 text-center text-2xl font-bold p-5 mt-10">Posted On</h1>
                     <p class="text-gray-600">{{ $project->posted_on }}</p>
+
+                    <!-- URL -->
+                    @if($project->url)
+                        <h1 class="text-gray-600 text-center text-2xl font-bold p-5 mt-10">Project URL</h1>
+                        <p class="text-gray-600"><a href="{{ $project->url }}" target="_blank" class="text-blue-500">{{ $project->url }}</a></p>
+                    @endif
+
+                    <!-- Video URL -->
+                    @if($project->video_url)
+                        <h1 class="text-gray-600 text-center text-2xl font-bold p-5 mt-10">Video URL</h1>
+                        <p class="text-gray-600"><a href="{{ $project->video_url }}" target="_blank" class="text-blue-500">{{ $project->video_url }}</a></p>
+                    @endif
+
+                    <!-- GitHub Repo URL -->
+                    @if($project->github_repo_url)
+                        <h1 class="text-gray-600 text-center text-2xl font-bold p-5 mt-10">GitHub Repository</h1>
+                        <p class="text-gray-600"><a href="{{ $project->github_repo_url }}" target="_blank" class="text-blue-500">{{ $project->github_repo_url }}</a></p>
+                    @endif
+
+                    <!-- Tools Used -->
+                    @if($project->tools_used)
+                        <h1 class="text-gray-600 text-center text-2xl font-bold p-5 mt-10">Tools Used</h1>
+                        <p class="text-gray-600">{{ $project->tools_used }}</p>
+                    @endif
+
+                    <!-- Programming Language Used -->
+                    @if($project->programming_language_used)
+                        <h1 class="text-gray-600 text-center text-2xl font-bold p-5 mt-10">Programming Language Used</h1>
+                        <p class="text-gray-600">{{ $project->programming_language_used }}</p>
+                    @endif
                 </div>
             </div>
         </div>

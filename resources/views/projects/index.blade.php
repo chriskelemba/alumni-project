@@ -14,9 +14,6 @@
                             @can('delete project')
                             <a href="{{ url('projects/trash') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Recycling Bin</a>
                             @endcan
-                            @can('create project')
-                            <a href="{{ url('projects/create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Post Project</a>
-                            @endcan
                         </div>
                     </div>
                     <div class="overflow-x-auto">

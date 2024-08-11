@@ -58,11 +58,22 @@ class ProjectController extends Controller
     public function edit($projectId)
     {
         $project = Project::find($projectId);
+
+        if ($project->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('projects.edit', ['project' => $project]);
     }
 
     public function update(Request $request, $projectId)
     {
+        $project = Project::find($projectId);
+
+        if ($project->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -87,6 +98,11 @@ class ProjectController extends Controller
     public function destroy($projectId)
     {
         $project = Project::find($projectId);
+
+        if ($project->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $project->delete();
 
         return redirect()->route('projects.index');

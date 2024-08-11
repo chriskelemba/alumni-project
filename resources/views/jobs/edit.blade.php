@@ -34,34 +34,39 @@
 
                             <div class="mb-4">
                                 <x-input-label for="description" :value="__('Description')" />
-                                <x-text-input id="description" name="description" value="{{ $job->description }}" class="block mt-1 w-full" />
+                                <textarea id="description" name="description" rows="8" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">{{ old('description', $job->description) }}</textarea>
                                 <x-input-error :messages="$errors->get('description')" class="mt-2" />
                             </div>
                             
                             <div class="mb-4">
                                 <x-input-label for="responsibilities" :value="__('Responsibilities')" />
-                                <x-text-input id="responsibilities" name="responsibilities" value="{{ $job->responsibilities }}" class="block mt-1 w-full" />
+                                <textarea id="responsibilities" name="responsibilities" rows="8" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">{{ old('responsibilities', $job->responsibilities) }}</textarea>
                                 <x-input-error :messages="$errors->get('responsibilities')" class="mt-2" />
                             </div>
                             
                             <div class="mb-4">
                                 <x-input-label for="qualifications" :value="__('Qualifications')" />
-                                <x-text-input id="qualifications" name="qualifications" value="{{ $job->qualifications }}" class="block mt-1 w-full" />
+                                <textarea id="qualifications" name="qualifications" rows="8" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">{{ old('qualifications', $job->qualifications) }}</textarea>
                                 <x-input-error :messages="$errors->get('qualifications')" class="mt-2" />
                             </div>
                             
                             <div class="mb-4">
                                 <x-input-label for="aboutus" :value="__('About Us')" />
-                                <x-text-input id="aboutus" name="aboutus" value="{{ $job->aboutus }}" class="block mt-1 w-full" />
+                                <textarea id="aboutus" name="aboutus" rows="8" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">{{ old('aboutus', $job->aboutus) }}</textarea>
                                 <x-input-error :messages="$errors->get('aboutus')" class="mt-2" />
-                            </div>
+                            </div>                            
 
-                            <div class="mt-4">
+                            <div class="mb-4">
                                 <x-input-label for="logo" :value="__('Logo')" />
                                 <x-text-input id="logo" class="block mt-1 w-full"
                                     type="file"
                                     name="logo" />
                                 <x-input-error :messages="$errors->get('logo')" class="mt-2" />
+                                    @if ($job->logo)
+                                    <div class="mt-2">
+                                        <img src="{{ asset('storage/' . $job->logo) }}" alt="Profile Picture" class="rounded-full w-24 h-24 object-cover">
+                                    </div>
+                                @endif
                             </div>
                             
                             <div class="mb-4">

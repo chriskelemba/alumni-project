@@ -22,27 +22,27 @@
 
                             <div class="mb-4">
                                 <x-input-label for="description" :value="__('Description')" />
-                                <textarea id="description" name="description" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full" required>{{ old('description', $portfolio->description) }}</textarea>
+                                <textarea id="description" name="description" rows="8" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full" required>{{ old('description', $portfolio->description) }}</textarea>
                             </div>
 
                             <div class="mb-4">
                                 <x-input-label for="skills" :value="__('Skills')" />
-                                <textarea id="skills" name="skills" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">{{ old('skills', $portfolio->skills) }}</textarea>
+                                <textarea id="skills" name="skills" rows="8" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">{{ old('skills', $portfolio->skills) }}</textarea>
                             </div>
 
                             <div class="mb-4">
                                 <x-input-label for="achievements" :value="__('Achievements')" />
-                                <textarea id="achievements" name="achievements" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">{{ old('achievements', $portfolio->achievements) }}</textarea>
+                                <textarea id="achievements" name="achievements" rows="8" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">{{ old('achievements', $portfolio->achievements) }}</textarea>
                             </div>
 
                             <div class="mb-4">
                                 <x-input-label for="work_experience" :value="__('Work Experience')" />
-                                <textarea id="work_experience" name="work_experience" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">{{ old('work_experience', $portfolio->work_experience) }}</textarea>
+                                <textarea id="work_experience" name="work_experience" rows="8" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">{{ old('work_experience', $portfolio->work_experience) }}</textarea>
                             </div>
 
                             <div class="mb-4">
                                 <x-input-label for="education" :value="__('Education')" />
-                                <textarea id="education" name="education" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">{{ old('education', $portfolio->education) }}</textarea>
+                                <textarea id="education" name="education" rows="8" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">{{ old('education', $portfolio->education) }}</textarea>
                             </div>
 
                             <div class="flex items-center justify-end mt-6">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Skill;
 use App\Models\Social;
 use App\Models\Project;
 use App\Models\Portfolio;
@@ -30,10 +31,17 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function edit(Request $request, User $user): View
     {
+        $userRoles = $user->roles->pluck('name', 'name')->all();
+        $skills = Skill::all();
+        $userSkills = $user->skills->pluck('name', 'name')->all();
+
         return view('profile.edit', [
             'user' => $request->user(),
+            'userRoles' => $userRoles,
+            'skills' => $skills,
+            'userSkills' => $userSkills
         ]);
     }
 
@@ -67,6 +75,7 @@ class ProfileController extends Controller
         }
     
         $user->save();
+        $user->syncSkills($request->skills);
     
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

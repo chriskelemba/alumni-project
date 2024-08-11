@@ -134,9 +134,16 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        @role('alumni')
                         <x-dropdown-link :href="url('profile/'.auth()->user()->id)">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+                        @endrole
+                        @role('super-admin|admin|employee')
+                        <x-dropdown-link :href="url('profile')">
+                            {{ __('Profile') }}
+                        </x-dropdown-link>
+                        @endrole
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
