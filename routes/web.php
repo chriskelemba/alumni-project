@@ -13,6 +13,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\NotificationController;
 
 Route::get('activate-account/{token}', [UserController::class, 'activateAccount'])->name('activate-account');
@@ -74,6 +75,14 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('skills/{skillId}/restore', [SkillsController::class, 'restore']);
     Route::get('skills/{skillId}/forceDelete', [SkillsController::class, 'forceDelete']);
 
+    Route::get('projects/trash', [ProjectController::class, 'trash']);
+    Route::get('projects/{projectId}/restore', [ProjectController::class, 'restore']);
+    Route::get('projects/{projectId}/forceDelete', [ProjectController::class, 'forceDelete']);
+
+    Route::get('/admin/applications/{applicationId}', [ApplicationController::class, 'show'])->name('admin.application.show');
+    Route::get('/admin/applications/{applicationId}/review', [ApplicationController::class, 'review'])->name('admin.application.review');
+    Route::get('/admin/applications/{applicationId}/approve', [ApplicationController::class, 'approve'])->name('admin.application.approve');
+
 });
 
 Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
@@ -88,12 +97,9 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::get('/jobs/{job}/feedback', [JobController::class, 'feedback']);
     Route::post('/jobs/{job}/submit-feedback', [JobController::class, 'submitFeedback']);
     
-    Route::get('projects/trash', [ProjectController::class, 'trash']);
     Route::resource('projects', ProjectController::class);
     Route::get('projects/{projectId}/show', [ProjectController::class, 'show']);
     Route::get('projects/{projectId}/delete', [ProjectController::class, 'destroy']);
-    Route::get('projects/{projectId}/restore', [ProjectController::class, 'restore']);
-    Route::get('projects/{projectId}/forceDelete', [ProjectController::class, 'forceDelete']);
     Route::post('/projects/{project}/publish', [ProjectController::class, 'publish'])->name('projects.publish');
     Route::post('/projects/{project}/unpublish', [ProjectController::class, 'unpublish'])->name('projects.unpublish');
 
@@ -107,9 +113,11 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::get('/messages/send/{user}', [MessageController::class, 'send'])->name('messages.send');
     Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
     Route::get('messages/{user}', [MessageController::class, 'showMessages'])->name('messages.show');
+    Route::delete('messages/{id}', [MessageController::class, 'destroy'])->name('messages.destroy');
+
+    Route::get('/my-applications', [ApplicationController::class, 'showApplications'])->name('my-applications');
 
 });
-
 
 Route::redirect('/', '/login');
 

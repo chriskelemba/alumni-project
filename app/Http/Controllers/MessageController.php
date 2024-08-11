@@ -66,4 +66,18 @@ class MessageController extends Controller
             'messages' => $messages
         ]);
     }
+
+    public function destroy($id)
+    {
+        $user = auth()->user();
+        $message = Message::where(function ($query) use ($user, $id) {
+            $query->where('sender_id', $user->id)
+                ->where('receiver_id', $id);
+        })->orWhere(function ($query) use ($user, $id) {
+            $query->where('sender_id', $id)
+                ->where('receiver_id', $user->id);
+        })->delete();
+
+        return redirect()->route('messages.index')->with('status', 'Chat deleted successfully!');
+    }
 }

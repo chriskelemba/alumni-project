@@ -27,10 +27,12 @@
                                     <span class="text-red-500 font-semibold">Private</span>
                                 @else
                                     <!-- Public Icon/Badge -->
+                                    @if(auth()->user()->id === $user->id)
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe text-green-500 mr-1" viewBox="0 0 16 16">
                                         <path d="M8 0a8 8 0 1 0 8 8A8 8 0 0 0 8 0zM8 1.5a6.5 6.5 0 0 1 6.5 6.5A6.5 6.5 0 0 1 8 14.5 6.5 6.5 0 0 1 1.5 8 6.5 6.5 0 0 1 8 1.5zm0 4a2.5 2.5 0 0 0-2.5 2.5A2.5 2.5 0 0 0 8 10.5 2.5 2.5 0 0 0 10.5 8 2.5 2.5 0 0 0 8 5.5z"/>
                                     </svg>
                                     <span class="text-green-500 font-semibold">Public</span>
+                                    @endif
                                 @endif
                             </div>
                         </div>

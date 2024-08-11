@@ -41,7 +41,7 @@
                         {{ __('Jobs') }}
                     </x-nav-link>
                     <x-nav-link :href="url('projects')" :active="request()->routeIs('jobs')">
-                        {{ __('Projects') }}
+                        {{ __('Published Projects') }}
                     </x-nav-link>
                     @role('super-admin|admin')
                     <x-nav-link :href="url('users')" :active="request()->routeIs('users')">
@@ -58,6 +58,11 @@
                         {{ __('Permissions') }}
                     </x-nav-link>
                     @endcan
+                    @role('alumni')
+                    <x-nav-link :href="url('my-applications')" :active="request()->routeIs('applications')">
+                        {{ __('View My Applications') }}
+                    </x-nav-link>
+                    @endrole
                     <x-nav-link :href="url('messages')" :active="request()->routeIs('messages')">
                         {{ __('Messages') }}
                     </x-nav-link>
@@ -103,6 +108,11 @@
                                                   onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['message_url'] }}'; }, 100);">
                                     {{ $senderName }} {{ __('has sent you a message.') }}
                                 </x-dropdown-link>
+                            @elseif(isset($notification->data['application_url']))
+                                <x-dropdown-link :href="$notification->data['application_url']"
+                                                  onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['application_url'] }}'; }, 100);">
+                                    {{ __('Your application for the job position') }} {{ $notification->data['job_title'] }} {{ __('has been approved.') }}
+                                </x-dropdown-link>
                             @endif                
                             <form id="mark-as-read-form-{{ $notification->id }}" action="{{ url('notifications/' . $notification->id) }}" method="post" style="display: none;">
                                 @csrf
@@ -125,7 +135,7 @@
                                 @method('DELETE')
                             </form>
                         @endif
-                    </x-slot>                                     
+                    </x-slot>                                                                            
                 </x-dropdown>
 
                 {{-- Settings --}}

@@ -12,17 +12,22 @@
                             <div class="flex items-center">
                                 <div class="mr-4">
                                     @if ($sender->profile_picture)
-                                    <img src="{{ Storage::url($sender->profile_picture) }}" alt="{{ $sender->name }}" class="w-12 h-12 rounded-full">
+                                        <img src="{{ Storage::url($sender->profile_picture) }}" alt="{{ $sender->name }}" class="w-12 h-12 rounded-full">
                                     @else
-                                    <img src="{{ asset('images/default-profile.png') }}" alt="{{ $sender->name }}" class="w-12 h-12 rounded-full">
+                                        <img src="{{ asset('images/default-profile.png') }}" alt="{{ $sender->name }}" class="w-12 h-12 rounded-full">
                                     @endif
                                 </div>
-                                <div>
+                                <div class="flex-grow">
                                     <h3 class="text-lg font-semibold">{{ $sender->name }}</h3>
                                     <a href="{{ url('/messages/'.$sender->id) }}">
                                         <x-primary-button>{{ __('Open Chat') }}</x-primary-button>
                                     </a>
                                 </div>
+                                <form action="{{ route('messages.destroy', $sender->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this chat?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-danger-button type="submit">{{ __('Delete Chat') }}</x-danger-button>
+                                </form>
                             </div>
                         </li>
                     @endforeach
