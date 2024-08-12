@@ -10,7 +10,7 @@
 
             <div class="overflow-y-auto max-h-96">
                 @forelse($messages as $message)
-                    <div class="mb-4 {{ $message->sender_id == auth()->id() ? 'text-right' : '' }}">
+                    <div class="mb-4 mt-4 {{ $message->sender_id == auth()->id() ? 'text-right' : '' }}">
                         <div class="flex items-center {{ $message->sender_id == auth()->id() ? 'justify-end' : 'justify-start' }}">
                             @if($message->sender_id != auth()->id())
                                 <div class="mr-4">

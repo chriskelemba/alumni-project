@@ -10,10 +10,23 @@
                         </a>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                    <div class="flex items-center mb-6">
+                        @if($application->job->logo)
+                            <img src="{{ Storage::url($application->job->logo) }}" alt="Job Logo" class="h-16 w-16 rounded-full mr-4">
+                        @endif
+                        <div>
+                            <h2 class="text-xl font-semibold text-gray-800">{{ $application->job->title }}</h2>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                         <div class="bg-gray-100 p-4 rounded-lg shadow-inner">
                             <h2 class="text-lg font-semibold text-gray-700">Name</h2>
-                            <p class="text-gray-900">{{ $application->name }}</p>
+                            <p class="text-gray-900">
+                                <a href="{{ url('profile/'.$application->user_id) }}">
+                                    {{ $application->name }}
+                                </a>
+                            </p>
                         </div>
                         <div class="bg-gray-100 p-4 rounded-lg shadow-inner">
                             <h2 class="text-lg font-semibold text-gray-700">Email</h2>
@@ -23,10 +36,11 @@
                             <h2 class="text-lg font-semibold text-gray-700">Resume</h2>
                             <a href="{{ Storage::url($application->resume) }}" class="text-blue-500 hover:underline" target="_blank">View Resume</a>
                         </div>
-                        <div class="bg-gray-100 p-4 rounded-lg shadow-inner">
-                            <h2 class="text-lg font-semibold text-gray-700">Cover Letter</h2>
-                            <p class="text-gray-900">{{ $application->cover_letter }}</p>
-                        </div>
+                    </div>
+
+                    <div class="bg-gray-100 p-4 rounded-lg shadow-inner mb-6">
+                        <h2 class="text-lg font-semibold text-gray-700">Cover Letter</h2>
+                        <p class="text-gray-900">{{ $application->cover_letter }}</p>
                     </div>
 
                     <div class="mt-6">
@@ -41,6 +55,7 @@
                                 <span class="bg-red-100 text-red-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Denied') }}</span>
                             @endif
                         </p>
+
                         @if($application->status == 'pending')
                             <div class="flex space-x-4">
                                 <a href="{{ route('application.review', $application->id) }}">
@@ -55,12 +70,14 @@
                             </div>
                         @endif
                         @if($application->status == 'reviewed')
-                            <a href="{{ route('application.approve', $application->id) }}">
-                                <x-primary-button>{{ __('Approve') }}</x-primary-button>
-                            </a>
-                            <a href="{{ route('application.deny', $application->id) }}">
-                                <x-danger-button>{{ __('Deny') }}</x-danger-button>
-                            </a>
+                            <div class="flex space-x-4">
+                                <a href="{{ route('application.approve', $application->id) }}">
+                                    <x-primary-button>{{ __('Approve') }}</x-primary-button>
+                                </a>
+                                <a href="{{ route('application.deny', $application->id) }}">
+                                    <x-danger-button>{{ __('Deny') }}</x-danger-button>
+                                </a>
+                            </div>
                         @endif
                     </div>
                 </div>

@@ -85,6 +85,9 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('applications/{applicationId}/approve', [ApplicationController::class, 'approve'])->name('application.approve');
     Route::get('applications/{applicationId}/deny', [ApplicationController::class, 'deny'])->name('application.deny');
 
+    Route::get('/job-feedbacks', [JobController::class, 'indexFeedback'])->name('feedback.index');
+    Route::get('/feedbacks/{id}', [JobController::class, 'showFeedback'])->name('feedback.show');
+
 });
 
 Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
@@ -116,6 +119,7 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::delete('messages/{id}', [MessageController::class, 'destroy'])->name('messages.destroy');
 
     Route::get('/my-applications', [ApplicationController::class, 'showApplications'])->name('my-applications');
+    Route::delete('/applications/{id}', [JobController::class, 'deleteApplication'])->name('applications.destroy');
 
 });
 

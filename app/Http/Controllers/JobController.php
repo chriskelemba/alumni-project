@@ -262,6 +262,18 @@ class JobController extends Controller implements HasMiddleware
         return view('reports.show', ['application' => $application]);
     }
 
+    public function deleteApplication($id)
+    {
+        $application = Application::findOrFail($id);
+
+        if ($application->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $application->delete();
+
+        return redirect()->route('my-applications')->with('status', 'Application Deleted Successfully.');
+    }
 
     public function feedback(Job $job)
     {
@@ -281,5 +293,17 @@ class JobController extends Controller implements HasMiddleware
         ]);
 
         return redirect('/jobs')->with('status', 'Feedback Submitted Successfully.');
+    }
+
+    public function indexFeedback()
+    {
+        $feedbacks = JobFeedback::all();
+        return view('feedback.index', ['feedbacks' => $feedbacks]);
+    }
+
+    public function showFeedback($id)
+    {
+        $feedback = JobFeedback::with('job', 'user')->findOrFail($id);
+        return view('feedback.show', ['feedback' => $feedback]);
     }
 }

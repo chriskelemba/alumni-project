@@ -23,28 +23,29 @@
                         </x-primary-button>
                     </a>
                 </div>
-                <!-- Alumni Dashboard Section -->
-                <div class="pb-6 px-6">
+            </div>
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-6 mt-6">
+                <div class="py-6 px-6">
                     <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{ __('Alumni Dashboard') }}</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-blue-100 p-4 rounded-lg shadow">
-                            <h3 class="text-xl font-semibold text-gray-700">{{ __('Jobs') }}</h3>
+                        <div class="bg-gray-50 p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-2">{{ __('Jobs') }}</h3>
                             <a href="{{ url('/jobs') }}">
                                 <x-primary-button class="mt-4">
                                     {{ __('View Jobs') }}
                                 </x-primary-button>
                             </a>
                         </div>
-                        <div class="bg-green-100 p-4 rounded-lg shadow">
-                            <h3 class="text-xl font-semibold text-gray-700">{{ __('Projects') }}</h3>
+                        <div class="bg-gray-50 p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-2">{{ __('Projects') }}</h3>
                             <a href="{{ url('/projects') }}">
                                 <x-primary-button class="mt-4">
                                     {{ __('View Published Projects') }}
                                 </x-primary-button>
                             </a>
                         </div>
-                        <div class="bg-yellow-100 p-4 rounded-lg shadow">
-                            <h3 class="text-xl font-semibold text-gray-700">{{ __('Messages') }}</h3>
+                        <div class="bg-gray-50 p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+                            <h3 class="text-xl font-semibold text-gray-700 mb-2">{{ __('Messages') }}</h3>
                             <a href="{{ url('/messages') }}">
                                 <x-primary-button class="mt-4">
                                     {{ __('View Messages') }}
@@ -59,12 +60,12 @@
 
         @role('super-admin|admin')
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-8">
-            <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
                 <div class="p-6">
                     <h1 class="text-3xl font-extrabold text-gray-800 mb-4">Skills</h1>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-blue-100 p-4 rounded-lg shadow">
-                            <h2 class="text-xl font-semibold text-gray-700">Skills</h2>
+                        <div class="bg-gray-50 p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+                            <h2 class="text-xl font-semibold text-gray-700 mb-2">Manage Skills</h2>
                             <a href="{{ url('/skills') }}">
                                 <x-primary-button class="mt-4">
                                     View Skills
@@ -74,16 +75,18 @@
                     </div>
                 </div>
             </div>
+            @endrole
+            @role('super-admin|admin|employee')
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div class="p-6">
                     @php
                         $totalApplications = \App\Models\Application::count();
                         $totalJobFeedback = \App\Models\JobFeedback::count();
                     @endphp
-                    <h1 class="text-3xl font-extrabold text-gray-800 mb-4">Job Analytics</h1>
+                    <h1 class="text-3xl font-extrabold text-gray-800 mb-4">Reports</h1>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-blue-100 p-4 rounded-lg shadow">
-                            <h2 class="text-xl font-semibold text-gray-700">Total Job Applications</h2>
+                        <div class="bg-gray-50 p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+                            <h2 class="text-xl font-semibold text-gray-700 mb-2">Total Job Applications</h2>
                             <p class="text-2xl font-bold text-blue-600">{{ $totalApplications }}</p>
                             <a href="{{ route('show-applications') }}">
                                 <x-primary-button class="mt-4">
@@ -91,12 +94,12 @@
                                 </x-primary-button>
                             </a>
                         </div>
-                        <div class="bg-green-100 p-4 rounded-lg shadow">
-                            <h2 class="text-xl font-semibold text-gray-700">Total Job Feedbacks</h2>
+                        <div class="bg-gray-50 p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+                            <h2 class="text-xl font-semibold text-gray-700 mb-2">Total Job Feedbacks</h2>
                             <p class="text-2xl font-bold text-green-600">{{ $totalJobFeedback }}</p>
-                            <a href="{{ url('profile/view') }}">
+                            <a href="{{ route('feedback.index') }}">
                                 <x-primary-button class="mt-4">
-                                    View Feedbacks
+                                    {{ __('View Feedbacks') }}
                                 </x-primary-button>
                             </a>
                         </div>

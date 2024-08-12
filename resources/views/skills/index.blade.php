@@ -11,9 +11,11 @@
                     <div class="flex justify-between mb-4">
                         <h4 class="text-lg font-bold">Skills</h4>
                         <div>
+                            @can('delete skill')
                             <a href="{{ url('skills/trash') }}">
                                 <x-primary-button>{{ __('Recycling Bin') }}</x-primary-button>
                             </a>
+                            @endcan
                             <a href="{{ url('skills/create') }}">
                                 <x-primary-button>{{ __('Add Skill') }}</x-primary-button>
                             </a>
