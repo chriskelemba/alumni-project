@@ -22,6 +22,7 @@
                                     <th class="py-3 px-6">Email</th>
                                     <th class="py-3 px-6">Resume</th>
                                     <th class="py-3 px-6">Cover Letter</th>
+                                    <th class="py-3 px-6">Status</th>
                                     <th class="py-3 px-6">Actions</th>
                                 </tr>
                             </thead>
@@ -37,7 +38,20 @@
                                             <a href="{{ url('storage/cover_letters/'.$application->cover_letter) }}" class="text-blue-500 hover:underline" target="_blank">View Cover Letter</a>
                                         </td>
                                         <td class="py-4 px-6">
-                                            <a href= "{{ route('applications.show', $application->id) }}" class="text-indigo-600 hover:text-indigo-900">Details</a>
+                                            @if($application->status == 'pending')
+                                                <span class="bg-yellow-100 text-yellow-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Pending') }}</span>
+                                            @elseif($application->status == 'reviewed')
+                                                <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Reviewed') }}</span>
+                                            @elseif($application->status == 'approved')
+                                                <span class="bg-green-100 text-green-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Approved') }}</span>
+                                            @elseif($application->status == 'denied')
+                                                <span class="bg-red-100 text-red-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Denied') }}</span>
+                                            @endif
+                                        </td>                                        
+                                        <td class="py-4 px-6">
+                                            <a href= "{{ route('applications.show', $application->id) }}">
+                                                <x-primary-button>{{ __('Details') }}</x-primary-button>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

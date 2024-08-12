@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use Illuminate\Http\Request;
+use App\Notifications\ApplicationDenied;
 use App\Notifications\ApplicationApproved;
 
 class ApplicationController extends Controller
@@ -15,12 +16,6 @@ class ApplicationController extends Controller
         return view('application.index', [
             'applications' => $applications,
         ]);
-    }
-
-    public function show($applicationId)
-    {
-        $application = Application::findOrFail($applicationId);
-        return view('admin.application-details', ['application' => $application]);
     }
     
     public function review($applicationId)
@@ -43,5 +38,18 @@ class ApplicationController extends Controller
         $user->notify(new ApplicationApproved($application));
 
         return redirect()->route('show-applications')->with('status', 'Application approved and user notified.');
+    }
+
+    public function deny($applicationId)
+    {
+        $application = Application::findOrFail($applicationId);
+
+        $application->status = 'denied';
+        $application->save();
+
+        $user = $application->user;
+        $user->notify(new ApplicationDenied($application));
+
+        return redirect()->route('show-applications')->with('status', 'Application denied and user notified.');
     }
 }

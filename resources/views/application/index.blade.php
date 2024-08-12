@@ -25,21 +25,20 @@
                                 <p class="text-gray-600 mb-2">Email: <b>{{ $application->email }}</b></p>
                                 <p class="text-gray-600 mb-2">Resume: <a href="{{ Storage::url($application->resume) }}" class="text-blue-500 hover:underline" target="_blank">{{ __('View Resume') }}</a></p>
                                 <p class="text-gray-600 mb-2">Cover Letter: <p class="bg-white p-4 border rounded-lg shadow-sm text-gray-700">{{ $application->cover_letter }}</p></p>
-                                <p class="text-gray-600 mb-2">Applied On: <b>{{ $application->created_at->format('M d, Y') }}</b></p>
-                                
-                                <!-- Status -->
+                                <p class="text-gray-600 mb-2 mt-2">Applied On: <b>{{ $application->created_at->format('M d, Y') }}</b></p>                               
                                 <p class="text-gray-600 mb-2">Status: 
                                     @if($application->status == 'pending')
-                                        <span class="text-yellow-600">Pending</span>
+                                        <span class="bg-yellow-100 text-yellow-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Pending') }}</span>
                                     @elseif($application->status == 'reviewed')
-                                        <span class="text-blue-600">Reviewed</span>
+                                        <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Reviewed') }}</span>
                                     @elseif($application->status == 'approved')
-                                        <span class="text-green-600">Approved</span>
+                                        <span class="bg-green-100 text-green-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Approved') }}</span>
+                                    @elseif($application->status == 'denied')
+                                        <span class="bg-red-100 text-red-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Denied') }}</span>
                                     @endif
-                                </p>
+                                </p>                                
                             </div>
-                        @endforeach
-                        
+                        @endforeach                    
                         </div>
                     @endif
                 </div>

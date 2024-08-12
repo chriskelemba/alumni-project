@@ -40,6 +40,11 @@
                     <x-nav-link :href="url('jobs')" :active="request()->routeIs('jobs')">
                         {{ __('Jobs') }}
                     </x-nav-link>
+                    @role('alumni')
+                    <x-nav-link :href="url('my-applications')" :active="request()->routeIs('applications')">
+                        {{ __('View My Applications') }}
+                    </x-nav-link>
+                    @endrole
                     <x-nav-link :href="url('projects')" :active="request()->routeIs('jobs')">
                         {{ __('Published Projects') }}
                     </x-nav-link>
@@ -58,11 +63,6 @@
                         {{ __('Permissions') }}
                     </x-nav-link>
                     @endcan
-                    @role('alumni')
-                    <x-nav-link :href="url('my-applications')" :active="request()->routeIs('applications')">
-                        {{ __('View My Applications') }}
-                    </x-nav-link>
-                    @endrole
                     <x-nav-link :href="url('messages')" :active="request()->routeIs('messages')">
                         {{ __('Messages') }}
                     </x-nav-link>
@@ -112,6 +112,11 @@
                                 <x-dropdown-link :href="$notification->data['application_url']"
                                                   onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['application_url'] }}'; }, 100);">
                                     {{ __('Your application for the job position') }} {{ $notification->data['job_title'] }} {{ __('has been approved.') }}
+                                </x-dropdown-link>
+                            @elseif(isset($notification->data['application_denied_url']))
+                                <x-dropdown-link :href="$notification->data['application_denied_url']"
+                                                  onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['application_denied_url'] }}'; }, 100);">
+                                    {{ __('Your application for the job position') }} {{ $notification->data['job_title'] }} {{ __('has been denied.') }}
                                 </x-dropdown-link>
                             @endif                
                             <form id="mark-as-read-form-{{ $notification->id }}" action="{{ url('notifications/' . $notification->id) }}" method="post" style="display: none;">

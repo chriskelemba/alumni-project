@@ -5,7 +5,7 @@
                 <div class="bg-white shadow-md rounded-lg p-8">
                     <div class="flex justify-between items-center mb-6">
                         <h1 class="text-2xl font-bold text-gray-800">Application Details</h1>
-                        <a href="{{ url()->previous() }}">
+                        <a href="{{ url('applications') }}">
                             <x-danger-button>{{ __('Back') }}</x-danger-button>
                         </a>
                     </div>
@@ -29,22 +29,38 @@
                         </div>
                     </div>
 
-                    <!-- Status and Actions -->
                     <div class="mt-6">
                         <p class="text-gray-700 mb-4">Status: 
                             @if($application->status == 'pending')
-                                <span class="text-yellow-600">Pending</span>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Pending') }}</span>
                             @elseif($application->status == 'reviewed')
-                                <span class="text-blue-600">Reviewed</span>
+                                <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Reviewed') }}</span>
                             @elseif($application->status == 'approved')
-                                <span class="text-green-600">Approved</span>
+                                <span class="bg-green-100 text-green-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Approved') }}</span>
+                            @elseif($application->status == 'denied')
+                                <span class="bg-red-100 text-red-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ __('Denied') }}</span>
                             @endif
                         </p>
                         @if($application->status == 'pending')
                             <div class="flex space-x-4">
-                                <a href="{{ route('admin.application.review', $application->id) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Review</a>
-                                <a href="{{ route('admin.application.approve', $application->id) }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Approve</a>
+                                <a href="{{ route('application.review', $application->id) }}">
+                                    <x-secondary-button>{{ __('Review') }}</x-secondary-button>
+                                </a>
+                                <a href="{{ route('application.approve', $application->id) }}">
+                                    <x-primary-button>{{ __('Approve') }}</x-primary-button>
+                                </a>
+                                <a href="{{ route('application.deny', $application->id) }}">
+                                    <x-danger-button>{{ __('Deny') }}</x-danger-button>
+                                </a>
                             </div>
+                        @endif
+                        @if($application->status == 'reviewed')
+                            <a href="{{ route('application.approve', $application->id) }}">
+                                <x-primary-button>{{ __('Approve') }}</x-primary-button>
+                            </a>
+                            <a href="{{ route('application.deny', $application->id) }}">
+                                <x-danger-button>{{ __('Deny') }}</x-danger-button>
+                            </a>
                         @endif
                     </div>
                 </div>

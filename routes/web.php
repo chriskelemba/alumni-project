@@ -79,9 +79,11 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('projects/{projectId}/restore', [ProjectController::class, 'restore']);
     Route::get('projects/{projectId}/forceDelete', [ProjectController::class, 'forceDelete']);
 
-    Route::get('/admin/applications/{applicationId}', [ApplicationController::class, 'show'])->name('admin.application.show');
-    Route::get('/admin/applications/{applicationId}/review', [ApplicationController::class, 'review'])->name('admin.application.review');
-    Route::get('/admin/applications/{applicationId}/approve', [ApplicationController::class, 'approve'])->name('admin.application.approve');
+    Route::get('/applications', [JobController::class, 'showApplications'])->name('show-applications');
+    Route::get('applications/{application}', [JobController::class, 'showApplication'])->name('applications.show');
+    Route::get('applications/{applicationId}/review', [ApplicationController::class, 'review'])->name('application.review');
+    Route::get('applications/{applicationId}/approve', [ApplicationController::class, 'approve'])->name('application.approve');
+    Route::get('applications/{applicationId}/deny', [ApplicationController::class, 'deny'])->name('application.deny');
 
 });
 
@@ -91,8 +93,6 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::get('jobs/{job}/show', [JobController::class, 'show']);
     Route::get('jobs/{job}/apply', [JobController::class, 'apply']);
     Route::post('jobs/{job}', [JobController::class, 'storeApplication'])->name('jobs.storeApplication');
-    Route::get('/applications', [JobController::class, 'showApplications'])->name('show-applications');
-    Route::get('applications/{application}', [JobController::class, 'showApplication'])->name('applications.show');
 
     Route::get('/jobs/{job}/feedback', [JobController::class, 'feedback']);
     Route::post('/jobs/{job}/submit-feedback', [JobController::class, 'submitFeedback']);
