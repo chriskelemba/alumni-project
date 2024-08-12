@@ -106,6 +106,26 @@
             @enderror
         </div>
         @endrole
+        @role('employee')
+        <!-- Skills -->
+        <div>
+            <x-input-label for="skills" :value="__('Skills')" />
+            <div class="flex flex-wrap">
+                @foreach ($skills as $skill)
+                    <div class="w-1/2 md:w-1/3 xl:w-1/4 p-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="skills[]" value="{{ $skill->name }}" 
+                            @if($user->skills->contains($skill->id)) checked @endif />
+                            <span class="ml-2">{{ $skill->name }}</span>
+                        </label>
+                    </div>
+                @endforeach
+            </div>
+            @error('skills')
+                <span class="text-xs text-red-600">{{ $message }}</span>
+            @enderror
+        </div>
+        @endrole
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>

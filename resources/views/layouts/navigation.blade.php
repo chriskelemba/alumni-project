@@ -98,7 +98,7 @@
                             @if(isset($notification->data['job_url']))
                                 <x-dropdown-link :href="$notification->data['job_url']"
                                                   onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['job_url'] }}'; }, 100);">
-                                    {{ $notification->data['job_title'] }}
+                                    {{ __('A job with your skills has been posted: ')}}{{ $notification->data['job_title'] }}{{ __('.') }}
                                 </x-dropdown-link>
                             @elseif(isset($notification->data['message_url']))
                                 @php

@@ -56,7 +56,17 @@ class UserController extends Controller implements HasMiddleware
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8|max:20',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'max:20',
+                'confirmed',
+                'regex:/[A-Z]/', // At least one uppercase letter
+                'regex:/[a-z]/', // At least one lowercase letter
+                'regex:/[0-9]/', // At least one number
+                'regex:/[@$!%*#?&]/', // At least one special character
+            ],
             'roles' => 'required'
         ]);
 
@@ -95,7 +105,17 @@ class UserController extends Controller implements HasMiddleware
         }
 
         $request->validate([
-            'password' => 'required|string|min:8|confirmed',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'max:20',
+                'confirmed',
+                'regex:/[A-Z]/', // At least one uppercase letter
+                'regex:/[a-z]/', // At least one lowercase letter
+                'regex:/[0-9]/', // At least one number
+                'regex:/[@$!%*#?&]/', // At least one special character
+            ],
         ]);
 
         $user->password = Hash::make($request->password);
@@ -405,7 +425,17 @@ class UserController extends Controller implements HasMiddleware
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'password' => 'nullable|string|min:8|max:20',
+            'password' => [
+                'nullable',
+                'string',
+                'min:8',
+                'max:20',
+                'confirmed',
+                'regex:/[A-Z]/', // At least one uppercase letter
+                'regex:/[a-z]/', // At least one lowercase letter
+                'regex:/[0-9]/', // At least one number
+                'regex:/[@$!%*#?&]/', // At least one special character
+            ],
             'roles' => 'required',
             'skills' => 'required'
         ]);

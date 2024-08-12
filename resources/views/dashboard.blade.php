@@ -58,8 +58,9 @@
             </div>
         </div>
 
-        @role('super-admin|admin')
+        @role('super-admin|admin|employee')
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-8">
+            @role('super-admin|admin')
             <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
                 <div class="p-6">
                     <h1 class="text-3xl font-extrabold text-gray-800 mb-4">Skills</h1>
@@ -76,7 +77,6 @@
                 </div>
             </div>
             @endrole
-            @role('super-admin|admin|employee')
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div class="p-6">
                     @php

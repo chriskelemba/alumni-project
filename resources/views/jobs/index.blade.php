@@ -20,7 +20,7 @@
                         </form>
                         <div class="flex justify-between">
                             <div class="mx-2">
-                                @role('super-admin|admin')
+                                @role('super-admin|admin|employee')
                                 @can('delete job')
                                 <a href="{{ url('jobs/trash') }}">
                                     <x-primary-button>{{ __('Recycling Bin') }}</x-primary-button>
@@ -33,7 +33,7 @@
                                 @endcan
                                 @endrole
                             </div>
-                            @role('alumni')
+                            @role('alumni|employee')
                             @if(request()->has('filter_skills'))
                                 <a href="{{ url('jobs') }}">
                                     <x-primary-button>Show All Jobs</x-primary-button>

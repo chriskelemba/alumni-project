@@ -199,17 +199,20 @@
                                     @endif
                                 </td>
                                 <td class="py-4 px-6">
-                                    <a href="{{ url('profile/'.$user->id) }}">
-                                        <x-primary-button>{{ __('View Profile') }}</x-primary-button>
-                                    </a>
+                                    @if($user->profile_setup == 1)
+                                        <a href="{{ url('profile/'.$user->id) }}">
+                                            <x-primary-button>{{ __('View Profile') }}</x-primary-button>
+                                        </a>
+                                    @else
+                                        <span class="text-gray-500">{{ __("Alumni has not set profile up.") }}</span>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-            </div>
-            @endrole
+                @endrole            
             </div>
         </div>
     </div>
