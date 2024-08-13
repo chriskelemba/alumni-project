@@ -210,14 +210,27 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @role('employee')
+            <x-responsive-nav-link :href="url('users')" :active="request()->routeIs('users')">
+                {{ __('Alumnis') }}
+            </x-responsive-nav-link>
+            @endrole
             <x-responsive-nav-link :href="url('jobs')" :active="request()->routeIs('jobs')">
                 {{ __('Jobs') }}
             </x-responsive-nav-link>
-            @can('view user')
+            @role('alumni')
+            <x-responsive-nav-link :href="url('my-applications')" :active="request()->routeIs('applications')">
+                {{ __('View My Applications') }}
+            </x-responsive-nav-link>
+            @endrole
+            <x-responsive-nav-link :href="url('projects')" :active="request()->routeIs('jobs')">
+                {{ __('Published Projects') }}
+            </x-responsive-nav-link>
+            @role('super-admin|admin')
             <x-responsive-nav-link :href="url('users')" :active="request()->routeIs('users')">
                 {{ __('Users') }}
             </x-responsive-nav-link>
-            @endcan
+            @endrole
             @can('view role')
             <x-responsive-nav-link :href="url('roles')" :active="request()->routeIs('roles')">
                 {{ __('Roles') }}
@@ -228,20 +241,71 @@
                 {{ __('Permissions') }}
             </x-responsive-nav-link>
             @endcan
+            <x-responsive-nav-link :href="url('messages')" :active="request()->routeIs('messages')">
+                {{ __('Messages') }}
+            </x-responsive-nav-link>
         </div>
 
         <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="flex px-4 text-gray-500">
+            <div class="flex items-center px-4 text-gray-500">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
                     <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901"/>
                 </svg>
                 <p class="px-2">Notifications</p>
             </div>
-
+        
             <div class="px-4 py-2">
-                <p>There are no new notifications</p>
+                @forelse(auth()->user()->unreadNotifications as $notification)
+                    @if(isset($notification->data['job_url']))
+                        <a href="{{ $notification->data['job_url'] }}"
+                           onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['job_url'] }}'; }, 100);"
+                           class="block py-2 px-4 text-gray-800 hover:bg-gray-200 rounded">
+                            {{ __('A job with your skills has been posted: ') }}{{ $notification->data['job_title'] }}{{ __('.') }}
+                        </a>
+                    @elseif(isset($notification->data['message_url']))
+                        @php
+                            $senderName = $notification->data['sender_name'] ?? 'A user';
+                        @endphp
+                        <a href="{{ $notification->data['message_url'] }}"
+                           onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['message_url'] }}'; }, 100);"
+                           class="block py-2 px-4 text-gray-800 hover:bg-gray-200 rounded">
+                            {{ $senderName }} {{ __('has sent you a message.') }}
+                        </a>
+                    @elseif(isset($notification->data['application_url']))
+                        <a href="{{ $notification->data['application_url'] }}"
+                           onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['application_url'] }}'; }, 100);"
+                           class="block py-2 px-4 text-gray-800 hover:bg-gray-200 rounded">
+                            {{ __('Your application for the job position') }} {{ $notification->data['job_title'] }} {{ __('has been approved.') }}
+                        </a>
+                    @elseif(isset($notification->data['application_denied_url']))
+                        <a href="{{ $notification->data['application_denied_url'] }}"
+                           onclick="event.preventDefault(); document.getElementById('mark-as-read-form-{{ $notification->id }}').submit(); setTimeout(function(){ window.location.href = '{{ $notification->data['application_denied_url'] }}'; }, 100);"
+                           class="block py-2 px-4 text-gray-800 hover:bg-gray-200 rounded">
+                            {{ __('Your application for the job position') }} {{ $notification->data['job_title'] }} {{ __('has been denied.') }}
+                        </a>
+                    @endif                
+                    <form id="mark-as-read-form-{{ $notification->id }}" action="{{ url('notifications/' . $notification->id) }}" method="post" style="display: none;">
+                        @csrf
+                        @method('PATCH')
+                    </form>
+                @empty
+                    <p class="py-2 px-4 text-gray-600">There are no new notifications</p>
+                @endforelse
+        
+                @if(auth()->user()->unreadNotifications->isNotEmpty())
+                    <a href="{{ url('notifications/clear') }}"
+                       onclick="event.preventDefault(); document.getElementById('clear-notifications-form').submit();"
+                       class="block py-2 px-4 text-gray-800 hover:bg-gray-200 rounded">
+                        {{ __('Clear all notifications') }}
+                    </a>
+                    <form id="clear-notifications-form" action="{{ url('notifications/clear') }}" method="post" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                @endif
             </div>
         </div>
+        
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
