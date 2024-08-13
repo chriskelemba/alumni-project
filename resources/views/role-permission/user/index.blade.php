@@ -14,7 +14,7 @@
                             <h4 class="text-lg font-bold">Users</h4>
                             @endrole
                             @role('super-admin|admin')
-                            <span class="bg-gray-100 text-black-700 text-sm font-bold mr-2 px-2.5 py-0.5 uppercase rounded">Click on the name to view user profile.</span>
+                            <span class="bg-gray-100 text-black-700 text-sm font-bold mr-2 px-2.5 py-0.5 uppercase rounded">Click on the name to view user profile. Only works if user has profile.</span>
                             @endrole
                         </div>
                         <div>
@@ -59,9 +59,13 @@
                                 <tr class="bg-white border-b">
                                     <td class="py-4 px-6">{{ $user->id }}</td>
                                     <td class="py-4 px-6">
+                                        @if($user->profile_setup == 1)
                                         <a href="{{ url('profile/'.$user->id) }}">
                                             {{ $user->name }}
                                         </a>
+                                    @else
+                                        {{ $user->name }}
+                                    @endif
                                     </td>
                                     <td class="py-4 px-6">{{ $user->email }}</td>
                                     <td class="py-4 px-6">

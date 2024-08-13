@@ -289,7 +289,6 @@ class UserController extends Controller implements HasMiddleware
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'url' => 'nullable|url',
             'video_url' => 'nullable|url',
             'github_repo_url' => 'nullable|url',
             'tools_used' => 'nullable|string',
@@ -304,7 +303,6 @@ class UserController extends Controller implements HasMiddleware
             'posted_by' => $user->name,
             'posted_on' => now(),
             'is_private' => $request->is_private,
-            'url' => $request->url,
             'video_url' => $request->video_url,
             'github_repo_url' => $request->github_repo_url,
             'tools_used' => $request->tools_used,

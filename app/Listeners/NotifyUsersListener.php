@@ -28,7 +28,11 @@ class NotifyUsersListener
         // Get the users who have the required skills for the job
         $users = User::whereHas('skills', function ($query) use ($job) {
             $query->whereIn('skills.id', $job->skills->pluck('id'));
-        })->get();
+        })
+        ->whereHas('roles', function ($query) {
+            $query->where('name', 'alumni');
+        })
+        ->get();
 
         // Notify each user
         foreach ($users as $user) {

@@ -21,6 +21,14 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response) {
+            if ($response->getStatusCode() === 504) {
+                return response()->view('errors.504');
+            }
+
+            if ($response->getStatusCode() === 503) {
+                return response()->view('errors.503');
+            }
+
             if ($response->getStatusCode() === 500) {
                 return response()->view('errors.500');
             }
