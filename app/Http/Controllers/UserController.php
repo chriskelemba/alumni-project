@@ -206,7 +206,7 @@ class UserController extends Controller implements HasMiddleware
 
         // Check if the user already has a portfolio
         if ($user->portfolio) {
-            return redirect('confirm-project')->with('status', 'Portfolio already added. Please add your project.');
+            return redirect('confirm-project')->with('status', 'Portfolio already added.');
         }
 
         return view('portfolio.create');
@@ -222,17 +222,17 @@ class UserController extends Controller implements HasMiddleware
 
         $request->validate([
             'description' => 'required|string',
-            'skills' => 'nullable|string',
-            'achievements' => 'nullable|string',
-            'work_experience' => 'nullable|string',
-            'education' => 'nullable|string',
+            'skills' => 'required|string',
+            'achievements' => 'required|string',
+            'work_experience' => 'required|string',
+            'education' => 'required|string',
         ]);
 
         $portfolio = new Portfolio($request->all());
         $portfolio->user_id = $user->id;
         $portfolio->save();
 
-        return redirect('confirm-project')->with('status', 'Portfolio added. Please add your project.');
+        return redirect('confirm-project')->with('status', 'Portfolio added.');
     }
 
     public function confirmProject(Request $request)

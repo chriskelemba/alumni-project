@@ -3,6 +3,16 @@
         <div class="bg-green-500 text-white font-bold rounded p-4 mb-4" role="alert">{{ session('status') }}</div>
     @endif
 
+    @if ($errors->any())
+    <div class="bg-red-500 text-white font-bold rounded p-4 mb-4">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <form action="{{ route('save-project') }}" method="POST">
         @csrf
 
@@ -55,17 +65,8 @@
         </div>
     </form>
 
-    <form method="GET" action="{{ route('social') }}" class="flex items-center justify-end mt-4">
-        @csrf
-        <x-primary-button>
-            {{ __('Skip') }}
-        </x-primary-button>
     </form>
-
-    <form method="POST" action="{{ route('logout') }}" class="flex items-center justify-end mt-4">
-        @csrf
-        <x-primary-button>
-            {{ __('Logout') }}
-        </x-primary-button>
-    </form>
+    <a href="{{ url('confirm-project') }}" class="flex items-center justify-end mt-4">
+        <x-danger-button>{{ __('Back') }}</x-danger-button>
+    </a>
 </x-profile-layout>
