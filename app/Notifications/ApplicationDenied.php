@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Models\Application;
 
-class ApplicationApproved extends Notification
+class ApplicationDenied extends Notification
 {
     use Queueable;
 
@@ -44,12 +44,12 @@ class ApplicationApproved extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Your Application Has Been Approved')
-            ->line('Congratulations! Your application for the job position at ' . $this->application->job->title . ' has been approved.')
-            ->line('Thank you for your interest in working with us.')
+            ->subject('Your Application Has Been Denied')
+            ->line('We regret to inform you that your application for the job position at ' . $this->application->job->title . ' has been denied.')
+            ->line('We appreciate your interest in working with us and encourage you to apply for other positions that match your qualifications.')
             ->action('View Application', url('/my-applications/'))
             ->line('If you have any questions, feel free to contact us.');
-    }
+    }    
 
     /**
      * Get the array representation of the notification.
@@ -61,7 +61,7 @@ class ApplicationApproved extends Notification
     {
         return [
             'job_title' => $this->application->job->title,
-            'application_url' => url('/my-applications/'),
+            'application_denied_url' => url('/my-applications/'),
         ];
     }
 }

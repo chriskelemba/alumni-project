@@ -67,7 +67,7 @@
         @role('alumni')
         <div class="flex items-center justify-end mt-4">
             <x-primary-button>
-                {{ __('Save Profile') }}
+                {{ __('Next Step') }}
             </x-primary-button>
         </div>
         @endrole

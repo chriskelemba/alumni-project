@@ -14,13 +14,13 @@
                             <h4 class="text-lg font-bold">Users</h4>
                             @endrole
                             @role('super-admin|admin')
-                            <span class="bg-gray-100 text-black-700 text-sm font-bold mr-2 px-2.5 py-0.5 uppercase rounded">Click on the name to view user profile.</span>
+                            <span class="bg-gray-100 text-black-700 text-sm font-bold mr-2 px-2.5 py-0.5 uppercase rounded block">Click on the name to view user profile. Only works if user has profile.</span>
                             @endrole
                         </div>
-                        <div>
+                        <div class="flex justify-center">
                             @role('super-admin|admin')
                             @can('delete user')
-                            <a href="{{ url('users/trash') }}">
+                            <a href="{{ url('users/trash') }}" class="mx-1">
                                 <x-primary-button>{{ __('Recycling Bin') }}</x-primary-button>
                             </a>
                             @endcan
@@ -30,13 +30,14 @@
                             @endrole
                         </div>
                     </div>
+
                     @role('super-admin|admin')
                     @php
                         [$alumniUsers, $otherUsers] = $users->partition(function ($user) {
                             return $user->hasRole('alumni');
                         });
                     @endphp
-                
+
                     <!-- Alumni Users Section -->
                     <h2 class="text-lg font-bold mb-4">{{ __('Alumnis') }}</h2>
                     <div class="overflow-x-auto mb-8">
@@ -59,9 +60,13 @@
                                 <tr class="bg-white border-b">
                                     <td class="py-4 px-6">{{ $user->id }}</td>
                                     <td class="py-4 px-6">
+                                        @if($user->profile_setup == 1)
                                         <a href="{{ url('profile/'.$user->id) }}">
                                             {{ $user->name }}
                                         </a>
+                                    @else
+                                        {{ $user->name }}
+                                    @endif
                                     </td>
                                     <td class="py-4 px-6">{{ $user->email }}</td>
                                     <td class="py-4 px-6">
@@ -69,10 +74,10 @@
                                             <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ $rolename }}</span>
                                         @endforeach
                                     </td>
-                                    <td class="py-4 px-6">
+                                    <td class="py-4 px-6 text-center">
                                         @if($user->skills->count() > 0)
                                             @foreach($user->skills as $skill)
-                                                <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ $skill->name }}</span>
+                                                <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded inline-block mb-1">{{ $skill->name }}</span>
                                             @endforeach
                                         @else
                                             {{ __("No Skills") }}
@@ -86,7 +91,7 @@
                                         @endif
                                     </td>
                                     @can('update user')
-                                    <td class="py-4 px-6">
+                                    <td class="py-4 px-6 text-center">
                                         <a href="{{ url('users/'.$user->id.'/edit') }}">
                                             <x-secondary-button>{{ __('Edit') }}</x-secondary-button>
                                         </a>
@@ -111,7 +116,7 @@
                             </tbody>
                         </table>
                     </div>
-                
+
                     <!-- Other Users Section -->
                     <h2 class="text-lg font-bold mb-4">{{ __('Admins and Employees') }}</h2>
                     <div class="overflow-x-auto">
@@ -147,7 +152,7 @@
                                         @endif
                                     </td>
                                     @can('update user')
-                                    <td class="py-4 px-6">
+                                    <td class="py-4 px-6 text-center">
                                         <a href="{{ url('users/'.$user->id.'/edit') }}">
                                             <x-secondary-button>{{ __('Edit') }}</x-secondary-button>
                                         </a>
@@ -179,38 +184,44 @@
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
                                 <th class="py-3 px-6">Name</th>
-                                <th class="py-3 px-6">Email</th>
-                                <th class="py-3 px-6">Skills</th>
-                                <th class="py-3 px-6">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($alumniUsers as $user)
-                            <tr class="bg-white border-b">
-                                <td class="py-4 px-6">{{ $user->name }}</td>
-                                <td class="py-4 px-6">{{ $user->email }}</td>
-                                <td class="py-4 px-6">
-                                    @if($user->skills->count() > 0)
-                                        @foreach($user->skills as $skill)
-                                            <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ $skill->name }}</span>
-                                        @endforeach
-                                    @else
-                                        {{ __("No Skills") }}
-                                    @endif
-                                </td>
-                                <td class="py-4 px-6">
-                                    <a href="{{ url('profile/'.$user->id) }}">
-                                        <x-primary-button>{{ __('View Profile') }}</x-primary-button>
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                <th class="py-3 px-6">Email</
+                                    <th class="py-3 px-6">Skills</th>
+                                    <th class="py-3 px-6">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($alumniUsers as $user)
+                                <tr class="bg-white border-b">
+                                    <td class="py-4 px-6">{{ $user->name }}</td>
+                                    <td class="py-4 px-6">{{ $user->email }}</td>
+                                    <td class="py-4 px-6">
+                                        @if($user->skills->count() > 0)
+                                            <div class="flex flex-wrap justify-center">
+                                                @foreach($user->skills as $skill)
+                                                    <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">{{ $skill->name }}</span>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            {{ __("No Skills") }}
+                                        @endif
+                                    </td>
+                                    <td class="py-4 px-6 text-center">
+                                        @if($user->profile_setup == 1)
+                                            <a href="{{ url('profile/'.$user->id) }}">
+                                                <x-primary-button>{{ __('View Profile') }}</x-primary-button>
+                                            </a>
+                                        @else
+                                            <span class="text-gray-500">{{ __("Alumni has not set profile up.") }}</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    @endrole            
                 </div>
             </div>
-            @endrole
-            </div>
         </div>
-    </div>
-</x-app-layout>
+    </x-app-layout>
+    

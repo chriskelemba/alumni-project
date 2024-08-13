@@ -74,10 +74,4 @@
             {{ __('Skip') }}
         </x-primary-button>
     </form>
-    <form method="POST" action="{{ route('logout') }}" class="flex items-center justify-end mt-4">
-        @csrf
-        <x-primary-button>
-            {{ __('Logout') }}
-        </x-primary-button>
-    </form>
 </x-profile-layout>

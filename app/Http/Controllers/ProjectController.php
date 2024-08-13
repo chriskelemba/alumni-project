@@ -88,6 +88,7 @@ class ProjectController extends Controller
         $project = Project::find($projectId);
         $project->title = $request->input('title');
         $project->description = $request->input('description');
+        $project->is_private = $request->input('is_private');
         $project->video_url = $request->input('video_url');
         $project->github_repo_url = $request->input('github_repo_url');
         $project->tools_used = $request->input('tools_used');
@@ -162,6 +163,6 @@ class ProjectController extends Controller
         $project->is_published = false;
         $project->save();
     
-        return redirect()->back()->with('status', 'Project Published Successfully!');
+        return redirect()->back()->with('status', 'Project Unpublished Successfully!');
     }
 }

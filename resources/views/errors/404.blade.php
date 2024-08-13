@@ -1,35 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>500 Internal Server Error</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f8f9fa;
-            color: #333;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            text-align: center;
-        }
-        .title {
-            font-size: 72px;
-            margin-bottom: 40px;
-        }
-        .message {
-            font-size: 24px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="title">404</div>
-        <div class="message">Internal Server Error: Unable to connect to the database. Please try again later.</div>
+<x-error-layout>
+    <div class="flex flex-col items-center justify-center bg-gray-100 text-gray-800">
+        <div class="text-5xl font-bold text-red-500 mb-4">404</div>
+        <div class="text-2xl font-semibold mb-4">Oops! Page Not Found</div>
+        <p class="text-lg text-gray-600 mb-8 text-center">
+            Sorry, the page you're looking for doesn't exist or has been moved.
+        </p>
+        <a href="{{ url('/') }}">
+            <x-primary-button>{{ __('Go to Homepage') }}</x-primary-button>
+        </a>
     </div>
-</body>
-</html>
+</x-error-layout>

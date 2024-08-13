@@ -43,6 +43,17 @@ Route::delete('notifications/clear', [NotificationController::class, 'clearAll']
 Route::group(['middleware' => ['role:super-admin|admin|employee']], function() {
 
     Route::get('users', [UserController::class, 'index']);
+    Route::get('jobs/create', [JobController::class, 'create']);
+    Route::post('jobs', [JobController::class, 'store']);
+    
+    Route::get('/applications', [JobController::class, 'showApplications'])->name('show-applications');
+    Route::get('applications/{application}', [JobController::class, 'showApplication'])->name('applications.show');
+    Route::get('applications/{applicationId}/review', [ApplicationController::class, 'review'])->name('application.review');
+    Route::get('applications/{applicationId}/approve', [ApplicationController::class, 'approve'])->name('application.approve');
+    Route::get('applications/{applicationId}/deny', [ApplicationController::class, 'deny'])->name('application.deny');
+
+    Route::get('/job-feedbacks', [JobController::class, 'indexFeedback'])->name('feedback.index');
+    Route::get('/feedbacks/{id}', [JobController::class, 'showFeedback'])->name('feedback.show');
 
 });
 
@@ -64,7 +75,7 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('users/{userId}/deactivateAccount', [UserController::class, 'deactivateAccount']);
 
     Route::get('jobs/trash', [JobController::class, 'trash']);
-    Route::resource('jobs', JobController::class)->except(['index']);
+    Route::resource('jobs', JobController::class)->except(['index', 'create', 'store']);
     Route::get('jobs/{jobId}/delete', [JobController::class, 'destroy']);
     Route::get('jobs/{jobId}/restore', [JobController::class, 'restore']);
     Route::get('jobs/{jobId}/forceDelete', [JobController::class, 'forceDelete']);
@@ -79,10 +90,6 @@ Route::group(['middleware' => ['role:super-admin|admin']], function() {
     Route::get('projects/{projectId}/restore', [ProjectController::class, 'restore']);
     Route::get('projects/{projectId}/forceDelete', [ProjectController::class, 'forceDelete']);
 
-    Route::get('/admin/applications/{applicationId}', [ApplicationController::class, 'show'])->name('admin.application.show');
-    Route::get('/admin/applications/{applicationId}/review', [ApplicationController::class, 'review'])->name('admin.application.review');
-    Route::get('/admin/applications/{applicationId}/approve', [ApplicationController::class, 'approve'])->name('admin.application.approve');
-
 });
 
 Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
@@ -91,8 +98,6 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::get('jobs/{job}/show', [JobController::class, 'show']);
     Route::get('jobs/{job}/apply', [JobController::class, 'apply']);
     Route::post('jobs/{job}', [JobController::class, 'storeApplication'])->name('jobs.storeApplication');
-    Route::get('/applications', [JobController::class, 'showApplications'])->name('show-applications');
-    Route::get('applications/{application}', [JobController::class, 'showApplication'])->name('applications.show');
 
     Route::get('/jobs/{job}/feedback', [JobController::class, 'feedback']);
     Route::post('/jobs/{job}/submit-feedback', [JobController::class, 'submitFeedback']);
@@ -116,6 +121,7 @@ Route::group(['middleware' => ['auth', 'checkProfileSetup']], function() {
     Route::delete('messages/{id}', [MessageController::class, 'destroy'])->name('messages.destroy');
 
     Route::get('/my-applications', [ApplicationController::class, 'showApplications'])->name('my-applications');
+    Route::delete('/applications/{id}', [JobController::class, 'deleteApplication'])->name('applications.destroy');
 
 });
 

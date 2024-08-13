@@ -56,7 +56,17 @@ class UserController extends Controller implements HasMiddleware
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8|max:20',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'max:20',
+                'confirmed',
+                'regex:/[A-Z]/', // At least one uppercase letter
+                'regex:/[a-z]/', // At least one lowercase letter
+                'regex:/[0-9]/', // At least one number
+                'regex:/[@$!%*#?&]/', // At least one special character
+            ],
             'roles' => 'required'
         ]);
 
@@ -95,7 +105,17 @@ class UserController extends Controller implements HasMiddleware
         }
 
         $request->validate([
-            'password' => 'required|string|min:8|confirmed',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'max:20',
+                'confirmed',
+                'regex:/[A-Z]/', // At least one uppercase letter
+                'regex:/[a-z]/', // At least one lowercase letter
+                'regex:/[0-9]/', // At least one number
+                'regex:/[@$!%*#?&]/', // At least one special character
+            ],
         ]);
 
         $user->password = Hash::make($request->password);
@@ -186,7 +206,7 @@ class UserController extends Controller implements HasMiddleware
 
         // Check if the user already has a portfolio
         if ($user->portfolio) {
-            return redirect('confirm-project')->with('status', 'Portfolio already added. Please add your project.');
+            return redirect('confirm-project')->with('status', 'Portfolio already added.');
         }
 
         return view('portfolio.create');
@@ -202,17 +222,17 @@ class UserController extends Controller implements HasMiddleware
 
         $request->validate([
             'description' => 'required|string',
-            'skills' => 'nullable|string',
-            'achievements' => 'nullable|string',
-            'work_experience' => 'nullable|string',
-            'education' => 'nullable|string',
+            'skills' => 'required|string',
+            'achievements' => 'required|string',
+            'work_experience' => 'required|string',
+            'education' => 'required|string',
         ]);
 
         $portfolio = new Portfolio($request->all());
         $portfolio->user_id = $user->id;
         $portfolio->save();
 
-        return redirect('confirm-project')->with('status', 'Portfolio added. Please add your project.');
+        return redirect('confirm-project')->with('status', 'Portfolio added.');
     }
 
     public function confirmProject(Request $request)
@@ -269,7 +289,6 @@ class UserController extends Controller implements HasMiddleware
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'url' => 'nullable|url',
             'video_url' => 'nullable|url',
             'github_repo_url' => 'nullable|url',
             'tools_used' => 'nullable|string',
@@ -284,7 +303,6 @@ class UserController extends Controller implements HasMiddleware
             'posted_by' => $user->name,
             'posted_on' => now(),
             'is_private' => $request->is_private,
-            'url' => $request->url,
             'video_url' => $request->video_url,
             'github_repo_url' => $request->github_repo_url,
             'tools_used' => $request->tools_used,
@@ -405,7 +423,17 @@ class UserController extends Controller implements HasMiddleware
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'password' => 'nullable|string|min:8|max:20',
+            'password' => [
+                'nullable',
+                'string',
+                'min:8',
+                'max:20',
+                'confirmed',
+                'regex:/[A-Z]/', // At least one uppercase letter
+                'regex:/[a-z]/', // At least one lowercase letter
+                'regex:/[0-9]/', // At least one number
+                'regex:/[@$!%*#?&]/', // At least one special character
+            ],
             'roles' => 'required',
             'skills' => 'required'
         ]);
