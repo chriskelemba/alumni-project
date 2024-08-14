@@ -39,7 +39,7 @@
                                     <x-primary-button>{{ __('Show All Jobs') }}</x-primary-button>
                                 </a>
                             @else
-                                <form action="{{ url('jobs') }}" method="GET" class="flex items-center mx-2">
+                                <form action="{{ url('jobs') }}" method="GET" class="mx-2">
                                     <input type="hidden" name="filter_skills" value="1">
                                     <x-primary-button>{{ __('Filter by My Skills') }}</x-primary-button>
                                 </form>

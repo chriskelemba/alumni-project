@@ -32,18 +32,31 @@ class UserController extends Controller implements HasMiddleware
         ];
     }
     
-    public function index()
+    public function index(Request $request)
     {
         $users = User::get();
-        $alumniUsers = User::whereHas('roles', function ($query) {
+    
+        $alumniQuery = User::query()->whereHas('roles', function ($query) {
             $query->where('name', 'alumni');
-        })->get();
-        
+        });
+    
+        if ($request->has('filter_skills')) {
+            $userSkills = Auth::user()->skills()->pluck('skills.id')->toArray();
+    
+            $alumniQuery->whereHas('skills', function ($query) use ($userSkills) {
+                $query->whereIn('skills.id', $userSkills);
+            });
+        }
+    
+        $alumniUsers = $alumniQuery->get();
+    
         return view('role-permission.user.index', [
             'users' => $users,
             'alumniUsers' => $alumniUsers,
         ]);
     }
+    
+    
 
     public function create()
     {
